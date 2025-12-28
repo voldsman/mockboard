@@ -18,6 +18,10 @@
             <groupId>dev.mockboard</groupId>
             <artifactId>mb-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.mockboard</groupId>
+            <artifactId>mb-data</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

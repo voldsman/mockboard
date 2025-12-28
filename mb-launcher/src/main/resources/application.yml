@@ -8,11 +8,14 @@ spring:
             enabled: always
     profiles:
         active: dev
+    mongodb:
+        uri: mongodb://admin:admin123@localhost:27017/mockboard?authSource=admin
+    data:
+      mongodb:
+          auto-index-creation: true
 
 server:
     port: 8080
-
-
 
 logging:
     level:
