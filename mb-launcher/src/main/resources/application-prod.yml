@@ -1,7 +1,0 @@
-server:
-    port: 8080
-
-logging:
-    level:
-        root: WARN
-        dev.mockboard: INFO

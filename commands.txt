@@ -1,8 +1,0 @@
----
-Clean & package maven: mvn clean package
-Clean & package maven skip tests: mvn clean package -DskipTests
-
----
-Set maven version (root): mvn versions:set -DnewVersion=NEW_VERSION
-apply: mvn versions:commit
-revert: mvn versions:revert

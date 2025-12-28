@@ -1,0 +1,18 @@
+server:
+    port: ${PORT:8000}
+
+spring:
+    application:
+        name: mockboard
+    main:
+        banner-mode: off
+    profiles:
+        active: ${ACTIVE_ENV:default_value}
+    threads:
+        virtual:
+            enabled: ${VI_THREADS:true}
+    mongodb:
+        uri: ${MONGO_URI:mongodb://localhost:27017/mockboard_db}
+    data:
+        mongodb:
+            auto-index-creation: true

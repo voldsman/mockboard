@@ -1,0 +1,4 @@
+logging:
+    level:
+        dev.mockboard: DEBUG
+        org.springframework.web: DEBUG
