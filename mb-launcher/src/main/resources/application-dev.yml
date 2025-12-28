@@ -1,11 +1,11 @@
 spring:
-    application:
-        name: mockboard
-    main:
-        banner-mode: off
-    output:
-        ansi:
-            enabled: always
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: true
 
-server:
-    port: 8080
+logging:
+    level:
+        dev.mockboard: DEBUG
+        org.springframework.web: DEBUG

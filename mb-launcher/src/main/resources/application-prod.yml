@@ -1,11 +1,7 @@
-spring:
-    devtools:
-        restart:
-            enabled: true
-        livereload:
-            enabled: true
+server:
+    port: 8080
 
 logging:
     level:
-        dev.mockboard: DEBUG
-        org.springframework.web: DEBUG
+        root: WARN
+        dev.mockboard: INFO

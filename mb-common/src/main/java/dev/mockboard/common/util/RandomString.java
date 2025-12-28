@@ -1,4 +1,12 @@
+package dev.mockboard.common.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-public class RandomString {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class RandomString {
+
+    public static String randomString(int length) {
+        return "";
+    }
 }
