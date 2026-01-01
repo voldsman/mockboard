@@ -1,25 +1,21 @@
 package dev.mockboard.storage.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
+import dev.mockboard.core.AppProperties;
 import dev.mockboard.core.engine.PathMatchingEngine;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-
 @Slf4j
 @Component
-public class MockExecutionCacheStore {
-
-    private static final int MAX_CACHE_SIZE = 10_000;
-    private static final int CACHE_EXPIRATION_AFTER_WRITE_MINUTES = 30;
+public class MockExecutionCacheStore extends BaseCacheStore<String, PathMatchingEngine> {
 
     // apiKey as key
-    private final Cache<String, PathMatchingEngine> enginesByApiKey = Caffeine.newBuilder()
-            .maximumSize(MAX_CACHE_SIZE)
-            .expireAfterAccess(Duration.ofMinutes(CACHE_EXPIRATION_AFTER_WRITE_MINUTES))
-            .build();
+    private final Cache<String, PathMatchingEngine> enginesByApiKey;
+
+    public MockExecutionCacheStore(AppProperties appProperties) {
+        this.enginesByApiKey = buildCache(appProperties);
+    }
 
     public void addEngineCache(String apiKey, PathMatchingEngine engine) {
         log.debug("Adding engine cache for apiKey {}", apiKey);
@@ -31,7 +27,7 @@ public class MockExecutionCacheStore {
         return enginesByApiKey.getIfPresent(apiKey);
     }
 
-    public void evictByApiKey(String apiKey) {
+    public void evict(String apiKey) {
         enginesByApiKey.invalidate(apiKey);
     }
 

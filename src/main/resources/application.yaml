@@ -16,3 +16,8 @@ spring:
     data:
         mongodb:
             auto-index-creation: true
+
+mockboard:
+    cache:
+        max-entries: ${CACHE_MAX_ENTRIES:10000}
+        expire-after-access-minutes: ${CACHE_EXPIRE_AFTER_ACCESS_MIN:30}

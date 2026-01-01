@@ -105,6 +105,6 @@ public class MockRuleService {
     private void evictMockExecutionCache(String boardId) {
         var board = boardCacheStore.getBoardCache(boardId);
         if (board == null) return;
-        mockExecutionCacheStore.evictByApiKey(board.getApiKey());
+        mockExecutionCacheStore.evict(board.getApiKey());
     }
 }

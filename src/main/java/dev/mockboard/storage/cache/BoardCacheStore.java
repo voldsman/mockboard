@@ -2,6 +2,7 @@ package dev.mockboard.storage.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import dev.mockboard.core.AppProperties;
 import dev.mockboard.core.common.domain.dto.BoardDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,22 +11,24 @@ import java.time.Duration;
 
 @Slf4j
 @Component
-public class BoardCacheStore {
-
-    private static final int MAX_CACHE_SIZE = 10_000;
-    private static final int CACHE_EXPIRATION_AFTER_WRITE_MINUTES = 30;
+public class BoardCacheStore extends BaseCacheStore<String, BoardDto> {
 
     // boardId as key, boardDto as value
-    private final Cache<String, BoardDto> boards = Caffeine.newBuilder()
-            .maximumSize(MAX_CACHE_SIZE)
-            .expireAfterAccess(Duration.ofMinutes(CACHE_EXPIRATION_AFTER_WRITE_MINUTES))
-            .build();
+    private final Cache<String, BoardDto> boards;
 
+    // helper cache for mapping to avoid
     // apiKey as key, boardId as value (for mock execution lookups)
-    private final Cache<String, String> boardsIdByApiKey = Caffeine.newBuilder()
-            .maximumSize(MAX_CACHE_SIZE)
-            .expireAfterAccess(Duration.ofMinutes(CACHE_EXPIRATION_AFTER_WRITE_MINUTES))
-            .build();
+    private final Cache<String, String> boardsIdByApiKey;
+
+    public BoardCacheStore(AppProperties appProperties) {
+        log.info("Initializing boards and boardsIdByApiKey cache...");
+        this.boards = buildCache(appProperties);
+
+        this.boardsIdByApiKey = Caffeine.newBuilder()
+                .maximumSize(appProperties.getMaxCacheEntries())
+                .expireAfterAccess(Duration.ofMinutes(appProperties.getCacheExpireAfterAccessMinutes()))
+                .build();
+    }
 
     public void initBoardCache(String boardId, BoardDto boardDto) {
         log.info("init board cache for boardId={}", boardId);
@@ -57,15 +60,17 @@ public class BoardCacheStore {
         boards.put(boardId, boardDto);
     }
 
-    public void evictByBoardId(String boardId) {
+    @Override
+    public void evict(String boardId) {
         var boardCache = getBoardCache(boardId);
         boardsIdByApiKey.invalidate(boardCache.getApiKey());
         boards.invalidate(boardId);
     }
 
-    public void evictAllBoardEntries() {
-        log.info("Evict all board entries");
+    @Override
+    public void evictAll() {
         boards.invalidateAll();
         boardsIdByApiKey.invalidateAll();
+        log.info("Evict all board entries");
     }
 }
