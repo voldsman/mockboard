@@ -2,6 +2,7 @@ package dev.mockboard.core.config.advice;
 
 import dev.mockboard.core.common.exception.NotFoundException;
 import dev.mockboard.core.common.exception.RateLimitExceededException;
+import dev.mockboard.core.common.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +19,12 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException ex) {
         var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({UnauthorizedException.class})
+    public ResponseEntity<ExceptionResponse> handleUnauthorizedException(UnauthorizedException ex) {
+        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({RateLimitExceededException.class})

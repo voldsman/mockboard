@@ -1,0 +1,1066 @@
+src/main/java/dev/mockboard/MockboardApplication.java:package dev.mockboard;
+src/main/java/dev/mockboard/MockboardApplication.java:import org.springframework.boot.SpringApplication;
+src/main/java/dev/mockboard/MockboardApplication.java:import org.springframework.boot.autoconfigure.SpringBootApplication;
+src/main/java/dev/mockboard/MockboardApplication.java:import java.util.TimeZone;
+src/main/java/dev/mockboard/MockboardApplication.java:@SpringBootApplication
+src/main/java/dev/mockboard/MockboardApplication.java:public class MockboardApplication {
+src/main/java/dev/mockboard/MockboardApplication.java:    public static void main(String[] args) {
+src/main/java/dev/mockboard/MockboardApplication.java:        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+src/main/java/dev/mockboard/MockboardApplication.java:        SpringApplication.run(MockboardApplication.class, args);
+src/main/java/dev/mockboard/MockboardApplication.java:    }
+src/main/java/dev/mockboard/MockboardApplication.java:}
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:package dev.mockboard.core.common.exception;
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:public class NotFoundException extends RuntimeException {
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:    public NotFoundException(String message) {
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:        super(message);
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:    }
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:    public NotFoundException(String message, Throwable cause) {
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:        super(message, cause);
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:    }
+src/main/java/dev/mockboard/core/common/exception/NotFoundException.java:}
+src/main/java/dev/mockboard/core/common/exception/RateLimitExceededException.java:package dev.mockboard.core.common.exception;
+src/main/java/dev/mockboard/core/common/exception/RateLimitExceededException.java:public class RateLimitExceededException extends RuntimeException {
+src/main/java/dev/mockboard/core/common/exception/RateLimitExceededException.java:    public RateLimitExceededException(String message) {
+src/main/java/dev/mockboard/core/common/exception/RateLimitExceededException.java:        super(message);
+src/main/java/dev/mockboard/core/common/exception/RateLimitExceededException.java:    }
+src/main/java/dev/mockboard/core/common/exception/RateLimitExceededException.java:}
+src/main/java/dev/mockboard/core/common/exception/UnauthorizedException.java:package dev.mockboard.core.common.exception;
+src/main/java/dev/mockboard/core/common/exception/UnauthorizedException.java:public class UnauthorizedException extends RuntimeException {
+src/main/java/dev/mockboard/core/common/exception/UnauthorizedException.java:    public UnauthorizedException(String message) {
+src/main/java/dev/mockboard/core/common/exception/UnauthorizedException.java:        super(message);
+src/main/java/dev/mockboard/core/common/exception/UnauthorizedException.java:    }
+src/main/java/dev/mockboard/core/common/exception/UnauthorizedException.java:}
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:package dev.mockboard.core.common.domain.dto;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:import lombok.AllArgsConstructor;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:import lombok.Builder;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:import lombok.Data;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:import lombok.NoArgsConstructor;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:@Data
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:@Builder
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:@NoArgsConstructor
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:@AllArgsConstructor
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:public class BoardDto {
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:    private String id;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:    private String apiKey;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:    private String ownerToken;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:    private LocalDateTime createdAt;
+src/main/java/dev/mockboard/core/common/domain/dto/BoardDto.java:}
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:package dev.mockboard.core.common.domain.dto;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:import lombok.AllArgsConstructor;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:import lombok.Builder;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:import lombok.Data;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:import lombok.NoArgsConstructor;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:import java.util.Map;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:@Data
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:@Builder
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:@NoArgsConstructor
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:@AllArgsConstructor
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:public class MockRuleDto {
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private String id;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private String boardId;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private String method;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private String path;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private Map<String, String> headers;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private String body;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private int statusCode;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:    private LocalDateTime createdAt;
+src/main/java/dev/mockboard/core/common/domain/dto/MockRuleDto.java:}
+src/main/java/dev/mockboard/core/common/domain/response/IdResponse.java:package dev.mockboard.core.common.domain.response;
+src/main/java/dev/mockboard/core/common/domain/response/IdResponse.java:public record IdResponse(String id) {
+src/main/java/dev/mockboard/core/common/domain/response/IdResponse.java:}
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:package dev.mockboard.core.common.domain;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:import lombok.Getter;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:public class PathPattern {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    private static final char SEPARATOR = '/';
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    @Getter
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    private final String pattern;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    @Getter
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    private final String mockId;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    private final String[] segments;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    private final boolean[] wildcardSegments;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    private final int segmentCount;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    public PathPattern(String pattern, String mockId) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        this.pattern = pattern;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        this.mockId = mockId;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        var parts = pattern.split("/", -1);
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        int startIdx = (parts.length > 0 && parts[0].isEmpty()) ? 1 : 0;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        this.segmentCount = parts.length - startIdx;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        this.segments = new String[segmentCount];
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        this.wildcardSegments = new boolean[segmentCount];
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        for (int i = 0; i < segmentCount; i++) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            var segment = parts[startIdx + i];
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            segments[i] = segment;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            wildcardSegments[i] = "*".equals(segment);
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    public boolean matches(String requestPath) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        if (requestPath.isEmpty()) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            return pattern.isEmpty();
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        int pathLength = requestPath.length();
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        int segmentIdx = 0;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        int charIdx = (requestPath.charAt(0) == SEPARATOR) ? 1 : 0;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        while (segmentIdx < segmentCount) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            if (charIdx >= pathLength) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                return false;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            if (wildcardSegments[segmentIdx]) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                while (charIdx < pathLength && requestPath.charAt(charIdx) != SEPARATOR) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                    charIdx++;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                charIdx++;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            } else {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                var expectedSegment = segments[segmentIdx];
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                int expectedLength = expectedSegment.length();
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                int segmentEnd = charIdx;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                while (segmentEnd < pathLength && requestPath.charAt(segmentEnd) != SEPARATOR) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                    segmentEnd++;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                int actualLength = segmentEnd - charIdx;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                if (actualLength != expectedLength) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                    return false;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                for (int i = 0; i < expectedLength; i++) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                    if (requestPath.charAt(charIdx + i) != expectedSegment.charAt(i)) {
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                        return false;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                    }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:                charIdx = segmentEnd + 1;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:            segmentIdx++;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:        return charIdx >= pathLength || charIdx == pathLength - 1;
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:    }
+src/main/java/dev/mockboard/core/common/domain/PathPattern.java:}
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:package dev.mockboard.core.common.mapper;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:import dev.mockboard.core.common.doc.BoardDoc;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:import dev.mockboard.core.common.domain.dto.BoardDto;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:import org.modelmapper.ModelMapper;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:@Component
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:public class BoardMapper {
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:    private final ModelMapper modelMapper;
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:    public BoardDto mapBoardDocToBoardDto(BoardDoc doc) {
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:        return modelMapper.map(doc, BoardDto.class);
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:    }
+src/main/java/dev/mockboard/core/common/mapper/BoardMapper.java:}
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:package dev.mockboard.core.common.mapper;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:import dev.mockboard.core.common.doc.MockRuleDoc;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:import dev.mockboard.core.common.domain.dto.MockRuleDto;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:import org.modelmapper.ModelMapper;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:@Component
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:public class MockRuleMapper {
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:    private final ModelMapper modelMapper;
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:    public MockRuleDoc mapMockRuleDtoToMockRuleDoc(MockRuleDto mockRuleDto) {
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:        return modelMapper.map(mockRuleDto, MockRuleDoc.class);
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:    }
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:    public MockRuleDto mapMockRuleDocToMockRuleDto(MockRuleDoc mockRuleDoc) {
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:        return modelMapper.map(mockRuleDoc, MockRuleDto.class);
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:    }
+src/main/java/dev/mockboard/core/common/mapper/MockRuleMapper.java:}
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:package dev.mockboard.core.common.doc;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import lombok.AllArgsConstructor;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import lombok.Builder;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import lombok.Data;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import lombok.NoArgsConstructor;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import org.springframework.data.annotation.Id;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import org.springframework.data.mongodb.core.index.Indexed;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import org.springframework.data.mongodb.core.mapping.Document;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import java.io.Serializable;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:@Data
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:@Builder
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:@NoArgsConstructor
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:@AllArgsConstructor
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:@Document(collection = "boards")
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:public class BoardDoc implements Serializable {
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    @Id
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    private String id;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    @Indexed(unique = true)
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    private String apiKey;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    private String ownerToken;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    @Indexed
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:    private LocalDateTime createdAt;
+src/main/java/dev/mockboard/core/common/doc/BoardDoc.java:}
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:package dev.mockboard.core.common.doc;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import lombok.AllArgsConstructor;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import lombok.Builder;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import lombok.Data;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import lombok.NoArgsConstructor;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import org.springframework.data.annotation.Id;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import org.springframework.data.mongodb.core.index.Indexed;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import org.springframework.data.mongodb.core.mapping.Document;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import java.io.Serializable;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import java.util.HashMap;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:import java.util.Map;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:@Data
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:@Builder
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:@NoArgsConstructor
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:@AllArgsConstructor
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:@Document(collection = "mock_rules")
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:public class MockRuleDoc implements Serializable {
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    @Id
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private String id;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    @Indexed
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private String boardId;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private String method;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private String path;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private Map<String, String> headers = new HashMap<>();
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private String body;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private int statusCode = 200;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:    private LocalDateTime createdAt;
+src/main/java/dev/mockboard/core/common/doc/MockRuleDoc.java:}
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:package dev.mockboard.core.common.ratelimiter;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:import com.github.benmanes.caffeine.cache.Cache;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:import com.github.benmanes.caffeine.cache.Caffeine;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:import dev.mockboard.core.common.exception.RateLimitExceededException;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:import java.time.Duration;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:import java.util.concurrent.atomic.AtomicInteger;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:@Component
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:public class BoardCreationRateLimiter {
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:    private static final int MAX_BOARDS_PER_HOUR_PER_IP = 5;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:    private final Cache<String, AtomicInteger> creationCounts = Caffeine.newBuilder()
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:            .expireAfterWrite(Duration.ofHours(1))
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:            .build();
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:    public void checkLimit(String ip) {
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:        var count = creationCounts.get(ip, k -> new AtomicInteger(0));
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:        assert count != null;
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:        if (count.incrementAndGet() > MAX_BOARDS_PER_HOUR_PER_IP) {
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:            throw new RateLimitExceededException("Too many boards.. chill");
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:        }
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:    }
+src/main/java/dev/mockboard/core/common/ratelimiter/BoardCreationRateLimiter.java:}
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:package dev.mockboard.core.common.ratelimiter;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:import com.github.benmanes.caffeine.cache.Cache;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:import com.github.benmanes.caffeine.cache.Caffeine;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:import dev.mockboard.core.common.exception.RateLimitExceededException;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:import java.time.Duration;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:import java.util.concurrent.atomic.AtomicInteger;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:@Component
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:public class MockExecutionRateLimiter {
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:    private static final int MAX_REQUESTS_PER_MINUTE_PER_APIKEY = 20;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:    private final Cache<String, AtomicInteger> requestCounts = Caffeine.newBuilder()
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:            .expireAfterWrite(Duration.ofMinutes(1))
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:            .build();
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:    public void checkLimit(String apiKey) {
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:        var count = requestCounts.get(apiKey, k -> new AtomicInteger(0));
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:        assert count != null;
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:        if (count.incrementAndGet() > MAX_REQUESTS_PER_MINUTE_PER_APIKEY) {
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:            throw new RateLimitExceededException("Too many requests.. chill");
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:        }
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:    }
+src/main/java/dev/mockboard/core/common/ratelimiter/MockExecutionRateLimiter.java:}
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:package dev.mockboard.core.common.validator;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import dev.mockboard.core.common.domain.dto.MockRuleDto;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import tools.jackson.databind.ObjectMapper;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import java.util.Map;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import java.util.Set;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:import java.util.regex.Pattern;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:@Component
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:public class MockRuleValidator {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final Pattern VALID_PATH_PATTERN = Pattern.compile("^/[a-zA-Z0-9/_\\-*{}]+$");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final Set<String> VALID_HTTP_METHODS = Set.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final int MAX_PATH_LENGTH = 256;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final int MAX_BODY_LENGTH = 5_000;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final int MAX_WILDCARDS = 3;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final int MAX_HEADERS_SIZE = 20;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final int MAX_HEADER_KEY_SIZE = 100;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private static final int MAX_HEADER_VALUE_SIZE = 500;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private final ObjectMapper objectMapper;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    public void validateMockRule(MockRuleDto dto) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        validatePath(dto.getPath());
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        validateBody(dto.getBody());
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        validateStatusCode(dto.getStatusCode());
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        validateMethod(dto.getMethod());
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        validateHeaders(dto.getHeaders());
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private void validatePath(String path) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (path == null || path.isEmpty()) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Path cannot be empty");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (!path.startsWith("/")) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Path must start with /");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (path.length() > MAX_PATH_LENGTH) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Path exceeds maximum length of " + MAX_PATH_LENGTH);
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (!VALID_PATH_PATTERN.matcher(path).matches()) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Path contains invalid characters. Allowed: a-z, A-Z, 0-9, /, _, -, *");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        long wildcardCount = path.chars().filter(ch -> ch == '*').count();
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (wildcardCount > MAX_WILDCARDS) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Path cannot have more than " + MAX_WILDCARDS + " wildcards");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        // maybe in future
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (path.contains("**")) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Adjacent wildcards (**) not allowed");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private void validateBody(String body) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        // get, options do not have a body
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (body == null) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            return;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        try {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            objectMapper.readTree(body);
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        } catch (Exception e) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Body must be valid JSON string");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (body.length() > MAX_BODY_LENGTH) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Body too large (max " +  (MAX_BODY_LENGTH / 1000) + "KB)");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private void validateStatusCode(int statusCode) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (statusCode < 100 || statusCode > 599) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Invalid HTTP status code: " + statusCode);
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private void validateMethod(String method) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        // or make it GET by default
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (method == null || method.isEmpty()) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("HTTP method cannot be empty");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (!VALID_HTTP_METHODS.contains(method.toUpperCase())) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Invalid HTTP method: " + method);
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    private void validateHeaders(Map<String, String> headers) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (headers == null) return;
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        if (headers.size() > MAX_HEADERS_SIZE) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            throw new IllegalArgumentException("Too many headers (max " + MAX_HEADERS_SIZE + ")");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        headers.forEach((key, value) -> {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            if (key.length() > MAX_HEADER_KEY_SIZE || value.length() > MAX_HEADER_VALUE_SIZE) {
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:                throw new IllegalArgumentException("Header key or value too long");
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:            }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:        });
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:    }
+src/main/java/dev/mockboard/core/common/validator/MockRuleValidator.java:}
+src/main/java/dev/mockboard/core/config/MongoConfig.java:package dev.mockboard.core.config;
+src/main/java/dev/mockboard/core/config/MongoConfig.java:import org.springframework.context.annotation.Configuration;
+src/main/java/dev/mockboard/core/config/MongoConfig.java:import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+src/main/java/dev/mockboard/core/config/MongoConfig.java:@Configuration
+src/main/java/dev/mockboard/core/config/MongoConfig.java:@EnableMongoRepositories(basePackages = "dev.mockboard.storage.repo")
+src/main/java/dev/mockboard/core/config/MongoConfig.java:public class MongoConfig {
+src/main/java/dev/mockboard/core/config/MongoConfig.java:}
+src/main/java/dev/mockboard/core/config/AppConfig.java:package dev.mockboard.core.config;
+src/main/java/dev/mockboard/core/config/AppConfig.java:import org.modelmapper.ModelMapper;
+src/main/java/dev/mockboard/core/config/AppConfig.java:import org.springframework.context.annotation.Bean;
+src/main/java/dev/mockboard/core/config/AppConfig.java:import org.springframework.context.annotation.Configuration;
+src/main/java/dev/mockboard/core/config/AppConfig.java:import org.springframework.scheduling.annotation.EnableScheduling;
+src/main/java/dev/mockboard/core/config/AppConfig.java:@Configuration
+src/main/java/dev/mockboard/core/config/AppConfig.java:@EnableScheduling
+src/main/java/dev/mockboard/core/config/AppConfig.java:public class AppConfig {
+src/main/java/dev/mockboard/core/config/AppConfig.java:    @Bean
+src/main/java/dev/mockboard/core/config/AppConfig.java:    public ModelMapper modelMapper() {
+src/main/java/dev/mockboard/core/config/AppConfig.java:        return new ModelMapper();
+src/main/java/dev/mockboard/core/config/AppConfig.java:    }
+src/main/java/dev/mockboard/core/config/AppConfig.java:}
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:package dev.mockboard.core.config.aop;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import jakarta.servlet.http.HttpServletRequest;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.aspectj.lang.JoinPoint;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.aspectj.lang.ProceedingJoinPoint;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.aspectj.lang.annotation.AfterThrowing;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.aspectj.lang.annotation.Around;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.aspectj.lang.annotation.Aspect;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.aspectj.lang.annotation.Pointcut;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.springframework.web.context.request.RequestContextHolder;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import org.springframework.web.context.request.ServletRequestAttributes;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:import java.util.Arrays;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:@Slf4j
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:@Aspect
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:@Component
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:public class LoggingAspectConfig {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    @Pointcut(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            "within(@org.springframework.stereotype.Repository *)" +
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    " || within(@org.springframework.stereotype.Service *)" +
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    " || within(@org.springframework.web.bind.annotation.RestController *)"
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    )
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    public void springBeanPointcut() {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        // noop
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    @Pointcut(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            "within(dev.mockboard.web..*)" +
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    " || within(dev.mockboard.service..*)" +
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    " || within(dev.mockboard.storage..*)"
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    )
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    public void applicationPackagePointcut() {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        // noop
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    public void restControllerPointcut() {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        // noop
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        log.error(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                "Exception in {} with cause = '{}' and exception = '{}'",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                joinPoint.getSignature().toShortString(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                e.getCause() != null ? e.getCause() : "NULL",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                e.getMessage(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                e
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    @Around("applicationPackagePointcut() && springBeanPointcut()")
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        if (log.isDebugEnabled()) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            log.debug(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    "Enter: {} with argument[s] = {}",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    joinPoint.getSignature().toShortString(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    Arrays.toString(joinPoint.getArgs())
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        try {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            var result = joinPoint.proceed();
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            if (log.isDebugEnabled()) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                log.debug(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        "Exit: {} with result = {}",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        joinPoint.getSignature().toShortString(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        result
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            return result;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        } catch (IllegalArgumentException e) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            log.error(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    "Illegal argument: {} in {}",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    Arrays.toString(joinPoint.getArgs()),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    joinPoint.getSignature().toShortString()
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            throw e;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    @Around("restControllerPointcut()")
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    public Object logRestController(ProceedingJoinPoint joinPoint) throws Throwable {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        var request = getCurrentRequest();
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        if (request != null && log.isInfoEnabled()) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            log.info(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    "Req: {} {}, method: {}",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    request.getMethod(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    request.getRequestURI(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                    joinPoint.getSignature().toShortString()
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        long startTime = System.currentTimeMillis();
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        try {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            var result = joinPoint.proceed();
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            long executionTime = System.currentTimeMillis() - startTime;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            if (request != null && log.isInfoEnabled()) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                log.info(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        "Resp: {} {}, status: SUCCESS, time: {}ms",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        request.getMethod(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        request.getRequestURI(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        executionTime
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            return result;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        } catch (Throwable e) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            long executionTime = System.currentTimeMillis() - startTime;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            if (request != null) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                log.error(
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        "Resp: {} {}, status: ERROR, time: {}ms, exception: {}",
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        request.getMethod(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        request.getRequestURI(),
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        executionTime,
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                        e.getMessage()
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:                );
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            throw e;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    private HttpServletRequest getCurrentRequest() {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        try {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            var attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            return attributes != null ? attributes.getRequest() : null;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        } catch (Exception e) {
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:            return null;
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:        }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:    }
+src/main/java/dev/mockboard/core/config/aop/LoggingAspectConfig.java:}
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:package dev.mockboard.core.config.advice;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import dev.mockboard.core.common.exception.NotFoundException;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import dev.mockboard.core.common.exception.RateLimitExceededException;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import dev.mockboard.core.common.exception.UnauthorizedException;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import org.springframework.http.HttpStatus;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import org.springframework.http.ResponseEntity;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import org.springframework.web.bind.annotation.ExceptionHandler;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import org.springframework.web.bind.annotation.RestControllerAdvice;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:@RestControllerAdvice
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:public class ExceptionHandlerAdvice {
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    private record ExceptionResponse(String error, LocalDateTime timestamp) {}
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    @ExceptionHandler({NotFoundException.class})
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException ex) {
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    }
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    @ExceptionHandler({UnauthorizedException.class})
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    public ResponseEntity<ExceptionResponse> handleUnauthorizedException(UnauthorizedException ex) {
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    }
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    @ExceptionHandler({RateLimitExceededException.class})
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    public ResponseEntity<ExceptionResponse> handleRateLimitExceededException(RateLimitExceededException ex) {
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        return new ResponseEntity<>(exceptionResponse, HttpStatus.TOO_MANY_REQUESTS);
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    }
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    @ExceptionHandler({Exception.class})
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    public ResponseEntity<ExceptionResponse> handleException(Exception ex) {
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:    }
+src/main/java/dev/mockboard/core/config/advice/ExceptionHandlerAdvice.java:}
+src/main/java/dev/mockboard/core/config/WebConfig.java:package dev.mockboard.core.config;
+src/main/java/dev/mockboard/core/config/WebConfig.java:import org.springframework.context.annotation.Configuration;
+src/main/java/dev/mockboard/core/config/WebConfig.java:import org.springframework.web.servlet.config.annotation.CorsRegistry;
+src/main/java/dev/mockboard/core/config/WebConfig.java:import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+src/main/java/dev/mockboard/core/config/WebConfig.java:@Configuration
+src/main/java/dev/mockboard/core/config/WebConfig.java:public class WebConfig implements WebMvcConfigurer {
+src/main/java/dev/mockboard/core/config/WebConfig.java:    @Override
+src/main/java/dev/mockboard/core/config/WebConfig.java:    public void addCorsMappings(CorsRegistry registry) {
+src/main/java/dev/mockboard/core/config/WebConfig.java:        registry.addMapping("/m/**")
+src/main/java/dev/mockboard/core/config/WebConfig.java:                .allowedOrigins("*")
+src/main/java/dev/mockboard/core/config/WebConfig.java:                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS")
+src/main/java/dev/mockboard/core/config/WebConfig.java:                .allowedHeaders("*");
+src/main/java/dev/mockboard/core/config/WebConfig.java:    }
+src/main/java/dev/mockboard/core/config/WebConfig.java:}
+src/main/java/dev/mockboard/core/utils/StringUtils.java:package dev.mockboard.core.utils;
+src/main/java/dev/mockboard/core/utils/StringUtils.java:import lombok.AccessLevel;
+src/main/java/dev/mockboard/core/utils/StringUtils.java:import lombok.NoArgsConstructor;
+src/main/java/dev/mockboard/core/utils/StringUtils.java:import org.apache.commons.lang3.RandomStringUtils;
+src/main/java/dev/mockboard/core/utils/StringUtils.java:@NoArgsConstructor(access = AccessLevel.PRIVATE)
+src/main/java/dev/mockboard/core/utils/StringUtils.java:public final class StringUtils {
+src/main/java/dev/mockboard/core/utils/StringUtils.java:    public static String generate(int length) {
+src/main/java/dev/mockboard/core/utils/StringUtils.java:        return RandomStringUtils.secure().nextAlphanumeric(length);
+src/main/java/dev/mockboard/core/utils/StringUtils.java:    }
+src/main/java/dev/mockboard/core/utils/StringUtils.java:}
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:package dev.mockboard.core.utils;
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:import jakarta.servlet.http.HttpServletRequest;
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:import lombok.AccessLevel;
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:import lombok.NoArgsConstructor;
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:@NoArgsConstructor(access = AccessLevel.PRIVATE)
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:public final class RequestUtils {
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:    public static String getClientIp(HttpServletRequest request) {
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:        var forwardedFor = request.getHeader("X-Forwarded-For");
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:        if (forwardedFor != null && !forwardedFor.isEmpty()) {
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:            return forwardedFor.split(",")[0].trim();
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:        }
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:        return request.getRemoteAddr();
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:    }
+src/main/java/dev/mockboard/core/utils/RequestUtils.java:}
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:package dev.mockboard.core.engine;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import dev.mockboard.core.common.domain.PathPattern;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import java.io.Serializable;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import java.util.ArrayList;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import java.util.List;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import java.util.Map;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import java.util.Optional;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:import java.util.concurrent.ConcurrentHashMap;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:@Slf4j
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:public class PathMatchingEngine implements Serializable {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private static final int MAX_WILDCARDS = 3;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private static final char WILDCARD = '*';
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private static final int MAX_LENGTH = 512;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private final Map<String, String> exactMatches = new ConcurrentHashMap<>();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private final Map<Integer, List<PathPattern>> wildcardPatterns = new ConcurrentHashMap<>();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private final Map<String, PathPattern> patternCache = new ConcurrentHashMap<>();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    public void register(String pattern, String mockId) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (pattern == null || pattern.isEmpty()) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            throw new IllegalArgumentException("Pattern cannot be null or empty");
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (pattern.length() > MAX_LENGTH) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            throw new IllegalArgumentException(
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                    "Pattern exceeds maximum length of " + MAX_LENGTH + " characters: " + pattern.length()
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            );
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        int wildcardCount = countWildcards(pattern);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (wildcardCount > MAX_WILDCARDS) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            throw new IllegalArgumentException(
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                    "Pattern cannot have more than " + MAX_WILDCARDS + " wildcards: " + pattern
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            );
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (wildcardCount == 0) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            exactMatches.put(pattern, mockId);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            log.debug("Registered exact match pattern: {} -> {}", pattern, mockId);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        var pathPattern = patternCache.computeIfAbsent(pattern, p -> new PathPattern(p, mockId));
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        wildcardPatterns.computeIfAbsent(wildcardCount, k -> new ArrayList<>()).add(pathPattern);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        log.debug("Registered wildcard pattern: {} (wildcards: {}) -> {}", pattern, wildcardCount, mockId);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    public Optional<String> match(String requestPath) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (requestPath == null || requestPath.isEmpty()) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return Optional.empty();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (requestPath.length() > MAX_LENGTH) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            log.warn("Request path exceeds maximum length of {}: {}", MAX_LENGTH, requestPath.length());
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return Optional.empty();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        var exactMatch = exactMatches.get(requestPath);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (exactMatch != null) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            log.trace("Exact match found for: {}", requestPath);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return Optional.of(exactMatch);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        for (int wildcardCount = 1; wildcardCount <= MAX_WILDCARDS; wildcardCount++) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            var patterns = wildcardPatterns.get(wildcardCount);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            if (patterns == null || patterns.isEmpty()) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                continue;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            for (var pattern : patterns) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                if (pattern.matches(requestPath)) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                    log.trace("Wildcard match found: {} matches {}", requestPath, pattern.getPattern());
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                    return Optional.of(pattern.getMockId());
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        log.trace("No match found for: {}", requestPath);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        return Optional.empty();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    public boolean unregister(String pattern) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (pattern == null || pattern.isEmpty()) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return false;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        int wildcardCount = countWildcards(pattern);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (wildcardCount == 0) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return exactMatches.remove(pattern) != null;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        var patterns = wildcardPatterns.get(wildcardCount);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (patterns == null) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            return false;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        boolean removed = patterns.removeIf(p -> p.getPattern().equals(pattern));
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        if (removed) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            patternCache.remove(pattern);
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        return removed;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    private int countWildcards(String pattern) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        int count = 0;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        for (int i = 0; i < pattern.length(); i++) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            if (pattern.charAt(i) == WILDCARD) {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                count++;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:            }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        return count;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    public int size() {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        int wildcardCount = wildcardPatterns.values().stream()
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                .mapToInt(List::size)
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:                .sum();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        return exactMatches.size() + wildcardCount;
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    public void clear() {
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        exactMatches.clear();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        wildcardPatterns.clear();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        patternCache.clear();
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:        log.debug("Cleared all patterns");
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:    }
+src/main/java/dev/mockboard/core/engine/PathMatchingEngine.java:}
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:package dev.mockboard.storage.cache;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:import com.github.benmanes.caffeine.cache.Cache;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:import com.github.benmanes.caffeine.cache.Caffeine;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:import dev.mockboard.core.common.domain.dto.BoardDto;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:import java.time.Duration;
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:@Slf4j
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:@Component
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:public class BoardCacheStore {
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    // boardId as key
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    private final Cache<String, BoardDto> boards = Caffeine.newBuilder()
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:            .maximumSize(10_000)
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:            .expireAfterAccess(Duration.ofMinutes(30))
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:            .build();
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    public void initBoardCache(String boardId, BoardDto boardDto) {
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        log.info("init board cache for boardId={}", boardId);
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        boards.put(boardId, boardDto);
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    public BoardDto getBoardCache(String boardId) {
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        return boards.getIfPresent(boardId);
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    public void updateBoardCache(String boardId, BoardDto boardDto) {
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        log.info("update board cache for boardId={}", boardId);
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        boards.put(boardId, boardDto);
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    public void evictAllBoardEntries() {
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        log.info("Evict all board entries");
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:        boards.invalidateAll();
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/BoardCacheStore.java:}
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:package dev.mockboard.storage.cache;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import com.github.benmanes.caffeine.cache.Cache;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import com.github.benmanes.caffeine.cache.Caffeine;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import dev.mockboard.core.common.domain.dto.MockRuleDto;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import org.springframework.util.CollectionUtils;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import java.time.Duration;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import java.util.ArrayList;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:import java.util.List;
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:@Slf4j
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:@Component
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:public class MockRuleCacheStore {
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    // apiKey as key
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    private final Cache<String, List<MockRuleDto>> mockRules = Caffeine.newBuilder()
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            .maximumSize(10_000)
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            .expireAfterAccess(Duration.ofMinutes(30))
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            .build();
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    public void addMockRuleToCache(String apiKey, MockRuleDto mockRule) {
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        var cachedRules = getMockRules(apiKey);
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        if (CollectionUtils.isEmpty(cachedRules)) {
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            var mockRulesToCache = new ArrayList<MockRuleDto>();
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            mockRulesToCache.add(mockRule);
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            mockRules.put(apiKey, mockRulesToCache);
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        } else {
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            cachedRules.add(mockRule);
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:            mockRules.put(apiKey, cachedRules);
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        }
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    public List<MockRuleDto> getMockRules(String apiKey) {
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        return mockRules.getIfPresent(apiKey);
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    public void evictAllMockRuleEntries() {
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        log.info("Evict all mock rule entries");
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:        mockRules.invalidateAll();
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:    }
+src/main/java/dev/mockboard/storage/cache/MockRuleCacheStore.java:}
+src/main/java/dev/mockboard/storage/repo/BoardRepository.java:package dev.mockboard.storage.repo;
+src/main/java/dev/mockboard/storage/repo/BoardRepository.java:import dev.mockboard.core.common.doc.BoardDoc;
+src/main/java/dev/mockboard/storage/repo/BoardRepository.java:import org.springframework.data.mongodb.repository.MongoRepository;
+src/main/java/dev/mockboard/storage/repo/BoardRepository.java:public interface BoardRepository extends MongoRepository<BoardDoc, String> {
+src/main/java/dev/mockboard/storage/repo/BoardRepository.java:}
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:package dev.mockboard.storage.repo;
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:import dev.mockboard.core.common.doc.MockRuleDoc;
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:import org.springframework.data.mongodb.repository.MongoRepository;
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:import java.util.List;
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:import java.util.Optional;
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:public interface MockRuleRepository extends MongoRepository<MockRuleDoc, String> {
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:    List<MockRuleDoc> findByBoardId(String boardId);
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:    Optional<MockRuleDoc> findByIdAndBoardId(String id, String boardId);
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:    void deleteByIdAndBoardId(String mockRuleId, String boardId);
+src/main/java/dev/mockboard/storage/repo/MockRuleRepository.java:}
+src/main/java/dev/mockboard/web/HelloController.java:package dev.mockboard.web;
+src/main/java/dev/mockboard/web/HelloController.java:import org.springframework.web.bind.annotation.GetMapping;
+src/main/java/dev/mockboard/web/HelloController.java:import org.springframework.web.bind.annotation.RequestMapping;
+src/main/java/dev/mockboard/web/HelloController.java:import org.springframework.web.bind.annotation.RestController;
+src/main/java/dev/mockboard/web/HelloController.java:import java.util.Map;
+src/main/java/dev/mockboard/web/HelloController.java:@RestController
+src/main/java/dev/mockboard/web/HelloController.java:@RequestMapping("/hello")
+src/main/java/dev/mockboard/web/HelloController.java:public class HelloController {
+src/main/java/dev/mockboard/web/HelloController.java:    @GetMapping
+src/main/java/dev/mockboard/web/HelloController.java:    public Map<String, String> hello() {
+src/main/java/dev/mockboard/web/HelloController.java:        return Map.of("message", "Hello World!");
+src/main/java/dev/mockboard/web/HelloController.java:    }
+src/main/java/dev/mockboard/web/HelloController.java:}
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:package dev.mockboard.web.api;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import dev.mockboard.service.MockExecutionService;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import jakarta.servlet.http.HttpServletRequest;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import org.springframework.http.ResponseEntity;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import org.springframework.web.bind.annotation.PathVariable;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import org.springframework.web.bind.annotation.RequestMapping;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import org.springframework.web.bind.annotation.RequestMethod;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:import org.springframework.web.bind.annotation.RestController;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:@RestController
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:@RequestMapping("/m/{apiKey}/**")
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:public class MockExecutionController {
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:    private final MockExecutionService mockExecutionService;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:    @RequestMapping(value = "**", method = {
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:            RequestMethod.GET,
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:            RequestMethod.POST,
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:            RequestMethod.PUT,
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:            RequestMethod.DELETE,
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:            RequestMethod.OPTIONS,
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:            RequestMethod.PATCH,})
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:    public ResponseEntity<String> executeMock(@PathVariable String apiKey, HttpServletRequest request) {
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://        String path = extractPath(request);
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://        var mockRule = mockService.findMatchingRule(apiKey, path)
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://                .orElseThrow(() -> new NotFoundException("No mock rule matches this path"));
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://        return ResponseEntity
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://                .status(mockRule.getStatusCode())
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://                .headers(buildHeaders(mockRule.getHeaders()))
+src/main/java/dev/mockboard/web/api/MockExecutionController.java://                .body(mockRule.getBody());
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:        return null;
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:    }
+src/main/java/dev/mockboard/web/api/MockExecutionController.java:}
+src/main/java/dev/mockboard/web/api/BoardController.java:package dev.mockboard.web.api;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.core.common.domain.dto.BoardDto;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.core.common.domain.dto.MockRuleDto;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.core.common.domain.response.IdResponse;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.core.common.ratelimiter.BoardCreationRateLimiter;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.core.utils.RequestUtils;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.service.BoardSecurityService;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.service.BoardService;
+src/main/java/dev/mockboard/web/api/BoardController.java:import dev.mockboard.service.MockRuleService;
+src/main/java/dev/mockboard/web/api/BoardController.java:import jakarta.servlet.http.HttpServletRequest;
+src/main/java/dev/mockboard/web/api/BoardController.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/web/api/BoardController.java:import org.springframework.http.HttpStatus;
+src/main/java/dev/mockboard/web/api/BoardController.java:import org.springframework.http.ResponseEntity;
+src/main/java/dev/mockboard/web/api/BoardController.java:import org.springframework.web.bind.annotation.*;
+src/main/java/dev/mockboard/web/api/BoardController.java:import java.util.List;
+src/main/java/dev/mockboard/web/api/BoardController.java:@RestController
+src/main/java/dev/mockboard/web/api/BoardController.java:@RequestMapping("/api/boards")
+src/main/java/dev/mockboard/web/api/BoardController.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/web/api/BoardController.java:public class BoardController {
+src/main/java/dev/mockboard/web/api/BoardController.java:    private final BoardService boardService;
+src/main/java/dev/mockboard/web/api/BoardController.java:    private final MockRuleService mockRuleService;
+src/main/java/dev/mockboard/web/api/BoardController.java:    private final BoardSecurityService boardSecurityService;
+src/main/java/dev/mockboard/web/api/BoardController.java:    private final BoardCreationRateLimiter boardCreationRateLimiter;
+src/main/java/dev/mockboard/web/api/BoardController.java:    private static final String OWNER_TOKEN_HEADER_KEY = "X-Owner-Token";
+src/main/java/dev/mockboard/web/api/BoardController.java:    @PostMapping
+src/main/java/dev/mockboard/web/api/BoardController.java:    public ResponseEntity<BoardDto> createBoard(HttpServletRequest request) {
+src/main/java/dev/mockboard/web/api/BoardController.java:        var ipAddress = RequestUtils.getClientIp(request);
+src/main/java/dev/mockboard/web/api/BoardController.java:        boardCreationRateLimiter.checkLimit(ipAddress);
+src/main/java/dev/mockboard/web/api/BoardController.java:        var boardDto = boardService.createBoard();
+src/main/java/dev/mockboard/web/api/BoardController.java:        return new ResponseEntity<>(boardDto, HttpStatus.CREATED);
+src/main/java/dev/mockboard/web/api/BoardController.java:    }
+src/main/java/dev/mockboard/web/api/BoardController.java:    @PostMapping("/{boardId}/mocks")
+src/main/java/dev/mockboard/web/api/BoardController.java:    public ResponseEntity<IdResponse> addMockRule(@PathVariable String boardId,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                                  @RequestBody MockRuleDto mockRuleDto,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                                  @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
+src/main/java/dev/mockboard/web/api/BoardController.java:        var boardDto = boardSecurityService.validateOwnership(boardId, ownerToken);
+src/main/java/dev/mockboard/web/api/BoardController.java:        var mockId = mockRuleService.addMockRule(boardDto.getId(), mockRuleDto);
+src/main/java/dev/mockboard/web/api/BoardController.java:        return new ResponseEntity<>(mockId, HttpStatus.CREATED);
+src/main/java/dev/mockboard/web/api/BoardController.java:    }
+src/main/java/dev/mockboard/web/api/BoardController.java:    @GetMapping("/{boardId}/mocks")
+src/main/java/dev/mockboard/web/api/BoardController.java:    public ResponseEntity<List<MockRuleDto>> getMockRules(@PathVariable String boardId,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                                          @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
+src/main/java/dev/mockboard/web/api/BoardController.java:        var boardDto = boardSecurityService.validateOwnership(boardId, ownerToken);
+src/main/java/dev/mockboard/web/api/BoardController.java:        return new ResponseEntity<>(mockRuleService.getMockRules(boardDto.getId()), HttpStatus.OK);
+src/main/java/dev/mockboard/web/api/BoardController.java:    }
+src/main/java/dev/mockboard/web/api/BoardController.java:    @PutMapping("/{boardId}/mocks/{mockId}")
+src/main/java/dev/mockboard/web/api/BoardController.java:    public ResponseEntity<IdResponse> updateMockRule(@PathVariable String boardId,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                                     @PathVariable String mockId,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                                     @RequestBody MockRuleDto mockRuleDto,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                                     @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
+src/main/java/dev/mockboard/web/api/BoardController.java:        var boardDto = boardSecurityService.validateOwnership(boardId, ownerToken);
+src/main/java/dev/mockboard/web/api/BoardController.java:        var response = mockRuleService.updateMockRule(boardDto.getId(), mockId, mockRuleDto);
+src/main/java/dev/mockboard/web/api/BoardController.java:        return new ResponseEntity<>(response, HttpStatus.OK);
+src/main/java/dev/mockboard/web/api/BoardController.java:    }
+src/main/java/dev/mockboard/web/api/BoardController.java:    @DeleteMapping("/{boardId}/mocks/{mockId}")
+src/main/java/dev/mockboard/web/api/BoardController.java:    public ResponseEntity<Void> deleteMockRule(@PathVariable String boardId,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                               @PathVariable String mockId,
+src/main/java/dev/mockboard/web/api/BoardController.java:                                               @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
+src/main/java/dev/mockboard/web/api/BoardController.java:        var boardDto = boardSecurityService.validateOwnership(boardId, ownerToken);
+src/main/java/dev/mockboard/web/api/BoardController.java:        mockRuleService.deleteMockRule(mockId, boardDto.getId());
+src/main/java/dev/mockboard/web/api/BoardController.java:        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+src/main/java/dev/mockboard/web/api/BoardController.java:    }
+src/main/java/dev/mockboard/web/api/BoardController.java:}
+src/main/java/dev/mockboard/service/BoardService.java:package dev.mockboard.service;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.core.common.doc.BoardDoc;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.core.common.domain.dto.BoardDto;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.core.common.exception.NotFoundException;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.core.common.mapper.BoardMapper;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.core.utils.StringUtils;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.storage.cache.BoardCacheStore;
+src/main/java/dev/mockboard/service/BoardService.java:import dev.mockboard.storage.repo.BoardRepository;
+src/main/java/dev/mockboard/service/BoardService.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/service/BoardService.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/service/BoardService.java:import org.springframework.stereotype.Service;
+src/main/java/dev/mockboard/service/BoardService.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/service/BoardService.java:@Slf4j
+src/main/java/dev/mockboard/service/BoardService.java:@Service
+src/main/java/dev/mockboard/service/BoardService.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/service/BoardService.java:public class BoardService {
+src/main/java/dev/mockboard/service/BoardService.java:    private static final int API_KEY_LENGTH = 16;
+src/main/java/dev/mockboard/service/BoardService.java:    private static final int OWNER_TOKEN_LENGTH = 32;
+src/main/java/dev/mockboard/service/BoardService.java:    private final BoardRepository boardRepository;
+src/main/java/dev/mockboard/service/BoardService.java:    private final BoardCacheStore boardCacheStore;
+src/main/java/dev/mockboard/service/BoardService.java:    private final BoardMapper boardMapper;
+src/main/java/dev/mockboard/service/BoardService.java:    public BoardDto createBoard() {
+src/main/java/dev/mockboard/service/BoardService.java:        var boardDoc = new BoardDoc();
+src/main/java/dev/mockboard/service/BoardService.java:        boardDoc.setApiKey(StringUtils.generate(API_KEY_LENGTH));
+src/main/java/dev/mockboard/service/BoardService.java:        boardDoc.setOwnerToken(StringUtils.generate(OWNER_TOKEN_LENGTH));
+src/main/java/dev/mockboard/service/BoardService.java:        var now = LocalDateTime.now();
+src/main/java/dev/mockboard/service/BoardService.java:        boardDoc.setCreatedAt(now);
+src/main/java/dev/mockboard/service/BoardService.java:        var stored = boardRepository.save(boardDoc);
+src/main/java/dev/mockboard/service/BoardService.java:        boardCacheStore.initBoardCache(boardDoc.getId(), boardMapper.mapBoardDocToBoardDto(stored));
+src/main/java/dev/mockboard/service/BoardService.java:        return boardMapper.mapBoardDocToBoardDto(stored);
+src/main/java/dev/mockboard/service/BoardService.java:    }
+src/main/java/dev/mockboard/service/BoardService.java:    public BoardDto getBoardDto(String boardId) {
+src/main/java/dev/mockboard/service/BoardService.java:        var cachedBoard = boardCacheStore.getBoardCache(boardId);
+src/main/java/dev/mockboard/service/BoardService.java:        if (cachedBoard == null) {
+src/main/java/dev/mockboard/service/BoardService.java:            // fallback to db
+src/main/java/dev/mockboard/service/BoardService.java:            log.debug("Board {} not found in cache, fallback.", boardId);
+src/main/java/dev/mockboard/service/BoardService.java:            var boardDoc = getBoardDoc(boardId);
+src/main/java/dev/mockboard/service/BoardService.java:            return boardMapper.mapBoardDocToBoardDto(boardDoc);
+src/main/java/dev/mockboard/service/BoardService.java:        }
+src/main/java/dev/mockboard/service/BoardService.java:        return cachedBoard;
+src/main/java/dev/mockboard/service/BoardService.java:    }
+src/main/java/dev/mockboard/service/BoardService.java:    private BoardDoc getBoardDoc(String boardId) {
+src/main/java/dev/mockboard/service/BoardService.java:        var boardDocOpt = boardRepository.findById(boardId);
+src/main/java/dev/mockboard/service/BoardService.java:        if (boardDocOpt.isEmpty()) {
+src/main/java/dev/mockboard/service/BoardService.java:            throw new NotFoundException("Board not found by id: " + boardId);
+src/main/java/dev/mockboard/service/BoardService.java:        }
+src/main/java/dev/mockboard/service/BoardService.java:        return boardDocOpt.get();
+src/main/java/dev/mockboard/service/BoardService.java:    }
+src/main/java/dev/mockboard/service/BoardService.java:}
+src/main/java/dev/mockboard/service/MockExecutionService.java:package dev.mockboard.service;
+src/main/java/dev/mockboard/service/MockExecutionService.java:import dev.mockboard.core.engine.PathMatchingEngine;
+src/main/java/dev/mockboard/service/MockExecutionService.java:import dev.mockboard.storage.cache.BoardCacheStore;
+src/main/java/dev/mockboard/service/MockExecutionService.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/service/MockExecutionService.java:import org.springframework.stereotype.Service;
+src/main/java/dev/mockboard/service/MockExecutionService.java:import java.util.Map;
+src/main/java/dev/mockboard/service/MockExecutionService.java:import java.util.concurrent.ConcurrentHashMap;
+src/main/java/dev/mockboard/service/MockExecutionService.java:@Service
+src/main/java/dev/mockboard/service/MockExecutionService.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/service/MockExecutionService.java:public class MockExecutionService {
+src/main/java/dev/mockboard/service/MockExecutionService.java:    // todo: use cache to avoid concurrency issues
+src/main/java/dev/mockboard/service/MockExecutionService.java:    // or as it is read only and it is ok for concurrent map
+src/main/java/dev/mockboard/service/MockExecutionService.java:    private final Map<String, PathMatchingEngine> enginesByApi = new ConcurrentHashMap<>();
+src/main/java/dev/mockboard/service/MockExecutionService.java:    private final BoardCacheStore boardCacheStore;
+src/main/java/dev/mockboard/service/MockExecutionService.java://    OLD CODE, TO BE REWORKED AND LINKED
+src/main/java/dev/mockboard/service/MockExecutionService.java://    public void rebuildEngine(String apiKey) {
+src/main/java/dev/mockboard/service/MockExecutionService.java://        var engine = new PathMatchingEngine();
+src/main/java/dev/mockboard/service/MockExecutionService.java://        var rules = boardCacheStore.getMockRulesCache(apiKey);
+src/main/java/dev/mockboard/service/MockExecutionService.java://        if (!CollectionUtils.isEmpty(rules)) {
+src/main/java/dev/mockboard/service/MockExecutionService.java://            rules.forEach(rule -> engine.register(rule.getPath(), rule.getId()));
+src/main/java/dev/mockboard/service/MockExecutionService.java://        }
+src/main/java/dev/mockboard/service/MockExecutionService.java://        enginesByApi.put(apiKey, engine);
+src/main/java/dev/mockboard/service/MockExecutionService.java://    }
+src/main/java/dev/mockboard/service/MockExecutionService.java://
+src/main/java/dev/mockboard/service/MockExecutionService.java://    public Optional<MockRuleCacheObj> findMatchingRule(String apiKey, String path) {
+src/main/java/dev/mockboard/service/MockExecutionService.java://        var engine = enginesByApi.get(apiKey);
+src/main/java/dev/mockboard/service/MockExecutionService.java://        if (engine == null) {
+src/main/java/dev/mockboard/service/MockExecutionService.java://            rebuildEngine(apiKey);
+src/main/java/dev/mockboard/service/MockExecutionService.java://            engine = enginesByApi.get(apiKey);
+src/main/java/dev/mockboard/service/MockExecutionService.java://        }
+src/main/java/dev/mockboard/service/MockExecutionService.java://
+src/main/java/dev/mockboard/service/MockExecutionService.java://        return engine.match(path)
+src/main/java/dev/mockboard/service/MockExecutionService.java://                .flatMap(mockId -> {
+src/main/java/dev/mockboard/service/MockExecutionService.java://                    var rules = boardCacheStore.getMockRulesCache(apiKey);
+src/main/java/dev/mockboard/service/MockExecutionService.java://                    return rules.stream()
+src/main/java/dev/mockboard/service/MockExecutionService.java://                            .filter(rule -> rule.getId().equals(mockId))
+src/main/java/dev/mockboard/service/MockExecutionService.java://                            .findFirst();
+src/main/java/dev/mockboard/service/MockExecutionService.java://                });
+src/main/java/dev/mockboard/service/MockExecutionService.java://    }
+src/main/java/dev/mockboard/service/MockExecutionService.java:}
+src/main/java/dev/mockboard/service/MockRuleService.java:package dev.mockboard.service;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.core.common.doc.MockRuleDoc;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.core.common.domain.dto.MockRuleDto;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.core.common.domain.response.IdResponse;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.core.common.exception.NotFoundException;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.core.common.mapper.MockRuleMapper;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.core.common.validator.MockRuleValidator;
+src/main/java/dev/mockboard/service/MockRuleService.java:import dev.mockboard.storage.repo.MockRuleRepository;
+src/main/java/dev/mockboard/service/MockRuleService.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/service/MockRuleService.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/service/MockRuleService.java:import org.springframework.stereotype.Service;
+src/main/java/dev/mockboard/service/MockRuleService.java:import java.time.LocalDateTime;
+src/main/java/dev/mockboard/service/MockRuleService.java:import java.util.List;
+src/main/java/dev/mockboard/service/MockRuleService.java:@Slf4j
+src/main/java/dev/mockboard/service/MockRuleService.java:@Service
+src/main/java/dev/mockboard/service/MockRuleService.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/service/MockRuleService.java:public class MockRuleService {
+src/main/java/dev/mockboard/service/MockRuleService.java:    private final MockRuleValidator mockRuleValidator;
+src/main/java/dev/mockboard/service/MockRuleService.java:    private final MockRuleRepository mockRuleRepository;
+src/main/java/dev/mockboard/service/MockRuleService.java:    private final MockRuleMapper mockRuleMapper;
+src/main/java/dev/mockboard/service/MockRuleService.java:    public IdResponse addMockRule(String boardId, MockRuleDto mockRuleDto) {
+src/main/java/dev/mockboard/service/MockRuleService.java:        log.debug("addMockRule for boardId={}", boardId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleValidator.validateMockRule(mockRuleDto);
+src/main/java/dev/mockboard/service/MockRuleService.java:        // todo: validate mock exists by path
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleDto.setId(null);
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleDto.setBoardId(boardId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleDto.setCreatedAt(LocalDateTime.now());
+src/main/java/dev/mockboard/service/MockRuleService.java:        var mockRuleDoc = mockRuleMapper.mapMockRuleDtoToMockRuleDoc(mockRuleDto);
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleRepository.save(mockRuleDoc);
+src/main/java/dev/mockboard/service/MockRuleService.java:        return new IdResponse(mockRuleDoc.getId());
+src/main/java/dev/mockboard/service/MockRuleService.java:    }
+src/main/java/dev/mockboard/service/MockRuleService.java:    public IdResponse updateMockRule(String boardId, String mockRuleId, MockRuleDto mockRuleDto) {
+src/main/java/dev/mockboard/service/MockRuleService.java:        log.debug("updateMockRule boardId={} mockRuleId={}", boardId, mockRuleId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleValidator.validateMockRule(mockRuleDto);
+src/main/java/dev/mockboard/service/MockRuleService.java:        var mockRule = getMockRuleDoc(mockRuleId, boardId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        // map manually to avoid swallowing
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRule.setMethod(mockRuleDto.getMethod());
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRule.setPath(mockRuleDto.getPath());
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRule.setHeaders(mockRuleDto.getHeaders());
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRule.setBody(mockRuleDto.getBody());
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRule.setStatusCode(mockRuleDto.getStatusCode());
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleRepository.save(mockRule);
+src/main/java/dev/mockboard/service/MockRuleService.java:        return new IdResponse(mockRule.getId());
+src/main/java/dev/mockboard/service/MockRuleService.java:    }
+src/main/java/dev/mockboard/service/MockRuleService.java:    public List<MockRuleDto> getMockRules(String boardId) {
+src/main/java/dev/mockboard/service/MockRuleService.java:        return mockRuleRepository.findByBoardId(boardId)
+src/main/java/dev/mockboard/service/MockRuleService.java:                .stream()
+src/main/java/dev/mockboard/service/MockRuleService.java:                .map(mockRuleMapper::mapMockRuleDocToMockRuleDto)
+src/main/java/dev/mockboard/service/MockRuleService.java:                .toList();
+src/main/java/dev/mockboard/service/MockRuleService.java:    }
+src/main/java/dev/mockboard/service/MockRuleService.java:    public void deleteMockRule(String mockRuleId, String boardId) {
+src/main/java/dev/mockboard/service/MockRuleService.java:        log.debug("delete mockRule with id={}, boardId={}", mockRuleId, boardId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        var mockRule = getMockRuleDoc(mockRuleId, boardId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        mockRuleRepository.delete(mockRule);
+src/main/java/dev/mockboard/service/MockRuleService.java:    }
+src/main/java/dev/mockboard/service/MockRuleService.java:    private MockRuleDoc getMockRuleDoc(String mockRuleId, String boardId) {
+src/main/java/dev/mockboard/service/MockRuleService.java:        var mockRuleDocOpt = mockRuleRepository.findByIdAndBoardId(mockRuleId, boardId);
+src/main/java/dev/mockboard/service/MockRuleService.java:        if (mockRuleDocOpt.isEmpty()) {
+src/main/java/dev/mockboard/service/MockRuleService.java:            throw new NotFoundException("mockRule with id: " + mockRuleId + " not found");
+src/main/java/dev/mockboard/service/MockRuleService.java:        }
+src/main/java/dev/mockboard/service/MockRuleService.java:        return mockRuleDocOpt.get();
+src/main/java/dev/mockboard/service/MockRuleService.java:    }
+src/main/java/dev/mockboard/service/MockRuleService.java:}
+src/main/java/dev/mockboard/service/BoardSecurityService.java:package dev.mockboard.service;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:import dev.mockboard.core.common.domain.dto.BoardDto;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:import dev.mockboard.core.common.exception.UnauthorizedException;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:import org.springframework.stereotype.Service;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:@Slf4j
+src/main/java/dev/mockboard/service/BoardSecurityService.java:@Service
+src/main/java/dev/mockboard/service/BoardSecurityService.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/service/BoardSecurityService.java:public class BoardSecurityService {
+src/main/java/dev/mockboard/service/BoardSecurityService.java:    private final BoardService boardService;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:    public BoardDto validateOwnership(String boardId, String requestOwnerToken) {
+src/main/java/dev/mockboard/service/BoardSecurityService.java:        var boardDto = boardService.getBoardDto(boardId);
+src/main/java/dev/mockboard/service/BoardSecurityService.java:        if (!boardDto.getOwnerToken().equals(requestOwnerToken)) {
+src/main/java/dev/mockboard/service/BoardSecurityService.java:            throw new UnauthorizedException("Invalid owner token");
+src/main/java/dev/mockboard/service/BoardSecurityService.java:        }
+src/main/java/dev/mockboard/service/BoardSecurityService.java:        return boardDto;
+src/main/java/dev/mockboard/service/BoardSecurityService.java:    }
+src/main/java/dev/mockboard/service/BoardSecurityService.java:}
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:package dev.mockboard.scheduler;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import dev.mockboard.storage.cache.BoardCacheStore;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import dev.mockboard.storage.cache.MockRuleCacheStore;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import dev.mockboard.storage.repo.BoardRepository;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import dev.mockboard.storage.repo.MockRuleRepository;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import lombok.RequiredArgsConstructor;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import lombok.extern.slf4j.Slf4j;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import org.springframework.scheduling.annotation.Scheduled;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:import org.springframework.stereotype.Component;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:@Slf4j
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:@Component
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:@RequiredArgsConstructor
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:public class BoardCleanupScheduler {
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    private final BoardRepository boardRepository;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    private final MockRuleRepository mockRuleRepository;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    private final BoardCacheStore boardCacheStore;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    private final MockRuleCacheStore mockRuleCacheStore;
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    // Delete all DB data and cache at 03:00 UTC
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    @Scheduled(cron = "0 0 3 * * * ")
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    public void cleanupBoards() {
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        log.info("Starting daily cleanup...");
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        var boardsCount = boardRepository.count();
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        var mockRulesCount = mockRuleRepository.count();
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        boardRepository.deleteAll();
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        mockRuleRepository.deleteAll();
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        boardCacheStore.evictAllBoardEntries();
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        mockRuleCacheStore.evictAllMockRuleEntries();
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:        log.info("Daily cleanup complete. Deleted {} boards and {} mock rules", boardsCount, mockRulesCount);
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:    }
+src/main/java/dev/mockboard/scheduler/BoardCleanupScheduler.java:}

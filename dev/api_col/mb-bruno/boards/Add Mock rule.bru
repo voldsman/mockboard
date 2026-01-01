@@ -1,13 +1,17 @@
 meta {
   name: Add Mock rule
   type: http
-  seq: 3
+  seq: 2
 }
 
 post {
-  url: {{SERVER_URL}}/api/boards/6955a56b3baa4f77dd96a3b7/mocks
+  url: {{SERVER_URL}}/api/boards/6955dc87fe4085925a3aac49/mocks
   body: json
   auth: inherit
+}
+
+headers {
+  X-Owner-Token: vlLgdfKFzDZdH1F91WYdZHB5h8igw1fP
 }
 
 body:json {

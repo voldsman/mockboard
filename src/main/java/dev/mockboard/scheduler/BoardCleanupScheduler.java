@@ -22,11 +22,16 @@ public class BoardCleanupScheduler {
 
     // Delete all DB data and cache at 03:00 UTC
     @Scheduled(cron = "0 0 3 * * * ")
-    public void cleanupOldBoards() {
+    public void cleanupBoards() {
+        log.info("Starting daily cleanup...");
+        var boardsCount = boardRepository.count();
+        var mockRulesCount = mockRuleRepository.count();
+
         boardRepository.deleteAll();
         mockRuleRepository.deleteAll();
 
         boardCacheStore.evictAllBoardEntries();
         mockRuleCacheStore.evictAllMockRuleEntries();
+        log.info("Daily cleanup complete. Deleted {} boards and {} mock rules", boardsCount, mockRulesCount);
     }
 }
