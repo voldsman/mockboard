@@ -19,7 +19,8 @@ Originally designed as a multi-tenant SaaS, this repository represents the **v2 
 - [x] Rate Limiting & Security (Owner Tokens)
 - [x] Automated Data Cleanup
 - [ ] Real-time request capture via SSE
-- [ ] Allow import/export mock rules
-- [ ] Create a mock rule from the received webhook
+- [ ] Allow to import/export mock rules
+- [ ] Allow to use json body templates for data `faking` (e.g., `{{user.fullName}}`)
 - [ ] Frontend UI: A lightweight Vue.js dashboard
+- [ ] Allow to create a mock rule from the received webhook
 - [ ] Docker Compose for easy self-hosting
