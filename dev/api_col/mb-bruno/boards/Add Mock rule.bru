@@ -5,23 +5,23 @@ meta {
 }
 
 post {
-  url: {{SERVER_URL}}/api/boards/6955dc87fe4085925a3aac49/mocks
+  url: {{SERVER_URL}}/api/boards/6955e4d6f57ecd028fec8a39/mocks
   body: json
   auth: inherit
 }
 
 headers {
-  X-Owner-Token: vlLgdfKFzDZdH1F91WYdZHB5h8igw1fP
+  X-Owner-Token: h3FeABDzx485eHqMaPgFcgYNNZIz7o0i
 }
 
 body:json {
   {
-    "method": "POST",
-    "path": "/api/users/*",
+    "method": "GET",
+    "path": "/api/users/12345",
     "headers": {
       "X-Header": "my-value"
     },
-    "body": "{\n  \"name\": \"Vold\",\n  \"email\": \"vold@mockboard.dev\",\n  \"nested_json\": {\n    \"key1\": \"value1\"\n  },\n  \"nested_array\": [\n    \"arrVal1\", \"arrVal2\", \"arrVal3\"\n  ]\n}",
+    "body": "{\n  \"name\": \"Vold\",\n  \"email\": \"vold@mockboard.dev\",\n  \"nested_json\": {\n    \"key1\": \"upDvalue1\"\n  },\n  \"nested_array\": [\n    \"arrVal1\", \"arrVal2\", \"arrVal3\"\n  ]\n}",
     "statusCode": 200
   }
 }

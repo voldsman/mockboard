@@ -22,6 +22,8 @@ public class MockRuleService {
     private final MockRuleValidator mockRuleValidator;
     private final MockRuleRepository mockRuleRepository;
     private final MockRuleMapper mockRuleMapper;
+    private final MockExecutionService mockExecutionService;
+    private final BoardService boardService;
 
     public IdResponse addMockRule(String boardId, MockRuleDto mockRuleDto) {
         log.debug("addMockRule for boardId={}", boardId);
@@ -34,6 +36,9 @@ public class MockRuleService {
         mockRuleDto.setCreatedAt(LocalDateTime.now());
         var mockRuleDoc = mockRuleMapper.mapMockRuleDtoToMockRuleDoc(mockRuleDto);
         mockRuleRepository.save(mockRuleDoc);
+
+        var board = boardService.getBoardDto(boardId);
+        mockExecutionService.invalidateEngine(board.getApiKey());
         return new IdResponse(mockRuleDoc.getId());
     }
 
@@ -49,6 +54,9 @@ public class MockRuleService {
         mockRule.setBody(mockRuleDto.getBody());
         mockRule.setStatusCode(mockRuleDto.getStatusCode());
         mockRuleRepository.save(mockRule);
+
+        var board = boardService.getBoardDto(boardId);
+        mockExecutionService.invalidateEngine(board.getApiKey());
         return new IdResponse(mockRule.getId());
     }
 
@@ -63,6 +71,9 @@ public class MockRuleService {
         log.debug("delete mockRule with id={}, boardId={}", mockRuleId, boardId);
         var mockRule = getMockRuleDoc(mockRuleId, boardId);
         mockRuleRepository.delete(mockRule);
+
+        var board = boardService.getBoardDto(boardId);
+        mockExecutionService.invalidateEngine(board.getApiKey());
     }
 
     private MockRuleDoc getMockRuleDoc(String mockRuleId, String boardId) {

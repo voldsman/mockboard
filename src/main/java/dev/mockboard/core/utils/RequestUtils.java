@@ -14,4 +14,24 @@ public final class RequestUtils {
         }
         return request.getRemoteAddr();
     }
+
+    public static String extractMockPath(HttpServletRequest request, String apiKey) {
+        var fullPath = request.getRequestURI();
+        var prefix = "/m/" + apiKey;
+
+        if (fullPath.startsWith(prefix)) {
+            var path = fullPath.substring(prefix.length());
+            if (path.isEmpty()) {
+                return "/";
+            }
+
+            if (!path.startsWith("/")) {
+                return "/" + path;
+            }
+            return path;
+        }
+
+        // should not happen
+        return fullPath;
+    }
 }
