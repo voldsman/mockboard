@@ -5,7 +5,11 @@
 ## Overview
 MockBoard is a high-performance, self-hosted API mocking platform.
 
-Originally designed as a multi-tenant SaaS, this repository represents the **v2 architecture**, pivoting to a lightweight, containerized solution that developers can run locally or in CI/CD pipelines without external dependencies.
+The project initially began as a SaaS prototype built with Elixir to leverage the BEAM VM for concurrency. 
+
+However, this repository represents the v2 architecture, a complete strategic rewrite in Spring Boot 4 & Java 21.
+
+This migration was chosen to provide a lightweight, containerized solution that is easier for the wider developer community to adopt, extend, and run locally or in CI/CD pipelines without niche runtime dependencies.
 
 ## Key Features
 - **Hybrid Performance:** Combines Caffeine lookups with MongoDB for persistence
