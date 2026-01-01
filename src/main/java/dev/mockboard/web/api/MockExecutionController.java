@@ -1,4 +1,4 @@
-package dev.mockboard.web;
+package dev.mockboard.web.api;
 
 import dev.mockboard.service.MockExecutionService;
 import jakarta.servlet.http.HttpServletRequest;

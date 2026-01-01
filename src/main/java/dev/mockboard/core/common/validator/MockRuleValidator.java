@@ -70,11 +70,11 @@ public class MockRuleValidator {
         try {
             objectMapper.readTree(body);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Body must be valid JSON: " + e.getMessage());
+            throw new IllegalArgumentException("Body must be valid JSON string");
         }
 
         if (body.length() > MAX_BODY_LENGTH) {
-            throw new IllegalArgumentException("Body too large (max 100KB)");
+            throw new IllegalArgumentException("Body too large (max " +  (MAX_BODY_LENGTH / 1000) + "KB)");
         }
     }
 

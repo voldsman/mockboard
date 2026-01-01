@@ -1,4 +1,4 @@
-package dev.mockboard.web;
+package dev.mockboard.web.api;
 
 import dev.mockboard.core.common.domain.dto.BoardDto;
 import dev.mockboard.core.common.domain.dto.MockRuleDto;
