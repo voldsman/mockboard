@@ -1,10 +1,10 @@
 <script setup>
 import {computed, ref} from 'vue'
+import constants from '@/constants'
 
 const mockApiKey = ref('EUVFAnUCrV3R7gz7')
-const serverUrl = 'http://localhost:8000'
 
-const executionUrl = computed(() => `${serverUrl}/m/${mockApiKey.value}/`)
+const executionUrl = computed(() => `${constants.SERVER_URL}/m/${mockApiKey.value}/`)
 
 const copied = ref(false)
 const copyUrl = () => {

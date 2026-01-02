@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppProperties {
 
+    @Value("${mockboard.security.owner-token-header-key}")
+    private String ownerTokenHeader;
+
     @Value("${mockboard.cache.max-entries}")
     private int maxCacheEntries;
 

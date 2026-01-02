@@ -18,6 +18,8 @@ spring:
             auto-index-creation: true
 
 mockboard:
+    security:
+        owner-token-header-key: ${OWNER_TOKEN_HEADER:'X-Owner-Token'}
     cache:
         max-entries: ${CACHE_MAX_ENTRIES:10000}
         expire-after-access-minutes: ${CACHE_EXPIRE_AFTER_ACCESS_MIN:30}
