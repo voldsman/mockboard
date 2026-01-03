@@ -31,7 +31,7 @@ public class BoardService {
         boardDoc.setOwnerToken(StringUtils.generate(OWNER_TOKEN_LENGTH));
         boardDoc.setCreatedAt(LocalDateTime.now());
         var stored = boardRepository.save(boardDoc);
-        boardCacheStore.initBoardCache(boardDoc.getId(), boardMapper.mapBoardDocToBoardDto(stored));
+        boardCacheStore.initBoardCache(stored.getId(), boardMapper.mapBoardDocToBoardDto(stored));
         return boardMapper.mapBoardDocToBoardDto(stored);
     }
 
