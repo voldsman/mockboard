@@ -1,5 +1,6 @@
-package dev.mockboard.core.common.doc;
+package dev.mockboard.storage.doc;
 
+import dev.mockboard.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "boards")
+@Document(collection = Constants.BOARDS)
 public class BoardDoc implements Serializable {
 
     @Id

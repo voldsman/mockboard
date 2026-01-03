@@ -1,6 +1,6 @@
 package dev.mockboard.core.common.mapper;
 
-import dev.mockboard.core.common.doc.BoardDoc;
+import dev.mockboard.storage.doc.BoardDoc;
 import dev.mockboard.core.common.domain.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

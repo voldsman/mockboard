@@ -1,18 +1,17 @@
 package dev.mockboard.service;
 
-import dev.mockboard.core.common.doc.BoardDoc;
 import dev.mockboard.core.common.domain.dto.BoardDto;
 import dev.mockboard.core.common.exception.NotFoundException;
 import dev.mockboard.core.common.mapper.BoardMapper;
 import dev.mockboard.core.utils.StringUtils;
 import dev.mockboard.storage.cache.BoardCacheStore;
-import dev.mockboard.storage.repo.BoardRepository;
+import dev.mockboard.storage.doc.BoardDoc;
+import dev.mockboard.storage.doc.repo.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,9 +29,7 @@ public class BoardService {
         var boardDoc = new BoardDoc();
         boardDoc.setApiKey(StringUtils.generate(API_KEY_LENGTH));
         boardDoc.setOwnerToken(StringUtils.generate(OWNER_TOKEN_LENGTH));
-
-        var now = LocalDateTime.now();
-        boardDoc.setCreatedAt(now);
+        boardDoc.setCreatedAt(LocalDateTime.now());
         var stored = boardRepository.save(boardDoc);
         boardCacheStore.initBoardCache(boardDoc.getId(), boardMapper.mapBoardDocToBoardDto(stored));
         return boardMapper.mapBoardDocToBoardDto(stored);
@@ -50,22 +47,6 @@ public class BoardService {
         return cachedBoard;
     }
 
-    public Optional<BoardDto> getBoardDtoByApiKeyCached(String apiKey) {
-        var boardDto = boardCacheStore.getBoardCacheByApiKey(apiKey);
-        if (boardDto == null) {
-            log.debug("Board by apiKey not found in cache, fallback.");
-            var boardDoc = getBoardDocByApiKey(apiKey);
-            if (boardDoc != null) {
-                var mappedBoardDto = boardMapper.mapBoardDocToBoardDto(boardDoc);
-                boardCacheStore.initBoardCache(boardDoc.getId(), mappedBoardDto);
-                boardCacheStore.initBoardIdByApiKey(boardDoc.getId(), boardDoc.getApiKey());
-                return Optional.of(mappedBoardDto);
-            }
-            return Optional.empty();
-        }
-        return Optional.of(boardDto);
-    }
-
     private BoardDoc getBoardDoc(String boardId) {
         var boardDocOpt = boardRepository.findById(boardId);
         if (boardDocOpt.isEmpty()) {
@@ -73,10 +54,5 @@ public class BoardService {
         }
 
         return boardDocOpt.get();
-    }
-
-    private BoardDoc getBoardDocByApiKey(String apiKey) {
-        var boardDocOpt = boardRepository.findByApiKey(apiKey);
-        return boardDocOpt.orElse(null);
     }
 }

@@ -11,9 +11,16 @@ public class AppProperties {
     @Value("${mockboard.security.owner-token-header-key}")
     private String ownerTokenHeader;
 
+    // cache props
     @Value("${mockboard.cache.max-entries}")
     private int maxCacheEntries;
 
-    @Value("${mockboard.cache.expire-after-access-minutes}")
+    @Value("${mockboard.cache.exp-after-access-minutes}")
     private int cacheExpireAfterAccessMinutes;
+
+    @Value("${mockboard.cache.rate-limiter.board-creation-exp-after-access-minutes}")
+    private int cacheBoardCreationExpireAfterAccessMinutes;
+
+    @Value("${mockboard.cache.rate-limiter.mock-execution-exp-after-access-minutes}")
+    private int cacheMockExecutionExpireAfterAccessMinutes;
 }

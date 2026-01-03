@@ -13,7 +13,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PathMatchingService {
 
-    private final BoardService boardService;
     private final MockRuleService mockRuleService;
     private final MockExecutionCacheStore mockExecutionCacheStore;
 
@@ -37,14 +36,7 @@ public class PathMatchingService {
         log.debug("building engine for apiKey {}", apiKey);
 
         var engine = new PathMatchingEngine();
-        var boardDtoOpt = boardService.getBoardDtoByApiKeyCached(apiKey);
-        if (boardDtoOpt.isEmpty()) {
-            log.warn("no board found for apiKey={}", apiKey);
-            return engine;
-        }
-
-        var boardDto = boardDtoOpt.get();
-        var mockRules = mockRuleService.getMockRulesCached(boardDto.getId(), boardDto.getApiKey());
+        var mockRules = mockRuleService.getMockRuleDtos(apiKey);
         int registered = 0;
         for (var mockRule : mockRules) {
             try {

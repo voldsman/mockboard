@@ -1,6 +1,6 @@
-package dev.mockboard.storage.repo;
+package dev.mockboard.storage.doc.repo;
 
-import dev.mockboard.core.common.doc.BoardDoc;
+import dev.mockboard.storage.doc.BoardDoc;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

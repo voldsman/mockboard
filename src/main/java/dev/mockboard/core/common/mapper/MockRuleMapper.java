@@ -1,6 +1,6 @@
 package dev.mockboard.core.common.mapper;
 
-import dev.mockboard.core.common.doc.MockRuleDoc;
+import dev.mockboard.storage.doc.MockRuleDoc;
 import dev.mockboard.core.common.domain.dto.MockRuleDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

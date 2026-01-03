@@ -1,7 +1,7 @@
 package dev.mockboard.web.api;
 
 import dev.mockboard.core.common.exception.NotFoundException;
-import dev.mockboard.core.common.ratelimiter.MockExecutionRateLimiter;
+import dev.mockboard.storage.cache.ratelimiter.MockExecutionRateLimiter;
 import dev.mockboard.core.utils.RequestUtils;
 import dev.mockboard.service.MockExecutionService;
 import jakarta.servlet.http.HttpServletRequest;

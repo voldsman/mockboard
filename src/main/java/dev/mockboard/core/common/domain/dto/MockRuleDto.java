@@ -16,6 +16,7 @@ public class MockRuleDto {
 
     private String id;
     private String boardId;
+    private String apiKey;
     private String method;
     private String path;
     private Map<String, String> headers;

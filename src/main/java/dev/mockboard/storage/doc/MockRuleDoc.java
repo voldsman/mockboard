@@ -1,5 +1,6 @@
-package dev.mockboard.core.common.doc;
+package dev.mockboard.storage.doc;
 
+import dev.mockboard.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "mock_rules")
+@Document(collection = Constants.MOCK_RULES)
 public class MockRuleDoc implements Serializable {
 
     @Id
@@ -25,6 +26,9 @@ public class MockRuleDoc implements Serializable {
 
     @Indexed
     private String boardId;
+
+    @Indexed
+    private String apiKey;
 
     private String method;
 

@@ -5,19 +5,19 @@ meta {
 }
 
 post {
-  url: {{SERVER_URL}}/api/boards/6956e39b34552e8663441ede/mocks
+  url: {{SERVER_URL}}/api/boards/69586a4522e40bed9825db8a/mocks
   body: json
   auth: inherit
 }
 
 headers {
-  X-Owner-Token: VCqVak9BGIfygEodY8t6MkVC1ilXwQUM
+  X-Owner-Token: FZ9968R6NQ7aM6exrfy2yMht1jIulbGL
 }
 
 body:json {
   {
     "method": "GET",
-    "path": "/api/users/54321/profile",
+    "path": "/api/users/*/profile",
     "headers": {
       "X-Header": "my-value"
     },

@@ -15,6 +15,13 @@ public abstract class BaseCacheStore<K, V> {
                 .build();
     }
 
+    public Cache<K, V> buildCache(int maxEntries, int duration) {
+        return Caffeine.newBuilder()
+                .maximumSize(maxEntries)
+                .expireAfterAccess(Duration.ofMinutes(duration))
+                .build();
+    }
+
     public abstract void evict(String key);
     public abstract void evictAll();
 }

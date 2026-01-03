@@ -22,4 +22,7 @@ mockboard:
         owner-token-header-key: ${OWNER_TOKEN_HEADER:'X-Owner-Token'}
     cache:
         max-entries: ${CACHE_MAX_ENTRIES:10000}
-        expire-after-access-minutes: ${CACHE_EXPIRE_AFTER_ACCESS_MIN:30}
+        exp-after-access-minutes: ${CACHE_EXP_AFTER_ACCESS_MIN:30}
+        rate-limiter:
+            board-creation-exp-after-access-minutes: ${BOARD_CREATION_CACHE_EXP_AFTER_MIN:60}
+            mock-execution-exp-after-access-minutes: ${MOCK_EXECUTION_CACHE_EXP_AFTER_MIN:1}
