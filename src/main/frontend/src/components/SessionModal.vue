@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 
 const emit = defineEmits(['session-start', 'session-continue'])
 const SESSION_KEY = 'mockboard_session_id'
-const showModal = ref(true)
+const showModal = ref(false)
 const isReturningUser = ref(false)
 
 onMounted(() => {

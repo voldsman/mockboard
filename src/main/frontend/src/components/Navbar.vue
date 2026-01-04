@@ -1,92 +1,96 @@
 <script setup>
 import { computed, ref } from 'vue'
 import constants from '@/constants'
+import { useBoardStore } from '@/stores/boardStore.js'
 
-const mockApiKey = ref('EUVFAnUCrV3R7gz7')
-
-const executionUrl = computed(() => `${constants.SERVER_URL}/m/${mockApiKey.value}/`)
-
+const boardStore = useBoardStore()
 const copied = ref(false)
+
+const displayUrl = computed(() => {
+  return boardStore.apiKey
+    ? `${constants.SERVER_URL}/m/${boardStore.apiKey}`
+    : 'Session initializing...'
+})
+
 const copyUrl = () => {
-  navigator.clipboard.writeText(executionUrl.value)
+  navigator.clipboard.writeText(displayUrl.value)
   copied.value = true
   setTimeout(() => (copied.value = false), 2000)
-}
-
-const closeBoard = () => {
-  alert('Close board clicked')
 }
 </script>
 
 <template>
   <nav
-    class="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between fixed top-0 left-0 right-0 z-50"
+    class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-40"
   >
-    <div class="flex items-center w-1/4">
-      <div class="flex items-center gap-2">
-        <div
-          class="w-8 h-8 bg-black rounded flex items-center justify-center text-white font-bold font-mono"
-        >
-          MB
-        </div>
-        <span class="text-xl font-bold tracking-tight text-gray-900">
-          MockBoard<span class="text-indigo-600">.dev</span>
-        </span>
+    <div class="flex items-center gap-3 w-64">
+      <div
+        class="w-8 h-8 bg-black rounded flex items-center justify-center text-white font-bold font-mono text-sm"
+      >
+        MB
       </div>
+      <span class="font-bold text-gray-900 tracking-tight text-sm"
+        >MockBoard<span class="text-indigo-600">.dev</span></span
+      >
     </div>
 
-    <div class="flex-1 flex justify-center max-w-2xl">
-      <div class="relative w-full max-w-lg group">
-        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <span class="text-gray-600 text-sm font-medium">URL</span>
-        </div>
-
-        <input
-          :value="executionUrl"
-          class="block w-full pl-20 pr-12 py-2 bg-gray-50 border border-gray-200 text-gray-600 text-sm rounded-md focus:ring-0 focus:border-gray-300 disabled:opacity-75 disabled:cursor-not-allowed font-mono shadow-sm"
-          disabled
-          readonly
-          type="text"
-        />
-
-        <button
-          class="absolute inset-y-1 right-1 px-3 flex items-center bg-white border border-gray-200 hover:bg-gray-50 text-gray-500 rounded text-xs font-medium transition-colors cursor-pointer"
-          title="Copy URL"
-          @click="copyUrl"
+    <div class="flex-1 max-w-2xl px-4">
+      <div
+        class="flex items-center bg-gray-50 border border-gray-200 rounded-md p-1 focus-within:ring-2 focus-within:ring-indigo-100 transition-all"
+      >
+        <span class="pl-3 text-gray-400 text-xs font-bold uppercase tracking-wider select-none"
+          >Base URL</span
         >
-          <span v-if="!copied">Copy</span>
-          <span v-else class="text-green-600">Copied!</span>
+        <input
+          readonly
+          :value="displayUrl"
+          class="flex-1 bg-transparent border-none text-xs font-mono text-gray-600 px-3 focus:ring-0 w-full"
+        />
+        <button
+          @click="copyUrl"
+          class="p-1.5 rounded hover:bg-white hover:shadow-sm text-gray-400 hover:text-indigo-600 transition-all cursor-pointer"
+          title="Copy to clipboard"
+        >
+          <span v-if="!copied">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </span>
+          <span v-else class="text-green-600 font-bold text-xs px-1">OK</span>
         </button>
       </div>
     </div>
 
-    <div class="flex items-center justify-end w-1/4 gap-4">
-      <div
-        class="flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full border border-green-100"
-      >
+    <div class="flex items-center justify-end gap-4 w-64">
+      <div class="hidden md:flex flex-col items-end">
+        <span class="text-[10px] uppercase text-gray-400 font-bold tracking-wider">Reset In</span>
+        <span class="text-xs font-mono text-gray-700">11:42:05</span>
+      </div>
+      <div class="h-8 w-[1px] bg-gray-200 mx-1"></div>
+      <div class="flex items-center gap-2">
         <span class="relative flex h-2.5 w-2.5">
           <span
             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
           ></span>
           <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
         </span>
-        <span class="text-xs font-medium text-green-700 uppercase tracking-wide">Connected</span>
+        <span class="text-xs font-bold text-gray-600">Live</span>
       </div>
-
-      <button
-        class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-md hover:bg-red-50 cursor-pointer"
-        title="Close Board"
-        @click="closeBoard"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+      <div class="h-8 w-[1px] bg-gray-200 mx-1"></div>
+      <button class="text-gray-400 hover:text-gray-600 transition p-1 cursor-pointer"
+      title="Close board">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
         </svg>
       </button>
     </div>
