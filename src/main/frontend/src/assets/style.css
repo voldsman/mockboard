@@ -8,7 +8,7 @@
 body {
     background-color: #f4f6f8;
     font-size: 0.9rem;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .font-mono {

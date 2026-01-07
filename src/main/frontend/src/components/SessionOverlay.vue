@@ -183,7 +183,7 @@ const handleContinue = () => {
 
                         <p class="text-center text-muted mt-4" style="font-size: 0.75rem;">
                             By continuing, you agree to the <a class="text-decoration-underline text-secondary"
-                                                               href="#">fair use
+                                                               href="/fair-use" target="_blank" rel="noopener noreferrer">fair use
                             policy</a>.
                         </p>
                     </div>
