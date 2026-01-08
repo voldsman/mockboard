@@ -3,8 +3,16 @@ import {defineStore} from 'pinia'
 export const useBoardStore = defineStore("boardStore", {
     state: () => ({
         board: null,
-        mocks: []
+        mockRules: []
     }),
+    getters: {
+        getBoard() {
+            return this.board
+        },
+        getMockRules() {
+            return this.mockRules
+        }
+    },
     actions: {
         initializeBoardStore(boardModel) {
             console.log(`Initializing boardStore for ${boardModel.id}`);
