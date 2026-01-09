@@ -62,31 +62,4 @@ public class BoardController {
         var mockRules = mockRuleService.getMockRules(boardDto);
         return new ResponseEntity<>(mockRules, HttpStatus.OK);
     }
-
-//
-//    @DeleteMapping("/{boardId}")
-//    public ResponseEntity<Void> closeBoard(@PathVariable String boardId,
-//                                           @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
-//        // todo: impl
-//        return ResponseEntity.notFound().build();
-//    }
-//
-//    @PutMapping("/{boardId}/mocks/{mockId}")
-//    public ResponseEntity<IdResponse> updateMockRule(@PathVariable String boardId,
-//                                                     @PathVariable String mockId,
-//                                                     @RequestBody MockRuleDto mockRuleDto,
-//                                                     @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
-//        var boardDto = boardSecurityService.validateOwnership(boardId, ownerToken);
-//        var response = mockRuleService.updateMockRule(boardDto, mockId, mockRuleDto);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/{boardId}/mocks/{mockId}")
-//    public ResponseEntity<Void> deleteMockRule(@PathVariable String boardId,
-//                                               @PathVariable String mockId,
-//                                               @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
-//        var boardDto = boardSecurityService.validateOwnership(boardId, ownerToken);
-//        mockRuleService.deleteMockRule(boardDto, mockId);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 }

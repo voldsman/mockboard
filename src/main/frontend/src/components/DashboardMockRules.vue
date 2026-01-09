@@ -11,7 +11,10 @@ onMounted(async () => {
     if (!boardStore.board) {
         await boardStore.restoreSession();
     }
-    await boardStore.fetchMockRules()
+
+    if (mockRules.value.length === 0) {
+        await boardStore.fetchMockRules()
+    }
 })
 </script>
 <template>
@@ -49,7 +52,7 @@ onMounted(async () => {
                             <div class="d-flex align-items-center gap-4 ms-auto">
                                 <div class="text-center">
                                     <small class="text-muted d-block text-uppercase ls-1" style="font-size: 0.65rem;">Status</small>
-                                    <span class="badge border-0 p-0 text-dark">
+                                    <span class="fw-semibold text-dark small">
                                     {{ mockRule.statusCode }}
                                 </span>
                                 </div>

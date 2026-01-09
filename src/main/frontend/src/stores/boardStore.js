@@ -64,8 +64,26 @@ export const useBoardStore = defineStore("boardStore", {
             try {
                 const result = await boardService.getMockRules(this.board.id, this.board.ownerToken);
                 this.mockRules = result.data.map(mr => new MockRuleModel(mr));
+                // todo: use flag like: this.rulesLoaded = true
             } catch (err) {
                 console.error("Failed to fetch mock rules", err)
+            }
+        },
+
+        async createNewMockRule(mockRuleData) {
+            try {
+                const result = await boardService.createMockRule(this.board.id, this.board.ownerToken, mockRuleData)
+
+                const mockId = result.data.id;
+                const newMockRule = new MockRuleModel({
+                    ...mockRuleData,
+                    id: mockId
+                })
+                this.mockRules.unshift(newMockRule)
+                return newMockRule
+            } catch (err) {
+                console.error("Failed to create mock rule", err)
+                throw err
             }
         }
     }

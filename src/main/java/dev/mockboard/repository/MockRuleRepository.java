@@ -54,7 +54,9 @@ public class MockRuleRepository {
     }
 
     public List<MockRule> findByBoardId(String boardId) {
-        var sql = "SELECT * FROM mock_rules WHERE board_id = ?;";
+        var sql = """
+                SELECT * FROM mock_rules WHERE board_id = ? ORDER BY created_at DESC;
+                """;
         try {
             return jdbcTemplate.query(sql, new MockRuleRowMapper(), boardId);
         } catch (Exception e) {

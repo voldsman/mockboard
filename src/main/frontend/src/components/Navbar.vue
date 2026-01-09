@@ -10,8 +10,8 @@ const boardStore = useBoardStore()
 const copied = ref(false)
 
 const displayUrl = computed(() => {
-    return boardStore.apiKey
-        ? `${constants.SERVER_URL}/m/${boardStore.apiKey}`
+    return boardStore.board.apiKey
+        ? `${constants.SERVER_URL}/m/${boardStore.board.apiKey}`
         : 'Session initializing...'
 })
 

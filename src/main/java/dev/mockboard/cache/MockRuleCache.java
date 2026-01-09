@@ -19,11 +19,11 @@ public class MockRuleCache extends CaffeineEntityCache<List<MockRuleDto>> {
 
     public void addMockRule(String key, MockRuleDto mockRule) {
         cache.asMap().compute(key, (k, mocks) -> {
-            if (mocks == null) {
-                mocks = new ArrayList<>();
-            }
-            mocks.add(mockRule);
-            return mocks;
+            var mutableMocks = (mocks == null)
+                    ? new ArrayList<MockRuleDto>()
+                    : new ArrayList<>(mocks);
+            mutableMocks.add(mockRule);
+            return mutableMocks;
         });
     }
 
