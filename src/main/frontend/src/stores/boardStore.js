@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import boardService from "@/services/boardService.js";
 import {BoardModel} from "@/models/boardModel.js";
 import constants from "@/constants.js";
+import {MockRuleModel} from "@/models/mockRuleModel.js";
 
 export const useBoardStore = defineStore("boardStore", {
     state: () => ({
@@ -10,22 +11,15 @@ export const useBoardStore = defineStore("boardStore", {
     }),
     getters: {
         hasActiveSession: (state) => !!state.board && !!state.board.id && !!state.board.ownerToken,
-        getBoard() {
-            return this.board
-        },
-        getMockRules() {
-            return this.mockRules
-        }
     },
     actions: {
         clearBoardStore() {
             this.board = null
             this.mockRules = []
-            localStorage.clear()
+            localStorage.removeItem(constants.BOARD_DATA)
         },
         async restoreSession() {
             const localModel = BoardModel.fromLS(constants.BOARD_DATA)
-            console.log('localModel', localModel)
             if (!localModel || !localModel.id || !localModel.ownerToken || localModel.isExpired()) {
                 this.clearBoardStore()
                 return null
@@ -66,8 +60,13 @@ export const useBoardStore = defineStore("boardStore", {
             }
         },
 
-        async fetchMockRules(boardId, ownerToken) {
-
+        async fetchMockRules() {
+            try {
+                const result = await boardService.getMockRules(this.board.id, this.board.ownerToken);
+                this.mockRules = result.data.map(mr => new MockRuleModel(mr));
+            } catch (err) {
+                console.error("Failed to fetch mock rules", err)
+            }
         }
     }
 })

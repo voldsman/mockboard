@@ -42,7 +42,7 @@ defineExpose({openLogDetails})
                     <button
                         @click="openCreate"
                         type="button"
-                        class="btn btn-outline-primary px-4 fw-bold">Add New Mock</button>
+                        class="btn btn-outline-primary px-4 fw-bold">Add Mock Endpoint</button>
                 </div>
             </div>
 

@@ -1,93 +1,77 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {useBoardStore} from "@/stores/boardStore.js";
-import boardService from "@/services/boardService.js";
-import {MockRuleModel} from "@/models/mockRuleModel.js";
-import {getReasonPhrase} from 'http-status-codes';
+import uiHelper from "@/helpers/uiHelper.js";
+import {storeToRefs} from "pinia";
 
 const boardStore = useBoardStore();
-const mockRules = ref([])
+const { mockRules } = storeToRefs(boardStore)
+
 onMounted(async () => {
-    const storeBoardModel = boardStore.getBoard
-    const storeMockRules = boardStore.getMockRules
-
-    if (storeMockRules.length === 0) {
-        try {
-            const result = await boardService.getMockRules(storeBoardModel.id, storeBoardModel.ownerToken);
-            result.data.forEach((mr) => {
-                mockRules.value.push(new MockRuleModel(mr))
-            })
-            boardStore.mockRules = result.data.map(mr => new MockRuleModel(mr));
-        } catch (error) {
-            console.error('Error getting mock rules', error);
-        }
-    } else {
-        mockRules.value = storeMockRules;
+    if (!boardStore.board) {
+        await boardStore.restoreSession();
     }
+    await boardStore.fetchMockRules()
 })
-
-const getStatusDetails = (code) => {
-    let standardText = "Unknown";
-    try {
-        standardText = getReasonPhrase(code)
-    } catch (error) {
-        console.error('Error extracting status code text', error);
-    }
-
-    const firstDigit = Math.floor(code / 100);
-    const styleMap = {
-        2: "bg-success-subtle text-success border-success-subtle",
-        3: "bg-info-subtle text-info border-info-subtle",
-        4: "bg-warning-subtle text-warning border-warning-subtle",
-        5: "bg-danger-subtle text-danger border-danger-subtle",
-    };
-
-    return {
-        fullText: `${code} ${standardText}`,
-        cssClass: styleMap[firstDigit] || "bg-light text-dark border-secondary-subtle"
-    };
-};
 </script>
 <template>
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+    <div class="card shadow-sm border-0 bg-transparent">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="m-0 fw-bold">Mock Endpoints</h6>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
-                <tr>
-                    <th class="ps-4">Method</th>
-                    <th>Path Pattern</th>
-                    <th>Status</th>
-                    <th>Delay</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="mockRule in mockRules" :key="mockRule.id">
-                    <td class="ps-4">
-                        <span class="badge bg-success">
-                            {{mockRule.method}}
-                        </span>
-                    </td>
-                    <td class="font-mono text-truncate" style="max-width: 250px;">
-                        {{mockRule.path}}
-                    </td>
-                    <td>
-                        <span :class="['badge border', getStatusDetails(mockRule.statusCode).cssClass]">
-                            {{ getStatusDetails(mockRule.statusCode).fullText }}
-                        </span>
-                    </td>
-                    <td class="text-muted">0ms TODO;</td>
-                    <td>
-                        <button class="btn btn-sm btn-light border"><i class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-light border text-danger"><i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+
+        <div v-if="mockRules.length === 0" class="text-center py-5 bg-white rounded-3 border border-dashed">
+            <p class="text-secondary mb-0">Your workspace is empty.</p>
+            <small class="text-muted">No mock endpoints configured yet.</small>
+        </div>
+
+        <div v-else class="d-flex flex-column gap-3">
+            <div v-for="mockRule in mockRules" :key="mockRule.id"
+                 class="card border-0 shadow-sm hover-shadow transition-all overflow-hidden">
+
+                <div class="card-body p-0">
+                    <div class="d-flex align-items-stretch">
+                        <div :class="['px-2 d-flex align-items-center justify-content-center', uiHelper.getMethodColor(mockRule.method)]"
+                             style="width: 12px;">
+                        </div>
+
+                        <div class="p-3 w-100 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+
+                            <div class="d-flex align-items-center gap-3 overflow-hidden">
+                            <span :class="['badge rounded-pill px-3 py-2', uiHelper.getMethodBadge(mockRule.method)]">
+                                {{ mockRule.method }}
+                            </span>
+                                <code class="text-dark fw-medium text-truncate fs-6" style="max-width: 400px;">
+                                    {{ mockRule.path }}
+                                </code>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-4 ms-auto">
+                                <div class="text-center">
+                                    <small class="text-muted d-block text-uppercase ls-1" style="font-size: 0.65rem;">Status</small>
+                                    <span class="badge border-0 p-0 text-dark">
+                                    {{ mockRule.statusCode }}
+                                </span>
+                                </div>
+
+                                <div class="text-center">
+                                    <small class="text-muted d-block text-uppercase ls-1" style="font-size: 0.65rem;">Delay</small>
+                                    <span class="fw-semibold text-dark small">0ms</span>
+                                </div>
+
+                                <div class="btn-group shadow-sm rounded-3">
+                                    <button class="btn btn-white btn-sm border-end px-3" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-white btn-sm text-danger px-3" title="Delete">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
