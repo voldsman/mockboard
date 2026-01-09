@@ -16,55 +16,47 @@ const isReturningUser = ref(false)
 const pendingBoardData = ref(null)
 
 onMounted(async () => {
-    const boardModel = BoardModel.fromLS(constants.BOARD_DATA);
-
-    if (boardModel && boardModel.id && !boardModel.isExpired()) {
-        try {
-            const result = await boardService.getBoard(boardModel.id, boardModel.ownerToken);
-            const validatedBoard = new BoardModel(result.data);
-
-            console.log(boardModel);
-            if (!boardModel.shouldShowOverlay()) {
-                boardStore.initializeBoardStore(validatedBoard)
-                emit('session-continue')
-                return;
-            }
-
-            pendingBoardData.value = validatedBoard;
-            isReturningUser.value = true;
-        } catch (err) {
-            console.warn('Session expired on server or invalid data');
-            isReturningUser.value = false
-            boardStore.clearBoardStore()
+    const boardModel = await boardStore.restoreSession()
+    if (boardModel) {
+        if (boardModel.shouldShowOverlay()) {
+            pendingBoardData.value = boardModel
+            isReturningUser.value = true
+            showModal.value = true
+        } else {
+            boardStore.setBoard(boardModel)
+            emit('session-continue')
         }
-    } else {
-        console.log('No local data found or session expired');
+     } else {
         isReturningUser.value = false
-        boardStore.clearBoardStore()
+        showModal.value = true
     }
-
-    showModal.value = true
 })
 
 const handleStartNew = async () => {
     try {
-        const result = await boardService.createBoard()
-        const boardModel = new BoardModel(result.data)
-        boardStore.initializeBoardStore(boardModel)
+        await boardStore.createNewBoard()
+        success('Board created successfully!')
 
         showModal.value = false
-        success('Board created successfully!')
         emit('session-start')
     } catch (err) {
-        console.error('Failed to create new board', err);
-        error('Failed to create board. Please try again.'+ err)
+        switch (err.status) {
+            case 429:
+                error('Too many requests! Please wait a minute before trying again.')
+                break
+            case 500:
+                error('Our server is having a moment. Please try again later.');
+                break;
+            default:
+                error(`Something went wrong: ${err.message}`);
+        }
+        console.error('Failed to create board', err)
     }
 }
 
 const handleContinue = () => {
     if (pendingBoardData.value) {
-        const model = pendingBoardData.value
-        boardStore.initializeBoardStore(model)
+        boardStore.setBoard(pendingBoardData.value)
     }
     showModal.value = false
     success('Welcome back!')
