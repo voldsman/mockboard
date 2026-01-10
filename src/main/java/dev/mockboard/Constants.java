@@ -25,8 +25,8 @@ public final class Constants {
 
     // scheduler
     public static final int CREATED_EVENTS_PROCESS_DELAY = 5_000;
-    public static final int UPDATED_EVENTS_PROCESS_DELAY = 10_000;
-    public static final int DELETED_EVENTS_PROCESS_DELAY = 30_000;
+    public static final int UPDATED_EVENTS_PROCESS_DELAY = 13_000;
+    public static final int DELETED_EVENTS_PROCESS_DELAY = 21_000;
 
     // validations
     public static final Pattern VALID_PATH_PATTERN = Pattern.compile("^/[a-zA-Z0-9/_\\-*{}]+$");
