@@ -41,7 +41,7 @@ const handleMockRuleDelete = async (mockRuleId) => {
     <div class="card shadow-sm border-0 bg-transparent">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="m-0 fw-bold">Mock Endpoints
-                <span class="badge rounded-pill bg-info text-dark" v-if="mockRules.length !== 0">
+                <span class="badge rounded-pill bg-info" v-if="mockRules.length !== 0">
                     {{boardStore.mockUsageCount}}
                 </span>
             </h6>

@@ -40,10 +40,11 @@ public final class Constants {
     public static final int MAX_HEADER_VALUE_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_VALUE_LENGTH", 500);
 
     // sse
-    public static final int MAX_SSE_EMITTERS_PER_BOARD = 3;
+    public static final int MAX_SSE_EMITTERS_PER_BOARD = 1;
     public static final long SSE_EMITTER_TTL = 1_800_000L; // 30min
     public static final long SSE_EMITTER_HEARTBEAT_RATE = 30_000L; // 30sec
     public static final String SSE_EMITTER_EVENT_WEBHOOK = "webhook-event";
     public static final String SSE_EMITTER_EVENT_PING = "ping";
+    public static final String SSE_EMITTER_EVENT_SHUTDOWN = "server-shutdown";
 
 }

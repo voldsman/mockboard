@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import static dev.mockboard.Constants.OWNER_TOKEN_HEADER_KEY;
-
 @RestController
 @RequestMapping("/api/boards")
 @RequiredArgsConstructor
@@ -18,8 +16,8 @@ public class SseController {
 
     @GetMapping("/{boardId}/stream")
     public SseEmitter subscribe(@PathVariable String boardId,
-                                @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
-        var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, ownerToken);
+                                @RequestParam String token) {
+        var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, token);
         return sseService.subscribe(boardDto);
     }
 }

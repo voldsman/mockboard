@@ -34,6 +34,7 @@ public class SseService {
                 try {
                     var oldest = newList.removeFirst();
                     oldest.complete();
+                    log.debug("Emitters size exceeded, oldest removed");
                 } catch (Exception e) {
                     // should be already dead
                     log.debug(e.getMessage(), e);
@@ -47,6 +48,15 @@ public class SseService {
         emitter.onCompletion(cleanup(boardDto.getApiKey(), emitter));
         emitter.onTimeout(cleanup(boardDto.getApiKey(), emitter));
         emitter.onError(e -> cleanup(boardDto.getApiKey(), emitter).run());
+
+        try {
+            emitter.send(SseEmitter.event()
+                    .name(Constants.SSE_EMITTER_EVENT_PING)
+                    .comment("established")
+            );
+        } catch (Exception e) {
+            emitter.completeWithError(e);
+        }
         return emitter;
     }
 
@@ -71,7 +81,7 @@ public class SseService {
                         .data(data, MediaType.APPLICATION_JSON)
                 );
             } catch (Exception e) {
-                log.debug(e.getMessage(), e);
+                log.debug("An exception sending to disconnected emitter, {}", e.getMessage(), e);
                 emitter.completeWithError(e);
             }
         });
@@ -91,10 +101,28 @@ public class SseService {
                         .comment("heartbeat")
                 );
             } catch (Exception e) {
+                log.debug("An exception sending to disconnected emitter, {}", e.getMessage(), e);
                 emitter.completeWithError(e);
                 // probably not needed, spring should handle it
                 // cleanup(key, emitter).run();
             }
         }));
+    }
+
+    public void onShutdown() {
+        log.info("Shutting down SSE service: closing {} active boards", webhookEmitters.size());
+
+        webhookEmitters.forEach((key, emitters) -> emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event()
+                        .name(Constants.SSE_EMITTER_EVENT_SHUTDOWN)
+                        .reconnectTime(0)
+                        .data("shutdown"));
+                emitter.complete();
+            } catch (Exception e) {
+                emitter.completeWithError(e);
+            }
+        }));
+        webhookEmitters.clear();
     }
 }

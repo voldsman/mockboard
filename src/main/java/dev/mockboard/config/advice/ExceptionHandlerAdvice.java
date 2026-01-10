@@ -50,6 +50,12 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ExceptionResponse> handleException(Exception ex) {
+        // handle SSE edge cases on shutdown/restart
+        if (ex.getClass().getSimpleName().contains("AsyncRequestNotUsableException") ||
+                ex.getClass().getSimpleName().contains("ClientAbortException")) {
+            return null;
+        }
+
         var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
