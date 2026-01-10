@@ -61,8 +61,6 @@ const validate = () => {
 };
 
 const handleSubmit = async () => {
-    console.log('Submit clicked');
-
     if (!validate()) {
         console.log('Validation failed:', errors.value);
         return;
@@ -85,7 +83,6 @@ const handleSubmit = async () => {
             body: formData.body
         };
 
-        console.log('Sending payload:', payload);
         await boardStore.createNewMockRule(payload);
         success("Mock rule created successfully!");
         emit('close');

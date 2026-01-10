@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Objects;
+
 import static dev.mockboard.Constants.*;
 
 @Slf4j
@@ -50,12 +52,11 @@ public class EventConsumer {
         }
 
         try {
-            var boards = events.stream()
-                    .map(DomainEvent::getEntity)
-                    .toList();
-
             switch (type) {
                 case CREATE -> {
+                    var boards = events.stream()
+                            .map(DomainEvent::getEntity)
+                            .toList();
                     boardRepository.batchInsert(boards);
                     log.debug("Created {} boards in DB", boards.size());
                 }
@@ -64,11 +65,11 @@ public class EventConsumer {
                 }
                 case DELETE -> {
                     var boardIds = events.stream()
-                            .map(DomainEvent::getEntity)
-                            .map(Board::getId)
+                            .map(DomainEvent::getEntityId)
+                            .filter(Objects::nonNull)
                             .toList();
                     boardRepository.batchDelete(boardIds);
-                    log.debug("Deleted {} boards from DB", boards.size());
+                    log.debug("Deleted {} boards from DB", boardIds.size());
                 }
             }
         } catch (Exception e) {
@@ -84,11 +85,11 @@ public class EventConsumer {
         }
 
         try {
-            var mockRules = events.stream()
-                    .map(DomainEvent::getEntity)
-                    .toList();
             switch (type) {
                 case CREATE -> {
+                    var mockRules = events.stream()
+                            .map(DomainEvent::getEntity)
+                            .toList();
                     mockRuleRepository.batchInsert(mockRules);
                     log.debug("Created {} mock rules in DB", mockRules.size());
                 }
@@ -96,7 +97,12 @@ public class EventConsumer {
                     log.warn("Batch mock rules updates not yet implemented");
                 }
                 case DELETE -> {
-                    log.warn("Batch mock rules deletes not yet implemented");
+                    var mockRuleIds = events.stream()
+                            .map(DomainEvent::getEntityId)
+                            .filter(Objects::nonNull)
+                            .toList();
+                    mockRuleRepository.batchDelete(mockRuleIds);
+                    log.debug("Deleted {} mock rules from DB", mockRuleIds.size());
                 }
             }
         } catch (Exception e) {

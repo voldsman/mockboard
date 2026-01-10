@@ -78,7 +78,7 @@ public class BoardRepository {
 
     public void batchDelete(List<String> boardIds) {
         var sql = """
-            DELETE FROM boards WHERE board_id IN (?)
+            DELETE FROM boards WHERE id IN (?)
         """;
 
         jdbcTemplate.batchUpdate(sql, boardIds, boardIds.size(),  (ps, id) -> ps.setString(1, id));

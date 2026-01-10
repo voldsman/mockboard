@@ -88,4 +88,12 @@ public class MockRuleRepository {
             ps.setTimestamp(9, Timestamp.from(mockRule.getTimestamp()));
         });
     }
+
+    public void batchDelete(List<String> mockRuleIds) {
+        var sql = """
+            DELETE FROM mock_rules WHERE id IN (?)
+        """;
+
+        jdbcTemplate.batchUpdate(sql, mockRuleIds, mockRuleIds.size(),  (ps, id) -> ps.setString(1, id));
+    }
 }

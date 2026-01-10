@@ -64,10 +64,18 @@ public class MockRuleService {
             var dtos = persistedMockRules.stream()
                     .map(mockRule -> modelMapper.map(mockRule, MockRuleDto.class))
                     .toList();
-            mockRuleCache.put(boardDto.getApiKey(), dtos);
+            mockRuleCache.addMockRules(boardDto.getApiKey(), dtos);
             return dtos;
         }
         return cachedMockRules;
+    }
+
+    public void deleteMockRule(BoardDto boardDto, String mockRuleId) {
+        log.info("deleting mock rule={} for boardId={}", mockRuleId, boardDto.getId());
+        mockRuleCache.deleteMockRule(boardDto.getApiKey(), mockRuleId);
+
+        // hard delete. maybe migrate to soft delete later
+        eventQueue.publish(DomainEvent.delete(mockRuleId, MockRule.class));
     }
 
     //    public List<MockRuleDto> getMockRuleDtos(BoardDto boardDto) {

@@ -3,9 +3,11 @@ import {onMounted, ref} from "vue";
 import {useBoardStore} from "@/stores/boardStore.js";
 import uiHelper from "@/helpers/uiHelper.js";
 import {storeToRefs} from "pinia";
+import {useToast} from "@/useToast.js";
 
 const boardStore = useBoardStore();
 const { mockRules } = storeToRefs(boardStore)
+const {success, error} = useToast()
 
 onMounted(async () => {
     if (!boardStore.board) {
@@ -16,6 +18,19 @@ onMounted(async () => {
         await boardStore.fetchMockRules()
     }
 })
+
+const handleMockRuleDelete = async (mockRuleId) => {
+    const result = confirm(`Are you sure you want to delete mock rule?`)
+    if (!result) return
+
+    try {
+        await boardStore.deleteMockRuleById(mockRuleId);
+        success('Mock rule deleted');
+    } catch (err) {
+        console.error(err);
+        error(`Error deleting mock rule: ${err}`);
+    }
+}
 </script>
 <template>
     <div class="card shadow-sm border-0 bg-transparent">
@@ -66,7 +81,7 @@ onMounted(async () => {
                                     <button class="btn btn-white btn-sm border-end px-3" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    <button class="btn btn-white btn-sm text-danger px-3" title="Delete">
+                                    <button @click="handleMockRuleDelete(mockRule.id)" class="btn btn-white btn-sm text-danger px-3" title="Delete">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>

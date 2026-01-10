@@ -85,6 +85,20 @@ export const useBoardStore = defineStore("boardStore", {
                 console.error("Failed to create mock rule", err)
                 throw err
             }
+        },
+
+        async deleteMockRuleById(mockRuleId) {
+            try {
+                const result = await boardService.deleteMockRule(this.board.id, this.board.ownerToken, mockRuleId)
+                if (result.status === 204) {
+                    this.mockRules = this.mockRules.filter(rule => rule.id !== mockRuleId);
+                    return
+                }
+                console.warn(`Received unexpected status code: ${result.status}`)
+            } catch (err) {
+                console.error(`Failed to delete mock rule ${mockRuleId}`, err)
+                throw err
+            }
         }
     }
 })

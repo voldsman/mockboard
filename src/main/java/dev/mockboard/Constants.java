@@ -38,4 +38,6 @@ public final class Constants {
     public static final int MAX_HEADER_KEY_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_KEY_LENGTH", 100);
     public static final int MAX_HEADER_VALUE_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_VALUE_LENGTH", 500);
 
+    // app
+    public static final int MAX_MOCK_RULES = 12;
 }
