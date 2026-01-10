@@ -7,6 +7,7 @@ import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.MockRuleDto;
 import dev.mockboard.common.domain.response.IdResponse;
 import dev.mockboard.common.exception.BadRequestException;
+import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.common.utils.JsonUtils;
 import dev.mockboard.common.validator.MockRuleValidator;
@@ -75,6 +76,28 @@ public class MockRuleService {
             return dtos;
         }
         return cachedMockRules;
+    }
+
+    public IdResponse updateMockRule(BoardDto boardDto, String mockRuleId, MockRuleDto mockRuleDto) {
+        log.debug("updating mock rule={} for boardId={}", mockRuleId, boardDto.getId());
+        mockRuleValidator.validateMockRule(mockRuleDto);
+
+        var mockRuleDtos = getMockRules(boardDto);
+        var existingDto = mockRuleDtos.stream()
+                .filter(m -> m.getId().equals(mockRuleId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Mock rule not found for id: " + mockRuleId));
+
+        existingDto.setMethod(mockRuleDto.getMethod());
+        existingDto.setPath(mockRuleDto.getPath());
+        existingDto.setHeaders(JsonUtils.minify(mockRuleDto.getHeaders()));
+        existingDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
+        existingDto.setStatusCode(mockRuleDto.getStatusCode());
+        mockRuleCache.updateMockRule(boardDto.getApiKey(), existingDto);
+
+        var mockRule = modelMapper.map(existingDto, MockRule.class);
+        eventQueue.publish(DomainEvent.update(mockRule, mockRuleId, MockRule.class));
+        return new IdResponse(mockRuleId);
     }
 
     public void deleteMockRule(BoardDto boardDto, String mockRuleId) {

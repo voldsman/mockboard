@@ -63,6 +63,16 @@ public class BoardController {
         return new ResponseEntity<>(mockRules, HttpStatus.OK);
     }
 
+    @PutMapping("/{boardId}/mocks/{mockRuleId}")
+    public ResponseEntity<IdResponse> updateMockRule(@PathVariable String boardId,
+                                                     @PathVariable String mockRuleId,
+                                                     @RequestBody MockRuleDto mockRuleDto,
+                                                     @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
+        var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, ownerToken);
+        var response = mockRuleService.updateMockRule(boardDto, mockRuleId, mockRuleDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{boardId}/mocks/{mockRuleId}")
     public ResponseEntity<Void> deleteMockRule(@PathVariable String boardId,
                                                @PathVariable String mockRuleId,

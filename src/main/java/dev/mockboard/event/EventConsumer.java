@@ -94,7 +94,11 @@ public class EventConsumer {
                     log.debug("Created {} mock rules in DB", mockRules.size());
                 }
                 case UPDATE -> {
-                    log.warn("Batch mock rules updates not yet implemented");
+                    var mockRules = events.stream()
+                            .map(DomainEvent::getEntity)
+                            .toList();
+                    mockRuleRepository.batchUpdate(mockRules);
+                    log.debug("Updated {} mock rules in DB", mockRules.size());
                 }
                 case DELETE -> {
                     var mockRuleIds = events.stream()

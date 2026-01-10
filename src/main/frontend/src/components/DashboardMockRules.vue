@@ -5,6 +5,7 @@ import uiHelper from "@/helpers/uiHelper.js";
 import {storeToRefs} from "pinia";
 import {useToast} from "@/useToast.js";
 
+const emit = defineEmits(['edit-mock'])
 const boardStore = useBoardStore();
 const { mockRules } = storeToRefs(boardStore)
 const {success, error} = useToast()
@@ -18,6 +19,10 @@ onMounted(async () => {
         await boardStore.fetchMockRules()
     }
 })
+
+const handleMockRuleEdit = (mockRuleId) => {
+    emit('edit-mock', mockRuleId)
+}
 
 const handleMockRuleDelete = async (mockRuleId) => {
     const result = confirm(`Are you sure you want to delete mock rule?`)
@@ -82,11 +87,15 @@ const handleMockRuleDelete = async (mockRuleId) => {
                                 </div>
 
                                 <div class="btn-group shadow-sm rounded-3">
-                                    <button class="btn btn-white btn-sm border-end px-3" title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
+                                    <button
+                                        @click="handleMockRuleEdit(mockRule.id)"
+                                        class="btn btn-white btn-sm border-end px-3" title="Edit">
+                                            <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    <button @click="handleMockRuleDelete(mockRule.id)" class="btn btn-white btn-sm text-danger px-3" title="Delete">
-                                        <i class="bi bi-trash3"></i>
+                                    <button
+                                        @click="handleMockRuleDelete(mockRule.id)"
+                                        class="btn btn-white btn-sm text-danger px-3" title="Delete">
+                                            <i class="bi bi-trash3"></i>
                                     </button>
                                 </div>
                             </div>

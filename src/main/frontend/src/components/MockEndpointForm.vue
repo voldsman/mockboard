@@ -1,8 +1,20 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import {useToast} from "@/useToast.js";
 import {useBoardStore} from "@/stores/boardStore.js";
 import uiHelper from "@/helpers/uiHelper.js";
+
+const props = defineProps({
+    mode: {
+        type: String,
+        default: 'create', // 'create' or 'edit'
+        validator: (value) => ['create', 'edit'].includes(value)
+    },
+    mockRuleId: {
+        type: String,
+        default: null
+    }
+});
 
 const {success, error} = useToast();
 const boardStore = useBoardStore();
@@ -18,6 +30,45 @@ const formData = reactive({
 });
 
 const errors = ref({});
+const isLoading = ref(false);
+
+onMounted(() => {
+    if (props.mode === 'edit' && props.mockRuleId) {
+        loadMockRule();
+    }
+});
+
+watch(() => props.mockRuleId, (newId) => {
+    if (props.mode === 'edit' && newId) {
+        loadMockRule();
+    }
+});
+
+const loadMockRule = () => {
+    const mockRule = boardStore.mockRules.find(r => r.id === props.mockRuleId);
+    if (!mockRule) {
+        error('Mock rule not found');
+        emit('close');
+        return;
+    }
+
+    formData.method = mockRule.method;
+    formData.path = mockRule.path;
+    formData.statusCode = mockRule.statusCode;
+    formData.delay = mockRule.delay || 0;
+
+    try {
+        const headersObj = mockRule.headers ? JSON.parse(mockRule.headers) : {};
+        formData.headers = Object.entries(headersObj).map(([key, value]) => ({ key, value }));
+        if (formData.headers.length === 0) {
+            formData.headers = [{ key: 'Content-Type', value: 'application/json' }];
+        }
+    } catch (e) {
+        formData.headers = [{ key: 'Content-Type', value: 'application/json' }];
+    }
+
+    formData.body = mockRule.body || '';
+};
 
 const addHeader = () => {
     if (!Array.isArray(formData.headers)) formData.headers = [];
@@ -66,6 +117,8 @@ const handleSubmit = async () => {
         return;
     }
 
+    isLoading.value = true;
+
     try {
         const headersObj = {};
         if (Array.isArray(formData.headers)) {
@@ -83,40 +136,56 @@ const handleSubmit = async () => {
             body: formData.body
         };
 
-        await boardStore.createNewMockRule(payload);
-        success("Mock rule created successfully!");
+        if (props.mode === 'edit') {
+            await boardStore.updateMockRuleById(props.mockRuleId, payload);
+            success("Mock rule updated successfully!");
+        } else {
+            await boardStore.createNewMockRule(payload);
+            success("Mock rule created successfully!");
+        }
+
         emit('close');
     } catch (err) {
-        console.error('Error creating mock:', err);
+        console.error('Error saving mock:', err);
         error("Failed to save: " + (err.response?.data?.message || err.message || "Unknown error"));
+    } finally {
+        isLoading.value = false;
     }
 };
 
 const handleCancel = () => {
-    emit('close')
+    emit('close');
 }
 </script>
 
 <template>
-    <div id="view-create-mock">
+    <div>
         <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
             <div class="d-flex align-items-center gap-3">
-                <h4 class="fw-bold mb-0 text-dark">Create Mock Endpoint</h4>
+                <h4 class="fw-bold mb-0 text-dark">
+                    {{ mode === 'edit' ? 'Edit Mock Endpoint' : 'Create Mock Endpoint' }}
+                </h4>
             </div>
             <div class="d-flex gap-2">
                 <button
                     @click="handleCancel"
                     type="button"
-                    class="btn btn-outline-secondary btn-sm">Cancel</button>
+                    class="btn btn-outline-secondary btn-sm"
+                    :disabled="isLoading">
+                    Cancel
+                </button>
                 <button
                     @click="handleSubmit"
                     type="button"
-                    class="btn btn-primary px-4 fw-bold"> Create Mock
+                    class="btn btn-primary px-4 fw-bold"
+                    :disabled="isLoading">
+                    <span v-if="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                    {{ mode === 'edit' ? 'Update Mock' : 'Create Mock' }}
                 </button>
             </div>
         </div>
 
-        <form @submit.prevent="handleSubmit" id="mockForm">
+        <form @submit.prevent="handleSubmit">
             <div class="mb-4">
                 <label class="form-label fw-bold text-muted small text-uppercase">Request Match</label>
                 <div :class="['bg-white border rounded shadow-sm overflow-hidden d-flex', errors.path ? 'border-danger' : '']">

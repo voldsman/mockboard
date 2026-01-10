@@ -103,11 +103,39 @@ export const useBoardStore = defineStore("boardStore", {
             }
         },
 
+        async updateMockRuleById(mockRuleId, mockRuleData) {
+            try {
+                const result = await boardService.updateMockRule(this.board.id,
+                    this.board.ownerToken,
+                    mockRuleId,
+                    mockRuleData
+                )
+
+                if (result.status === 200 && result.data.id) {
+                    const index = this.mockRules.findIndex(r => r.id === mockRuleId)
+                    if (index !== -1) {
+                        this.mockRules[index] = new MockRuleModel({
+                            ...mockRuleData,
+                            id: mockRuleId
+                        });
+                    }
+
+                    return result;
+                }
+                console.warn(`Received unexpected status: ${result.status}`, result.data);
+                // for later: handle errors
+                // throw new Error(`Unexpected response status: ${result.status}`);
+            } catch (err) {
+                console.error("Failed to update mock rule", err)
+                throw err
+            }
+        },
+
         async deleteMockRuleById(mockRuleId) {
             try {
                 const result = await boardService.deleteMockRule(this.board.id, this.board.ownerToken, mockRuleId)
                 if (result.status === 204) {
-                    this.mockRules = this.mockRules.filter(rule => rule.id !== mockRuleId);
+                    this.mockRules = this.mockRules.filter(rule => rule.id !== mockRuleId)
                     return
                 }
                 console.warn(`Received unexpected status code: ${result.status}`)

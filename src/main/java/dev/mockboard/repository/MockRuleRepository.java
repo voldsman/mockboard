@@ -89,6 +89,20 @@ public class MockRuleRepository {
         });
     }
 
+    public void batchUpdate(List<MockRule> mockRules) {
+        var sql = """
+                UPDATE mock_rules SET method=?, path=?, headers=?, body=?, status_code=? WHERE id=?
+        """;
+        jdbcTemplate.batchUpdate(sql, mockRules, mockRules.size(), (ps, mockRule) -> {
+            ps.setString(1, mockRule.getMethod());
+            ps.setString(2, mockRule.getPath());
+            ps.setString(3, mockRule.getHeaders());
+            ps.setString(4, mockRule.getBody());
+            ps.setInt(5, mockRule.getStatusCode());
+            ps.setString(6, mockRule.getId());
+        });
+    }
+
     public void batchDelete(List<String> mockRuleIds) {
         var sql = """
             DELETE FROM mock_rules WHERE id IN (?)

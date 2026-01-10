@@ -37,6 +37,19 @@ public class MockRuleCache extends CaffeineEntityCache<List<MockRuleDto>> {
         });
     }
 
+    public void updateMockRule(String key, MockRuleDto mockRule) {
+        cache.asMap().compute(key, (k, mocks) -> {
+            if (CollectionUtils.isEmpty(mocks)) {
+                return new ArrayList<>(List.of(mockRule));
+            }
+
+            var newList = new ArrayList<MockRuleDto>(mocks);
+            newList.removeIf(m -> m.getId().equals(mockRule.getId()));
+            newList.add(mockRule);
+            return newList;
+        });
+    }
+
     public List<MockRuleDto> getMockRules(String key) {
         var mockRules = cache.getIfPresent(key);
         if (CollectionUtils.isEmpty(mockRules)) {

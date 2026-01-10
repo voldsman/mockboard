@@ -7,6 +7,7 @@ export class MockRuleModel {
         this.headers = data.headers || null;
         this.body = data.body || null;
         this.statusCode = data.statusCode || null;
+        this.delay = data.delay || null;
         this.timestamp = data.timestamp || null;
     }
 }
