@@ -27,4 +27,5 @@ CREATE TABLE IF NOT EXISTS mock_rules (
     CONSTRAINT fk_mock_rules_board
         FOREIGN KEY (board_id)
             REFERENCES boards(id)
+                ON DELETE CASCADE
 );

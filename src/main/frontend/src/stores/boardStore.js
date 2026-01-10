@@ -60,6 +60,16 @@ export const useBoardStore = defineStore("boardStore", {
             }
         },
 
+        async deleteBoardById() {
+            try {
+                const result = await boardService.deleteBoard(this.board.id, this.board.ownerToken)
+                return result.status === 204;
+            } catch (err) {
+                console.error(`Failed to delete board ${mockRuleId}`, err)
+                throw err
+            }
+        },
+
         async fetchMockRules() {
             try {
                 const result = await boardService.getMockRules(this.board.id, this.board.ownerToken);

@@ -10,7 +10,7 @@ const boardStore = useBoardStore()
 const copied = ref(false)
 
 const displayUrl = computed(() => {
-    return boardStore.board.apiKey
+    return boardStore.board?.apiKey
         ? `${constants.SERVER_URL}/m/${boardStore.board.apiKey}`
         : 'Session initializing...'
 })
@@ -21,14 +21,17 @@ const copyUrl = () => {
     setTimeout(() => (copied.value = false), 2000)
 }
 
-const closeBoard = () => {
+const closeBoard = async () => {
     const result = confirm("Are you sure you want to delete the board?")
-    if (result) {
+    if (!result) return
+
+    try {
+        await boardStore.deleteBoardById()
         boardStore.clearBoardStore()
         success('Board successfully closed. Have a nice day :) ')
         setTimeout(() => (window.location.reload()), 500)
-
-        // todo: add call to server
+    } catch (err) {
+        boardStore.clearBoardStore()
     }
 }
 </script>
