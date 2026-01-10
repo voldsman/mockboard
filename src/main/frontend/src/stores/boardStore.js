@@ -11,6 +11,12 @@ export const useBoardStore = defineStore("boardStore", {
     }),
     getters: {
         hasActiveSession: (state) => !!state.board && !!state.board.id && !!state.board.ownerToken,
+        mockUsageCount: (state) => {
+            return `${state.mockRules.length} / ${constants.MAX_MOCKS}`;
+        },
+        canAddMoreMocks: (state) => {
+            return state.mockRules.length < constants.MAX_MOCKS
+        },
     },
     actions: {
         clearBoardStore() {

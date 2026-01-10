@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 import {useBoardStore} from "@/stores/boardStore.js";
 import uiHelper from "@/helpers/uiHelper.js";
 import {storeToRefs} from "pinia";
@@ -35,7 +35,11 @@ const handleMockRuleDelete = async (mockRuleId) => {
 <template>
     <div class="card shadow-sm border-0 bg-transparent">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="m-0 fw-bold">Mock Endpoints</h6>
+            <h6 class="m-0 fw-bold">Mock Endpoints
+                <span class="badge rounded-pill bg-info text-dark" v-if="mockRules.length !== 0">
+                    {{boardStore.mockUsageCount}}
+                </span>
+            </h6>
         </div>
 
         <div v-if="mockRules.length === 0" class="text-center py-5 bg-white rounded-3 border border-dashed">

@@ -1,9 +1,12 @@
 <script setup>
 import {ref} from 'vue'
 import constants from '@/constants.js'
-import DashboardStats from "@/components/DashboardStats.vue";
 import CreateMockEndpoint from "@/components/CreateMockEndpoint.vue";
 import DashboardMockRules from "@/components/DashboardMockRules.vue";
+import {useBoardStore} from "@/stores/boardStore.js";
+import {storeToRefs} from "pinia";
+
+const boardStore = useBoardStore();
 
 const viewDashboard = constants.DASHBOARD_VIEWS.DASHBOARD
 const viewCreateMock = constants.DASHBOARD_VIEWS.CREATE_MOCK
@@ -12,6 +15,7 @@ const viewLogDetails = constants.DASHBOARD_VIEWS.LOG_DETAILS
 
 const currentView = ref(viewDashboard)
 const selectedLog = ref(null)
+const { mockRules } = storeToRefs(boardStore);
 
 const openCreate = () => {
     currentView.value = viewCreateMock
@@ -38,7 +42,9 @@ defineExpose({openLogDetails})
                 <div class="d-flex align-items-center gap-3">
                     <h4 class="fw-bold mb-0 text-dark">Dashboard</h4>
                 </div>
-                <div class="d-flex gap-2">
+                <div
+                    v-if="boardStore.canAddMoreMocks"
+                    class="d-flex gap-2">
                     <button
                         @click="openCreate"
                         type="button"
@@ -51,8 +57,7 @@ defineExpose({openLogDetails})
         </div>
 
         <div v-if="currentView === viewCreateMock" class="w-100 px-lg-4">
-            <CreateMockEndpoint
-            @close="currentView = viewDashboard"/>
+            <CreateMockEndpoint @close="currentView = viewDashboard"/>
         </div>
 
         <!-- NOT NEEDED FOR NOW d-none-->

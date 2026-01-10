@@ -1,5 +1,6 @@
 package dev.mockboard.config.advice;
 
+import dev.mockboard.common.exception.BadRequestException;
 import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.exception.RateLimitExceededException;
 import dev.mockboard.common.exception.UnauthorizedException;
@@ -21,6 +22,12 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException ex) {
         var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException ex) {
+        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({UnauthorizedException.class})

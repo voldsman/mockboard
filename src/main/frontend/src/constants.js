@@ -1,6 +1,6 @@
 export default {
     // base
-    APP_VERSION: '0.0.1-alpha',
+    APP_VERSION: '0.0.1-dev',
     SERVER_URL: 'http://localhost:8000',
 
     // ls
