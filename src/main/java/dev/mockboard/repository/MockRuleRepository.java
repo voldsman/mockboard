@@ -43,7 +43,6 @@ public class MockRuleRepository {
                 mockRule.getId(),
                 mockRule.getBoardId(),
                 mockRule.getApiKey(),
-                mockRule.getApiKey(),
                 mockRule.getMethod(),
                 mockRule.getPath(),
                 mockRule.getHeaders(),

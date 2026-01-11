@@ -90,6 +90,7 @@ public class SseService {
     @Scheduled(fixedRate = Constants.SSE_EMITTER_HEARTBEAT_RATE)
     public void sendHeartbeat() {
         if (webhookEmitters.isEmpty()) {
+            log.debug("No emitters found, nothing to send");
             return;
         }
 

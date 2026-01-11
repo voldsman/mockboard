@@ -16,7 +16,7 @@ import java.time.Instant;
 public class MockRuleDto implements Serializable {
 
     private String id;
-    private String boardId;
+    @JsonIgnore private String boardId;
     @JsonIgnore private String apiKey;
     private String method;
     private String path;
