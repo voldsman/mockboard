@@ -16,7 +16,6 @@ public class MockRule implements Serializable {
 
     private String id;
     private String boardId;
-    private String apiKey; // todo: use board join later
     private String method;
     private String path;
     private String headers;

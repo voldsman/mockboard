@@ -25,7 +25,7 @@ public class SseService {
 
     public SseEmitter subscribe(BoardDto boardDto) {
         var emitter = new SseEmitter(Constants.SSE_EMITTER_TTL);
-        webhookEmitters.compute(boardDto.getApiKey(), (key, emitters) -> {
+        webhookEmitters.compute(boardDto.getId(), (key, emitters) -> {
             var newList = (CollectionUtils.isEmpty(emitters))
                     ? new CopyOnWriteArrayList<SseEmitter>()
                     : emitters;
@@ -45,9 +45,9 @@ public class SseService {
             return newList;
         });
 
-        emitter.onCompletion(cleanup(boardDto.getApiKey(), emitter));
-        emitter.onTimeout(cleanup(boardDto.getApiKey(), emitter));
-        emitter.onError(e -> cleanup(boardDto.getApiKey(), emitter).run());
+        emitter.onCompletion(cleanup(boardDto.getId(), emitter));
+        emitter.onTimeout(cleanup(boardDto.getId(), emitter));
+        emitter.onError(e -> cleanup(boardDto.getId(), emitter).run());
 
         try {
             emitter.send(SseEmitter.event()

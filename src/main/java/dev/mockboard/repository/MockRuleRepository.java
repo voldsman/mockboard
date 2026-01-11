@@ -23,7 +23,6 @@ public class MockRuleRepository {
             return MockRule.builder()
                     .id(rs.getString("id"))
                     .boardId(rs.getString("board_id"))
-                    .apiKey(rs.getString("api_key"))
                     .method(rs.getString("method"))
                     .path(rs.getString("path"))
                     .headers(rs.getString("headers"))
@@ -36,13 +35,12 @@ public class MockRuleRepository {
 
     public void insert(MockRule mockRule) {
         var sql = """
-                INSERT INTO mock_rules(id, board_id, api_key, method, path, headers, body, status_code, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO mock_rules(id, board_id, method, path, headers, body, status_code, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         jdbcTemplate.update(sql,
                 mockRule.getId(),
                 mockRule.getBoardId(),
-                mockRule.getApiKey(),
                 mockRule.getMethod(),
                 mockRule.getPath(),
                 mockRule.getHeaders(),
@@ -72,19 +70,18 @@ public class MockRuleRepository {
     // batch operations for events
     public void batchInsert(List<MockRule> mockRules) {
         var sql = """
-                INSERT INTO mock_rules(id, board_id, api_key, method, path, headers, body, status_code, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO mock_rules(id, board_id, method, path, headers, body, status_code, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         jdbcTemplate.batchUpdate(sql, mockRules, mockRules.size(), (ps, mockRule) -> {
             ps.setString(1, mockRule.getId());
             ps.setString(2, mockRule.getBoardId());
-            ps.setString(3, mockRule.getApiKey());
-            ps.setString(4, mockRule.getMethod());
-            ps.setString(5, mockRule.getPath());
-            ps.setString(6, mockRule.getHeaders());
-            ps.setString(7, mockRule.getBody());
-            ps.setInt(8, mockRule.getStatusCode());
-            ps.setTimestamp(9, Timestamp.from(mockRule.getTimestamp()));
+            ps.setString(3, mockRule.getMethod());
+            ps.setString(4, mockRule.getPath());
+            ps.setString(5, mockRule.getHeaders());
+            ps.setString(6, mockRule.getBody());
+            ps.setInt(7, mockRule.getStatusCode());
+            ps.setTimestamp(8, Timestamp.from(mockRule.getTimestamp()));
         });
     }
 

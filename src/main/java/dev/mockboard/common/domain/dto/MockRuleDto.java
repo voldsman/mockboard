@@ -17,7 +17,6 @@ public class MockRuleDto implements Serializable {
 
     private String id;
     @JsonIgnore private String boardId;
-    @JsonIgnore private String apiKey;
     private String method;
     private String path;
     private String headers;

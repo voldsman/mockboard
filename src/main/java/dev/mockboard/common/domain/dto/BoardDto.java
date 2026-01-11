@@ -15,7 +15,6 @@ import java.time.Instant;
 public class BoardDto implements Serializable {
 
     private String id;
-    private String apiKey;
     private String ownerToken;
     private Instant timestamp;
 }

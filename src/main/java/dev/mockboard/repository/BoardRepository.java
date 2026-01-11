@@ -24,7 +24,6 @@ public class BoardRepository {
         public Board mapRow(ResultSet rs, int _rowNum) throws SQLException {
             return Board.builder()
                     .id(rs.getString("id"))
-                    .apiKey(rs.getString("api_key"))
                     .ownerToken(rs.getString("owner_token"))
                     .timestamp(rs.getTimestamp("created_at").toInstant())
                     .build();
@@ -33,13 +32,12 @@ public class BoardRepository {
 
     public void insert(Board board) {
         var sql = """
-            INSERT INTO boards (id, api_key, owner_token, created_at)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO boards (id, owner_token, created_at)
+            VALUES (?, ?, ?)
             """;
 
         jdbcTemplate.update(sql,
                 board.getId(),
-                board.getApiKey(),
                 board.getOwnerToken(),
                 Timestamp.from(board.getTimestamp())
         );
@@ -64,15 +62,14 @@ public class BoardRepository {
     // batch operations for events
     public void batchInsert(List<Board> boards) {
         var sql = """
-            INSERT INTO boards (id, api_key, owner_token, created_at)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO boards (id, owner_token, created_at)
+            VALUES (?, ?, ?)
             """;
 
         jdbcTemplate.batchUpdate(sql, boards, boards.size(), (ps, board) -> {
             ps.setString(1, board.getId());
-            ps.setString(2, board.getApiKey());
-            ps.setString(3, board.getOwnerToken());
-            ps.setTimestamp(4, Timestamp.from(board.getTimestamp()));
+            ps.setString(2, board.getOwnerToken());
+            ps.setTimestamp(3, Timestamp.from(board.getTimestamp()));
         });
     }
 

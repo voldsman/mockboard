@@ -14,11 +14,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class Board implements Serializable {
 
-    private String id;
-
-    private String apiKey;
-
+    private String id; // id and apiKey
     private String ownerToken;
-
     private Instant timestamp;
 }

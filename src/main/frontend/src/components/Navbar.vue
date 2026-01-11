@@ -10,8 +10,8 @@ const boardStore = useBoardStore()
 const copied = ref(false)
 
 const displayUrl = computed(() => {
-    return boardStore.board?.apiKey
-        ? `${constants.SERVER_URL}/m/${boardStore.board.apiKey}`
+    return boardStore.board?.id
+        ? `${constants.SERVER_URL}/m/${boardStore.board.id}`
         : 'Session initializing...'
 })
 
@@ -43,12 +43,12 @@ const closeBoard = async () => {
                 <i class="bi bi-box-seam-fill text-primary"></i> MockBoard<span class="text-muted fw-light">.dev</span>
             </a>
 
-            <div class="input-group input-group-sm mx-auto" style="min-width: 300px; max-width: 500px;">
+            <div class="input-group input-group-sm mx-auto" style="min-width: 300px; max-width: 560px;">
                 <span class="input-group-text bg-light text-muted fw-bold text-xs">BASE URL</span>
 
                 <input
                     type="text"
-                    class="form-control font-mono text-muted bg-white"
+                    class="form-control font-mono text-muted bg-white text-center"
                     :class="{ 'border-success border-2 shadow-none': copied }"
                     :value="displayUrl" readonly>
                 <button
