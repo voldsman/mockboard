@@ -29,6 +29,9 @@ public final class Constants {
     public static final int DELETED_EVENTS_PROCESS_DELAY = 21_000;
 
     // validations
+    public static final int MAX_MOCK_RULES = 12;
+    public static final int MAX_WEBHOOKS = 15;
+
     public static final Pattern VALID_PATH_PATTERN = Pattern.compile("^/[a-zA-Z0-9/_\\-*]+$");
     public static final Set<String> VALID_HTTP_METHODS = Set.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS");
     public static final int MAX_PATH_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_PATH_LENGTH", 250);
@@ -38,6 +41,12 @@ public final class Constants {
     public static final int MAX_HEADER_KEY_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_KEY_LENGTH", 100);
     public static final int MAX_HEADER_VALUE_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_VALUE_LENGTH", 500);
 
-    // app
-    public static final int MAX_MOCK_RULES = 12;
+    // sse
+    public static final int MAX_SSE_EMITTERS_PER_BOARD = 1;
+    public static final long SSE_EMITTER_TTL = 1_800_000L; // 30min
+    public static final long SSE_EMITTER_HEARTBEAT_RATE = 30_000L; // 30sec
+    public static final String SSE_EMITTER_EVENT_WEBHOOK = "webhook-event";
+    public static final String SSE_EMITTER_EVENT_PING = "ping";
+    public static final String SSE_EMITTER_EVENT_SHUTDOWN = "server-shutdown";
+
 }

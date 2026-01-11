@@ -55,6 +55,7 @@ public class MockRuleService {
 
         var mockRule = modelMapper.map(mockRuleDto, MockRule.class);
         mockRuleCache.addMockRule(boardDto.getApiKey(), mockRuleDto);
+        matchingEngineCache.invalidate(boardDto.getApiKey());
 
         eventQueue.publish(DomainEvent.create(mockRule, MockRule.class));
         log.info("Mock rule added bo board: {}", boardDto.getId());
@@ -94,6 +95,7 @@ public class MockRuleService {
         existingDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
         existingDto.setStatusCode(mockRuleDto.getStatusCode());
         mockRuleCache.updateMockRule(boardDto.getApiKey(), existingDto);
+        matchingEngineCache.invalidate(boardDto.getApiKey());
 
         var mockRule = modelMapper.map(existingDto, MockRule.class);
         eventQueue.publish(DomainEvent.update(mockRule, mockRuleId, MockRule.class));
@@ -103,6 +105,7 @@ public class MockRuleService {
     public void deleteMockRule(BoardDto boardDto, String mockRuleId) {
         log.info("deleting mock rule={} for boardId={}", mockRuleId, boardDto.getId());
         mockRuleCache.deleteMockRule(boardDto.getApiKey(), mockRuleId);
+        matchingEngineCache.invalidate(boardDto.getApiKey());
         eventQueue.publish(DomainEvent.delete(mockRuleId, MockRule.class));
     }
 }
