@@ -2,9 +2,9 @@ package dev.mockboard.service;
 
 import dev.mockboard.Constants;
 import dev.mockboard.cache.MockRuleCache;
+import dev.mockboard.common.domain.MockExecutionResult;
+import dev.mockboard.common.domain.RequestMetadata;
 import dev.mockboard.common.domain.dto.MockRuleDto;
-import dev.mockboard.common.utils.RequestUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,17 +23,8 @@ public class MockExecutionService {
     private final PathMatchingService pathMatchingService;
     private final MockRuleCache mockRuleCache;
 
-    public record MockExecutionResult(
-            MockRuleDto matchingMockRuleDto,
-            HttpHeaders headers,
-            String responseBody,
-            int statusCode) {}
-
-    public MockExecutionResult execute(String apiKey, HttpServletRequest request) {
-        var mockPath = RequestUtils.extractMockPath(request, apiKey);
-        var method = request.getMethod();
-
-        var mockRule = findMatchingRule(apiKey, mockPath, method).orElse(null);
+    public MockExecutionResult execute(String apiKey, RequestMetadata metadata) {
+        var mockRule = findMatchingRule(apiKey, metadata.mockPath(), metadata.method()).orElse(null);
         int statusCode = 200;
         var body = Constants.DEFAULT_EXECUTION_RESPONSE;
 
@@ -47,6 +38,7 @@ public class MockExecutionService {
 
         var headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        // todo: attach user provided response headers
 
         // simulate delay
         if (mockRule != null && mockRule.getDelay() > 0) {

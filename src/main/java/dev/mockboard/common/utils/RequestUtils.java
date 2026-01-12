@@ -15,7 +15,7 @@ public final class RequestUtils {
         return request.getRemoteAddr();
     }
 
-    public static String extractMockPath(HttpServletRequest request, String apiKey) {
+    public static String extractMockPath(String apiKey, HttpServletRequest request) {
         var fullPath = request.getRequestURI();
         var prefix = "/m/" + apiKey;
 

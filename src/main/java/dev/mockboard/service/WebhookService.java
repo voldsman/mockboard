@@ -1,6 +1,8 @@
 package dev.mockboard.service;
 
 import dev.mockboard.cache.WebhookCache;
+import dev.mockboard.common.domain.MockExecutionResult;
+import dev.mockboard.common.domain.RequestMetadata;
 import dev.mockboard.common.domain.dto.WebhookDto;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.event.config.EventQueue;
@@ -21,17 +23,27 @@ public class WebhookService {
     private final ModelMapper modelMapper;
     private final WebhookCache webhookCache;
     private final SseService sseService;
-    private final BoardService boardService;
 
     @Async
-    public void processWebhookAsync(String apiKey, long executionTime) {
+    public void processWebhookAsync(String apiKey, RequestMetadata metadata, MockExecutionResult result, long executionTime) {
         try {
             log.debug("Processing webhook async [{}] for key: {}", Thread.currentThread(), apiKey);
             var webhookDto = new WebhookDto();
             webhookDto.setId(IdGenerator.generateId());
+            webhookDto.setBoardId(apiKey);
+            webhookDto.setMatched(result.matchingMockRuleDto() != null);
             webhookDto.setProcessingTimeMs(executionTime);
             webhookDto.setTimestamp(Instant.now());
-            // todo: map rest of fields
+
+            webhookDto.setMethod(metadata.method());
+            webhookDto.setPath(metadata.mockPath());
+            webhookDto.setFullUrl(metadata.fullUrl());
+            webhookDto.setQueryParams(metadata.queryParams());
+            webhookDto.setHeaders(metadata.headers());
+            webhookDto.setBody(metadata.requestBody());
+            webhookDto.setContentType(metadata.contentType());
+            webhookDto.setStatusCode(result.statusCode());
+
             var cachedResultDto = webhookCache.addWebhook(apiKey, webhookDto);
             // when ids are equals - means new object added, should process insert
             // otherwise - reference rewrite happened, should process update and use cachedResultDto
