@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS mock_rules (
     headers VARCHAR,
     body VARCHAR,
     status_code INT NOT NULL,
+    delay LONG NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL,
     INDEX idx_mock_board_id (board_id),
     INDEX idx_mock_created_at (created_at),

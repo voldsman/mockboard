@@ -21,5 +21,6 @@ public class MockRule implements Serializable {
     private String headers;
     private String body;
     private int statusCode;
+    private long delay; //ms
     private Instant timestamp;
 }

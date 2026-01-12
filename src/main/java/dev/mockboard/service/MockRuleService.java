@@ -93,6 +93,7 @@ public class MockRuleService {
         existingDto.setHeaders(JsonUtils.minify(mockRuleDto.getHeaders()));
         existingDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
         existingDto.setStatusCode(mockRuleDto.getStatusCode());
+        existingDto.setDelay(mockRuleDto.getDelay());
         mockRuleCache.updateMockRule(boardDto.getId(), existingDto);
         matchingEngineCache.invalidate(boardDto.getId());
 

@@ -22,5 +22,6 @@ public class MockRuleDto implements Serializable {
     private String headers;
     private String body;
     private int statusCode;
+    private long delay;
     private Instant timestamp;
 }

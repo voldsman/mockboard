@@ -90,7 +90,7 @@ public class PathMatchingEngine implements Serializable {
     }
 
     private long countWildcards(String pattern) {
-        return pattern.chars().filter(ch -> ch == '*').count();
+        return pattern.chars().filter(ch -> ch == WILDCARD).count();
     }
 
     public int size() {

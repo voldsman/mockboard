@@ -28,6 +28,7 @@ public class MockRuleRepository {
                     .headers(rs.getString("headers"))
                     .body(rs.getString("body"))
                     .statusCode(rs.getInt("status_code"))
+                    .delay(rs.getLong("delay"))
                     .timestamp(rs.getTimestamp("created_at").toInstant())
                     .build();
         }
@@ -35,8 +36,8 @@ public class MockRuleRepository {
 
     public void insert(MockRule mockRule) {
         var sql = """
-                INSERT INTO mock_rules(id, board_id, method, path, headers, body, status_code, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO mock_rules(id, board_id, method, path, headers, body, status_code, delay, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         jdbcTemplate.update(sql,
                 mockRule.getId(),
@@ -46,6 +47,7 @@ public class MockRuleRepository {
                 mockRule.getHeaders(),
                 mockRule.getBody(),
                 mockRule.getStatusCode(),
+                mockRule.getDelay(),
                 Timestamp.from(mockRule.getTimestamp())
         );
     }
@@ -70,8 +72,8 @@ public class MockRuleRepository {
     // batch operations for events
     public void batchInsert(List<MockRule> mockRules) {
         var sql = """
-                INSERT INTO mock_rules(id, board_id, method, path, headers, body, status_code, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO mock_rules(id, board_id, method, path, headers, body, status_code, delay, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         jdbcTemplate.batchUpdate(sql, mockRules, mockRules.size(), (ps, mockRule) -> {
             ps.setString(1, mockRule.getId());
@@ -81,13 +83,14 @@ public class MockRuleRepository {
             ps.setString(5, mockRule.getHeaders());
             ps.setString(6, mockRule.getBody());
             ps.setInt(7, mockRule.getStatusCode());
-            ps.setTimestamp(8, Timestamp.from(mockRule.getTimestamp()));
+            ps.setLong(8, mockRule.getDelay());
+            ps.setTimestamp(9, Timestamp.from(mockRule.getTimestamp()));
         });
     }
 
     public void batchUpdate(List<MockRule> mockRules) {
         var sql = """
-                UPDATE mock_rules SET method=?, path=?, headers=?, body=?, status_code=? WHERE id=?
+                UPDATE mock_rules SET method=?, path=?, headers=?, body=?, status_code=?, delay=? WHERE id=?
         """;
         jdbcTemplate.batchUpdate(sql, mockRules, mockRules.size(), (ps, mockRule) -> {
             ps.setString(1, mockRule.getMethod());
@@ -95,7 +98,8 @@ public class MockRuleRepository {
             ps.setString(3, mockRule.getHeaders());
             ps.setString(4, mockRule.getBody());
             ps.setInt(5, mockRule.getStatusCode());
-            ps.setString(6, mockRule.getId());
+            ps.setLong(6, mockRule.getDelay());
+            ps.setString(7, mockRule.getId());
         });
     }
 
