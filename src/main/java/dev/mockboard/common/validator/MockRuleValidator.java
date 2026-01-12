@@ -22,6 +22,7 @@ public class MockRuleValidator {
         validateStatusCode(dto.getStatusCode());
         validateMethod(dto.getMethod());
         validateHeaders(dto.getHeaders());
+        validateDelay(dto.getDelay());
     }
 
     private void validatePath(String path) {
@@ -100,6 +101,12 @@ public class MockRuleValidator {
             });
         } catch (Exception e) {
             throw new IllegalArgumentException("Headers must be valid JSON string");
+        }
+    }
+
+    private void validateDelay(long delay) {
+        if (delay < 0 || delay > 10_000) {
+            throw new IllegalArgumentException("Delay must be in the range 0...10000");
         }
     }
 }

@@ -48,14 +48,13 @@ public class MockRuleService {
 
         mockRuleDto.setId(IdGenerator.generateId());
         mockRuleDto.setBoardId(boardDto.getId());
-        mockRuleDto.setApiKey(boardDto.getApiKey());
         mockRuleDto.setHeaders(JsonUtils.minify(mockRuleDto.getHeaders()));
         mockRuleDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
         mockRuleDto.setTimestamp(Instant.now());
 
         var mockRule = modelMapper.map(mockRuleDto, MockRule.class);
-        mockRuleCache.addMockRule(boardDto.getApiKey(), mockRuleDto);
-        matchingEngineCache.invalidate(boardDto.getApiKey());
+        mockRuleCache.addMockRule(boardDto.getId(), mockRuleDto);
+        matchingEngineCache.invalidate(boardDto.getId());
 
         eventQueue.publish(DomainEvent.create(mockRule, MockRule.class));
         log.info("Mock rule added bo board: {}", boardDto.getId());
@@ -63,7 +62,7 @@ public class MockRuleService {
     }
 
     public List<MockRuleDto> getMockRules(BoardDto boardDto) {
-        var cachedMockRules = mockRuleCache.getMockRules(boardDto.getApiKey());
+        var cachedMockRules = mockRuleCache.getMockRules(boardDto.getId());
         if (CollectionUtils.isEmpty(cachedMockRules)) {
             var persistedMockRules = mockRuleRepository.findByBoardId(boardDto.getId());
             if (CollectionUtils.isEmpty(persistedMockRules)) {
@@ -73,7 +72,7 @@ public class MockRuleService {
             var dtos = persistedMockRules.stream()
                     .map(mockRule -> modelMapper.map(mockRule, MockRuleDto.class))
                     .toList();
-            mockRuleCache.addMockRules(boardDto.getApiKey(), dtos);
+            mockRuleCache.addMockRules(boardDto.getId(), dtos);
             return dtos;
         }
         return cachedMockRules;
@@ -94,8 +93,9 @@ public class MockRuleService {
         existingDto.setHeaders(JsonUtils.minify(mockRuleDto.getHeaders()));
         existingDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
         existingDto.setStatusCode(mockRuleDto.getStatusCode());
-        mockRuleCache.updateMockRule(boardDto.getApiKey(), existingDto);
-        matchingEngineCache.invalidate(boardDto.getApiKey());
+        existingDto.setDelay(mockRuleDto.getDelay());
+        mockRuleCache.updateMockRule(boardDto.getId(), existingDto);
+        matchingEngineCache.invalidate(boardDto.getId());
 
         var mockRule = modelMapper.map(existingDto, MockRule.class);
         eventQueue.publish(DomainEvent.update(mockRule, mockRuleId, MockRule.class));
@@ -104,8 +104,8 @@ public class MockRuleService {
 
     public void deleteMockRule(BoardDto boardDto, String mockRuleId) {
         log.info("deleting mock rule={} for boardId={}", mockRuleId, boardDto.getId());
-        mockRuleCache.deleteMockRule(boardDto.getApiKey(), mockRuleId);
-        matchingEngineCache.invalidate(boardDto.getApiKey());
+        mockRuleCache.deleteMockRule(boardDto.getId(), mockRuleId);
+        matchingEngineCache.invalidate(boardDto.getId());
         eventQueue.publish(DomainEvent.delete(mockRuleId, MockRule.class));
     }
 }

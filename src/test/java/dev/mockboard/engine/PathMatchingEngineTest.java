@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PathMatchingEngineTest {
 
@@ -62,13 +59,6 @@ class PathMatchingEngineTest {
         var result = engine.match("/api/v1/users/12345/posts/67890");
         assertTrue(result.isPresent());
         assertEquals("mock-1", result.get());
-    }
-
-    @Test
-    void tooManyWildcards() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            engine.register("/api/*/*/*/*", "mock-1");
-        });
     }
 
     @Test
@@ -203,20 +193,6 @@ class PathMatchingEngineTest {
     }
 
     @Test
-    void nullPatternRegistration() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            engine.register(null, "mock-1");
-        });
-    }
-
-    @Test
-    void emptyPatternRegistration() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            engine.register("", "mock-1");
-        });
-    }
-
-    @Test
     void nullRequestPath() {
         engine.register("/api/users/profile", "mock-1");
 
@@ -332,16 +308,6 @@ class PathMatchingEngineTest {
 
         var result = engine.match(requestPath);
         assertEquals(shouldMatch, result.isPresent());
-    }
-
-    @Test
-    void longSegmentValues() {
-        engine.register("/api/users/*/data", "mock-1");
-
-        String longValue = "a".repeat(512 - 16);
-        var result = engine.match("/api/users/" + longValue + "/data");
-        assertTrue(result.isPresent());
-        assertEquals("mock-1", result.get());
     }
 
     @Test

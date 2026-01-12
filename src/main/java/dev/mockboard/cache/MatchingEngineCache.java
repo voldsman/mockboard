@@ -13,4 +13,8 @@ public class MatchingEngineCache extends CaffeineEntityCache<PathMatchingEngine>
     public MatchingEngineCache() {
         super(DEFAULT_CACHE_MAX_ENTRIES, DEFAULT_CACHE_EXP_AFTER_ACCESS_MINUTES);
     }
+
+    public PathMatchingEngine getEngine(String key) {
+        return cache.getIfPresent(key);
+    }
 }

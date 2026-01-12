@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public final class Constants {
 
     // defaults
-    public static final int BOARD_API_KEY_LENGTH = 20;
+    public static final int BOARD_ID_LENGTH = 24;
     public static final int BOARD_OWNER_TOKEN_LENGTH = 48;
 
     // cache
@@ -49,4 +49,5 @@ public final class Constants {
     public static final String SSE_EMITTER_EVENT_PING = "ping";
     public static final String SSE_EMITTER_EVENT_SHUTDOWN = "server-shutdown";
 
+    public static final String DEFAULT_EXECUTION_RESPONSE = "{\"message\": \"Hello from Mockboard.dev\"}";
 }

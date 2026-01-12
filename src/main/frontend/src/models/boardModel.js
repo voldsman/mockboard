@@ -5,7 +5,6 @@ export class BoardModel {
         // server data
         this.id = data.id || null
         this.ownerToken = data.ownerToken || null
-        this.apiKey = data.apiKey || null
         this.timestamp = data.timestamp ? new Date(data.timestamp).getTime() : null
         // local properties
         this.lastInteraction = data.lastInteraction || null
@@ -15,7 +14,6 @@ export class BoardModel {
         return {
             id: this.id,
             ownerToken: this.ownerToken,
-            apiKey: this.apiKey,
             timestamp: this.timestamp,
             lastInteraction: this.lastInteraction,
         }
@@ -66,7 +64,7 @@ export class BoardModel {
         try {
             const data = JSON.parse(raw)
             const board = new BoardModel(data)
-            if (!board.id || !board.ownerToken || !board.apiKey) {
+            if (!board.id || !board.ownerToken) {
                 console.warn('Invalid board data in localStorage')
                 return null
             }

@@ -83,7 +83,7 @@ const handleMockRuleDelete = async (mockRuleId) => {
 
                                 <div class="text-center">
                                     <small class="text-muted d-block text-uppercase ls-1" style="font-size: 0.65rem;">Delay</small>
-                                    <span class="fw-semibold text-dark small">0ms</span>
+                                    <span class="fw-semibold text-dark small">{{mockRule.delay ? mockRule.delay : 0}}ms</span>
                                 </div>
 
                                 <div class="btn-group shadow-sm rounded-3">

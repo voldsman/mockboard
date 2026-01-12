@@ -26,7 +26,7 @@ const formData = reactive({
     method: 'GET',
     path: '',
     headers: [{ key: 'Content-Type', value: 'application/json' }],
-    body: '',
+    body: '{}',
     statusCode: 200,
     delay: 0
 });
@@ -309,8 +309,10 @@ const handleCancel = () => {
                         <option :value="0">No delay</option>
                         <option :value="250">250ms</option>
                         <option :value="500">500ms</option>
-                        <option :value="1000">1s (Heavy load)</option>
-                        <option :value="3000">3s (Timeout sim)</option>
+                        <option :value="1000">1s</option>
+                        <option :value="3000">3s</option>
+                        <option :value="5000">5s</option>
+                        <option :value="10000">10s</option>
                     </select>
                 </div>
             </div>

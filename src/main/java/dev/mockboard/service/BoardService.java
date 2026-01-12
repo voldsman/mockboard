@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-import static dev.mockboard.Constants.BOARD_API_KEY_LENGTH;
 import static dev.mockboard.Constants.BOARD_OWNER_TOKEN_LENGTH;
 
 @Slf4j
@@ -32,13 +31,11 @@ public class BoardService {
     private final MockRuleCache mockRuleCache;
 
     public BoardDto createBoard() {
-        var boardId = IdGenerator.generateId();
-        var apiKey = StringUtils.generate(BOARD_API_KEY_LENGTH);
+        var boardId = IdGenerator.generateBoardId();
         var ownerToken = StringUtils.generate(BOARD_OWNER_TOKEN_LENGTH);
 
         var board = Board.builder()
                 .id(boardId)
-                .apiKey(apiKey)
                 .ownerToken(ownerToken)
                 .timestamp(Instant.now())
                 .build();
@@ -71,7 +68,7 @@ public class BoardService {
     public void deleteBoard(BoardDto boardDto) {
         log.info("Deleting board: {}", boardDto.getId());
         boardCache.invalidate(boardDto.getId());
-        mockRuleCache.invalidate(boardDto.getApiKey());
+        mockRuleCache.invalidate(boardDto.getId());
 
         eventQueue.publish(DomainEvent.delete(boardDto.getId(), Board.class));
     }
