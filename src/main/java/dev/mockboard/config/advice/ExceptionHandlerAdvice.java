@@ -42,6 +42,12 @@ public class ExceptionHandlerAdvice {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.TOO_MANY_REQUESTS);
     }
 
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler({MissingRequestHeaderException.class})
     public ResponseEntity<ExceptionResponse> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
         var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());

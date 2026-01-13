@@ -1,22 +1,22 @@
 <script setup>
 import {onMounted, onUnmounted, ref} from 'vue'
 import {useBoardStore} from "@/stores/boardStore.js";
+import uiHelper from "@/helpers/uiHelper.js";
+import {storeToRefs} from "pinia";
 
 const boardStore = useBoardStore();
-const emit = defineEmits(['view-log'])
+const emit = defineEmits(['view-webhook'])
 
 const isConnected = ref(false)
 const statusMessage = ref('INITIALIZING')
 const retryCount = ref(0)
-const logs = ref([
-    {id: 1, method: 'POST', path: '/api/v1/login', status: 200, matched: true, time: '14:20:01'},
-    {id: 2, method: 'GET', path: '/users/123', status: 404, matched: false, time: '14:19:55'},
-    {id: 3, method: 'GET', path: '/products', status: 200, matched: false, time: '14:18:22'},
-    {id: 4, method: 'PUT', path: '/settings', status: 500, matched: true, time: '14:15:10'},
-])
+const currentTime = ref(Date.now())
+
+const {webhooks} = storeToRefs(boardStore)
 
 let eventSource = null
 let reconnectTimer = null
+let webhookTimestampTimer = null
 
 const BACKOFF_STRATEGY = [10_000, 20_000, 30_000];
 
@@ -34,9 +34,12 @@ const connectSSE = () => {
     };
 
     eventSource.addEventListener('webhook-event', (e) => {
-        console.log(e)
-        //const data = JSON.parse(e.data)
-        // handle
+        try {
+            const data = JSON.parse(e.data)
+            boardStore.processReceivedWebhook(data)
+        } catch (err) {
+            console.error('Could not parse the event', err);
+        }
     })
 
     eventSource.addEventListener('server-shutdown', () => {
@@ -72,19 +75,24 @@ const handleReconnect = () => {
     }
 };
 
-onMounted(() => {
+onMounted(async () => {
     if (boardStore.board?.id) {
+        await boardStore.fetchWebhooks()
         connectSSE();
     }
+    webhookTimestampTimer = setInterval(() => {
+        currentTime.value = Date.now();
+    }, 20000)
 });
 
 onUnmounted(() => {
+    clearTimeout(webhookTimestampTimer)
     clearTimeout(reconnectTimer);
     if (eventSource) eventSource.close();
 });
 
-const handleLogClick = (log) => {
-    emit('view-log', log)
+const handleWebhookClick = (log) => {
+    emit('view-webhook', log)
 }
 </script>
 
@@ -93,8 +101,8 @@ const handleLogClick = (log) => {
         <div class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
             <span class="text-uppercase text-muted text-xs fw-bold">Live Requests</span>
 
-            <div class="d-flex align-items-center fw-bold text-xs"
-                 :class="isConnected ? 'text-success' : 'text-warning'">
+            <div :class="isConnected ? 'text-success' : 'text-warning'"
+                 class="d-flex align-items-center fw-bold text-xs">
                 <span v-if="isConnected" class="spinner-grow spinner-grow-sm me-1" role="status"></span>
                 <i v-else-if="retryCount >= 3" class="bi bi-x-circle-fill me-1 text-danger"></i>
                 <i v-else class="bi bi-exclamation-triangle-fill me-1"></i>
@@ -103,21 +111,41 @@ const handleLogClick = (log) => {
         </div>
 
         <div class="list-group list-group-flush">
-            <a v-for="log in logs" href="#" class="list-group-item list-group-item-action log-item matched p-3"
-               @click="handleLogClick(log)">
-                <div class="d-flex w-100 justify-content-between mb-1">
-                    <span class="badge bg-success badge-method">{{ log.method }}</span>
-                    <small class="text-muted font-mono">{{ log.time }}</small>
+            <div v-if="webhooks.length === 0" class="text-center py-5 bg-white rounded-3 border border-dashed">
+                <h6 class="text-dark">No Activity Yet</h6>
+                <small class="text-muted">
+                    Send a request to your mock URL <br> to see the payload in real-time.
+                </small>
+            </div>
+
+            <a v-for="webhook in webhooks"
+               :key="webhook.id"
+               class="list-group-item list-group-item-action log-item p-3 border-0 border-bottom cursor-pointer"
+               @click="handleWebhookClick(webhook)">
+
+                <div class="d-flex w-100 justify-content-between mb-1 align-items-center">
+                    <span :class="['badge badge-method', webhook.matched ? 'bg-success' : 'bg-secondary']">
+                        {{ webhook.method }}
+                    </span>
+                    <small class="text-muted font-mono">
+                        {{ uiHelper.formatWebhookTime(webhook.timestamp) }}
+                    </small>
                 </div>
-                <div class="font-mono text-truncate mb-1 fw-bold">{{ log.path }}</div>
+                <div class="font-mono text-truncate mb-2 fw-bold text-dark">
+                    {{ webhook.path }}
+                </div>
                 <div class="d-flex align-items-center gap-2">
-                    <span v-if="log.matched" class="badge bg-light text-success border border-success text-xs">
+                    <span v-if="webhook.matched" class="badge bg-light text-success border border-success-subtle text-xs">
                         <i class="bi bi-check-circle-fill me-1"></i>Matched
                     </span>
-                    <span v-else class="badge bg-light text-warning border border-warning text-xs">
+                    <span v-else class="badge bg-light text-warning border border-warning-subtle text-xs">
                         <i class="bi bi-exclamation-triangle-fill me-1"></i>No Match
                     </span>
-                    <span class="badge bg-light text-dark border text-xs ms-auto">{{ log.status }}</span>
+
+                    <span class="ms-auto d-flex align-items-center gap-2">
+                        <small class="text-muted text-xs font-mono">{{ webhook.processingTimeMs }}ms</small>
+                        <span class="badge bg-light text-dark border text-xs">{{ webhook.statusCode }}</span>
+                    </span>
                 </div>
             </a>
         </div>

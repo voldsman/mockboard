@@ -5,8 +5,10 @@ import dev.mockboard.event.config.EventQueue;
 import dev.mockboard.event.config.EventType;
 import dev.mockboard.repository.BoardRepository;
 import dev.mockboard.repository.MockRuleRepository;
+import dev.mockboard.repository.WebhookRepository;
 import dev.mockboard.repository.model.Board;
 import dev.mockboard.repository.model.MockRule;
+import dev.mockboard.repository.model.Webhook;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,29 +27,32 @@ public class EventConsumer {
     private final EventQueue eventQueue;
     private final BoardRepository boardRepository;
     private final MockRuleRepository mockRuleRepository;
+    private final WebhookRepository webhookRepository;
 
     @Scheduled(fixedDelay = CREATED_EVENTS_PROCESS_DELAY)
     public void processCreateEvents() {
         processBoards(EventType.CREATE);
         processMockRules(EventType.CREATE);
+        processWebhooks(EventType.CREATE);
     }
 
     @Scheduled(fixedDelay = UPDATED_EVENTS_PROCESS_DELAY)
     public void processUpdateEvents() {
         processBoards(EventType.UPDATE);
         processMockRules(EventType.UPDATE);
+        processWebhooks(EventType.UPDATE);
     }
 
     @Scheduled(fixedDelay = DELETED_EVENTS_PROCESS_DELAY)
     public void processDeleteEvents() {
         processBoards(EventType.DELETE);
         processMockRules(EventType.DELETE);
+//        processWebhooks(EventType.DELETE);
     }
 
     private void processBoards(EventType type) {
         var events = eventQueue.drain(type, Board.class, MAX_EVENT_CONSUMER_DRAIN_ELEMS);
         if (CollectionUtils.isEmpty(events)) {
-//            log.debug("No events found for type {}", type);
             return;
         }
 
@@ -80,7 +85,6 @@ public class EventConsumer {
     private void processMockRules(EventType type) {
         var events = eventQueue.drain(type, MockRule.class, MAX_EVENT_CONSUMER_DRAIN_ELEMS);
         if (CollectionUtils.isEmpty(events)) {
-//            log.debug("No events found for type {}", type);
             return;
         }
 
@@ -111,6 +115,37 @@ public class EventConsumer {
             }
         } catch (Exception e) {
             log.error("Failed to process {} mock rules events", type, e);
+        }
+    }
+
+    private void processWebhooks(EventType type) {
+        var events = eventQueue.drain(type, Webhook.class, MAX_EVENT_CONSUMER_DRAIN_ELEMS);
+        if (CollectionUtils.isEmpty(events)) {
+            return;
+        }
+
+        try {
+            switch (type) {
+                case CREATE -> {
+                    var webhooks = events.stream()
+                            .map(DomainEvent::getEntity)
+                            .toList();
+                    webhookRepository.batchInsert(webhooks);
+                    log.debug("Created {} webhooks in DB", webhooks.size());
+                }
+                case UPDATE -> {
+                    var webhooks = events.stream()
+                            .map(DomainEvent::getEntity)
+                            .toList();
+                    webhookRepository.batchUpdate(webhooks);
+                    log.debug("Updated {} webhooks in DB", webhooks.size());
+                }
+                case DELETE -> {
+                    log.warn("Batch webhook deletes not yet implemented");
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to process {} webhook events", type, e);
         }
     }
 }

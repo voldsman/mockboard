@@ -2,12 +2,10 @@
 import Navbar from '@/components/Navbar.vue'
 import SessionOverlay from '@/components/SessionOverlay.vue'
 import RequestSidebar from '@/components/RequestSidebar.vue'
-import {useBoardStore} from '@/stores/boardStore.js'
 import {ref} from 'vue'
 import DashboardLayout from '@/components/DashboardLayout.vue'
 import Footer from "@/components/Footer.vue";
 
-const boardStore = useBoardStore()
 const dashboardRef = ref(null)
 const isReady = ref(false)
 
@@ -23,7 +21,7 @@ const onSessionContinue = () => {
 
 const onLogSelected = (log) => {
     if (dashboardRef.value) {
-        dashboardRef.value.openLogDetails(log)
+        dashboardRef.value.openWebhookDetails(log)
     }
 }
 </script>
@@ -36,7 +34,7 @@ const onLogSelected = (log) => {
 
     <template v-if="isReady">
         <Navbar/>
-        <RequestSidebar @view-log="onLogSelected"/>
+        <RequestSidebar @view-webhook="onLogSelected"/>
         <DashboardLayout ref="dashboardRef"/>
         <Footer/>
     </template>

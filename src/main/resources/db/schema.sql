@@ -26,3 +26,24 @@ CREATE TABLE IF NOT EXISTS mock_rules (
             REFERENCES boards(id)
                 ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS webhooks (
+    id VARCHAR(45) NOT NULL PRIMARY KEY,
+    board_id VARCHAR(45) NOT NULL,
+    method VARCHAR(20) NOT NULL,
+    path VARCHAR NOT NULL,
+    full_url VARCHAR NOT NULL,
+    query_params VARCHAR,
+    headers VARCHAR,
+    body VARCHAR,
+    content_type VARCHAR,
+    status_code INT NOT NULL,
+    matched BOOL NOT NULL,
+    received_at TIMESTAMP NOT NULL,
+    processing_time_ms LONG NOT NULL,
+    INDEX idx_webhook_board_id_key (board_id),
+    CONSTRAINT fk_webhooks_board
+        FOREIGN KEY (board_id)
+            REFERENCES boards(id)
+            ON DELETE CASCADE
+);

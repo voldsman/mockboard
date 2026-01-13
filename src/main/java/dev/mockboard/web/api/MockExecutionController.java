@@ -1,6 +1,8 @@
 package dev.mockboard.web.api;
 
+import dev.mockboard.common.validator.RequestMetadataValidator;
 import dev.mockboard.service.MockExecutionService;
+import dev.mockboard.service.WebhookService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MockExecutionController {
 
+    private final RequestMetadataValidator requestMetadataValidator;
     private final MockExecutionService mockExecutionService;
+    private final WebhookService webhookService;
 
     @RequestMapping(value = "/**", method = {
             RequestMethod.GET,
@@ -29,10 +33,12 @@ public class MockExecutionController {
     })
     public ResponseEntity<String> executeMock(@PathVariable String apiKey, HttpServletRequest request) {
         var executionStart = System.currentTimeMillis();
-        var result = mockExecutionService.execute(apiKey, request);
+        var metadata = requestMetadataValidator.validateAndGet(apiKey, request);
+        var result = mockExecutionService.execute(apiKey, metadata);
 
         var executionTime = System.currentTimeMillis() - executionStart;
         log.debug("Execution time: {}ms", executionTime);
+        webhookService.processWebhookAsync(apiKey, metadata, result, executionTime);
         return ResponseEntity
                 .status(result.statusCode())
                 .headers(result.headers())

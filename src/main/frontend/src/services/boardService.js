@@ -7,6 +7,7 @@ const getBoardMockRulesPath = (boardId) => `api/boards/${boardId}/mocks`;
 const createBoardMockRulePath = (boardId) => `api/boards/${boardId}/mocks`;
 const updateBoardMockRulePath = (boardId, mockRuleId) => `api/boards/${boardId}/mocks/${mockRuleId}`;
 const deleteBoardMockRulePath = (boardId, mockRuleId) => `api/boards/${boardId}/mocks/${mockRuleId}`;
+const getBoardWebhooksPath = (boardId) => `api/boards/${boardId}/webhooks`;
 
 const BoardService = {
     getBoard(boardId, ownerToken) {
@@ -59,6 +60,15 @@ const BoardService = {
                 'Content-Type': 'application/json'
             }
         });
+    },
+
+    getWebhooks(boardId, ownerToken) {
+        return api.get(getBoardWebhooksPath(boardId), {
+            headers: {
+                ...api.attachOwnerHeader(ownerToken).headers,
+                'Content-Type': 'application/json'
+            }
+        })
     }
 }
 

@@ -43,7 +43,7 @@ public class MockRuleCache extends CaffeineEntityCache<List<MockRuleDto>> {
                 return new ArrayList<>(List.of(mockRule));
             }
 
-            var newList = new ArrayList<MockRuleDto>(mocks);
+            var newList = new ArrayList<>(mocks);
             newList.removeIf(m -> m.getId().equals(mockRule.getId()));
             newList.add(mockRule);
             return newList;
