@@ -3,11 +3,13 @@ import boardService from "@/services/boardService.js";
 import {BoardModel} from "@/models/boardModel.js";
 import constants from "@/constants.js";
 import {MockRuleModel} from "@/models/mockRuleModel.js";
+import {WebhookModel} from "@/models/webhookModel.js";
 
 export const useBoardStore = defineStore("boardStore", {
     state: () => ({
         board: null,
-        mockRules: []
+        mockRules: [],
+        webhooks: [],
     }),
     getters: {
         hasActiveSession: (state) => !!state.board && !!state.board.id && !!state.board.ownerToken,
@@ -78,8 +80,8 @@ export const useBoardStore = defineStore("boardStore", {
 
         async fetchMockRules() {
             try {
-                const result = await boardService.getMockRules(this.board.id, this.board.ownerToken);
-                this.mockRules = result.data.map(mr => new MockRuleModel(mr));
+                const result = await boardService.getMockRules(this.board.id, this.board.ownerToken)
+                this.mockRules = result.data.map(mr => new MockRuleModel(mr))
                 // todo: use flag like: this.rulesLoaded = true
             } catch (err) {
                 console.error("Failed to fetch mock rules", err)
@@ -142,6 +144,22 @@ export const useBoardStore = defineStore("boardStore", {
             } catch (err) {
                 console.error(`Failed to delete mock rule ${mockRuleId}`, err)
                 throw err
+            }
+        },
+
+        async fetchWebhooks() {
+            try {
+                const result = await boardService.getWebhooks(this.board.id, this.board.ownerToken)
+                this.webhooks = result.data.map(mr => new WebhookModel(mr))
+            } catch (err) {
+                console.error("Failed to fetch webhooks", err)
+            }
+        },
+
+        async processReceivedWebhook(webhookData) {
+            this.webhooks.unshift(webhookData)
+            if (this.webhooks.length > constants.MAX_WEBHOOKS) {
+                this.webhooks.pop();
             }
         }
     }

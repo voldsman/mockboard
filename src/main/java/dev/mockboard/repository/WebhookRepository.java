@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class WebhookRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static class WebhookMapper implements RowMapper<Webhook> {
+    private static class WebhookRowMapper implements RowMapper<Webhook> {
         @Override
         public Webhook mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Webhook.builder()
@@ -33,6 +34,17 @@ public class WebhookRepository {
                     .processingTimeMs(rs.getLong("processing_time_ms"))
                     .matched(rs.getBoolean("matched"))
                     .build();
+        }
+    }
+
+    public List<Webhook> findByBoardId(String boardId) {
+        var sql = """
+                SELECT * FROM webhooks WHERE board_id = ? ORDER BY received_at DESC;
+                """;
+        try {
+            return jdbcTemplate.query(sql, new WebhookRowMapper(), boardId);
+        } catch (Exception e) {
+            return List.of();
         }
     }
 }

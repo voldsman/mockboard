@@ -31,12 +31,12 @@ const closePanel = () => {
     selectedLog.value = null
 }
 
-const openLogDetails = (log) => {
+const openWebhookDetails = (log) => {
     selectedLog.value = log
     currentView.value = viewLogDetails
 }
 
-defineExpose({openLogDetails, openEdit})
+defineExpose({openWebhookDetails, openEdit})
 </script>
 
 <template>
@@ -59,6 +59,10 @@ defineExpose({openLogDetails, openEdit})
 
 <!--            <DashboardStats />-->
             <DashboardMockRules @edit-mock="openEdit"/>
+        </div>
+
+        <div v-if="currentView === viewLogDetails" class="w-100 px-lg-4" >
+            <h1>Webhook details panel: {{selectedLog.path}}</h1>
         </div>
 
         <div v-if="currentView === viewCreateMock" class="w-100 px-lg-4">

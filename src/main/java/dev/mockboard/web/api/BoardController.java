@@ -2,10 +2,12 @@ package dev.mockboard.web.api;
 
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.MockRuleDto;
+import dev.mockboard.common.domain.dto.WebhookDto;
 import dev.mockboard.common.domain.response.IdResponse;
 import dev.mockboard.service.BoardSecurityService;
 import dev.mockboard.service.BoardService;
 import dev.mockboard.service.MockRuleService;
+import dev.mockboard.service.WebhookService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MockRuleService mockRuleService;
+    private final WebhookService webhookService;
     private final BoardSecurityService boardSecurityService;
 
     @PostMapping
@@ -80,5 +83,13 @@ public class BoardController {
         var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, ownerToken);
         mockRuleService.deleteMockRule(boardDto, mockRuleId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{boardId}/webhooks")
+    public ResponseEntity<List<WebhookDto>> getWebhooks(@PathVariable String boardId,
+                                                        @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
+        var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, ownerToken);
+        var webhooks = webhookService.getWebhooks(boardDto);
+        return new ResponseEntity<>(webhooks, HttpStatus.OK);
     }
 }

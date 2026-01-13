@@ -3,16 +3,21 @@ package dev.mockboard.service;
 import dev.mockboard.cache.WebhookCache;
 import dev.mockboard.common.domain.MockExecutionResult;
 import dev.mockboard.common.domain.RequestMetadata;
+import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.WebhookDto;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.event.config.EventQueue;
+import dev.mockboard.repository.WebhookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -22,7 +27,25 @@ public class WebhookService {
     private final EventQueue eventQueue;
     private final ModelMapper modelMapper;
     private final WebhookCache webhookCache;
+    private final WebhookRepository webhookRepository;
     private final SseService sseService;
+
+    public List<WebhookDto> getWebhooks(BoardDto boardDto) {
+        var cachedWebhooks = webhookCache.getWebhooks(boardDto.getId());
+        if (CollectionUtils.isEmpty(cachedWebhooks)) {
+            var persistedWebhooks = webhookRepository.findByBoardId(boardDto.getId());
+            if (CollectionUtils.isEmpty(persistedWebhooks)) {
+                return Collections.emptyList();
+            }
+
+            var dtos = persistedWebhooks.stream()
+                    .map(webhook -> modelMapper.map(webhook, WebhookDto.class))
+                    .toList();
+            webhookCache.addWebhooks(boardDto.getId(), dtos);
+            return dtos;
+        }
+        return cachedWebhooks;
+    }
 
     @Async
     public void processWebhookAsync(String apiKey, RequestMetadata metadata, MockExecutionResult result, long executionTime) {

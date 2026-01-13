@@ -48,7 +48,7 @@ const handleMockRuleDelete = async (mockRuleId) => {
         </div>
 
         <div v-if="mockRules.length === 0" class="text-center py-5 bg-white rounded-3 border border-dashed">
-            <p class="text-secondary mb-0">Your board is empty.</p>
+            <h6 class="text-dark mb-1">Your board is empty.</h6>
             <small class="text-muted">No mock endpoints configured yet.</small>
         </div>
 

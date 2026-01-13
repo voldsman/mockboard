@@ -23,6 +23,7 @@ export default {
 
     // validation
     MAX_MOCKS: 12,
+    MAX_WEBHOOKS: 15,
     VALIDATION: {
         MAX_PATH_LENGTH: 200,
         MAX_BODY_LENGTH: 5000,
