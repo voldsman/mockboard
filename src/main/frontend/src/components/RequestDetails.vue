@@ -2,6 +2,7 @@
 
 import uiHelper from "@/helpers/uiHelper.js";
 import {computed} from "vue";
+import {selectionState} from "@/helpers/selectionState.js";
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -30,7 +31,10 @@ const formattedBody = computed(() => {
     }
 });
 
-const handleClose = () => emit('close')
+const handleClose = () => {
+    selectionState.clear();
+    emit('close')
+}
 </script>
 
 <template>
@@ -107,16 +111,16 @@ const handleClose = () => emit('close')
                 <div class="p-2 border rounded bg-light-subtle font-mono small d-flex align-items-center gap-2">
                     <span class="text-muted">MATCH:</span>
                     <span v-if="webhook.matched" class="text-success fw-bold">
-                        <i class="bi bi-check-circle-fill me-1"></i>SUCCESS
+                        <i class="bi bi-check-circle-fill me-1"></i>MATCHED
                     </span>
                     <span v-else class="text-warning fw-bold">
-                        <i class="bi bi-exclamation-triangle-fill me-1"></i>UNMATCHED
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i>NO MATCH
                     </span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-2 border rounded bg-light-subtle font-mono small text-center">
-                    <span class="text-muted">PROCESS:</span> {{ webhook.processingTimeMs }}ms
+                    <span class="text-muted">PROCESS:</span> {{ webhook.processingTimeMs || 0 }}ms
                 </div>
             </div>
             <div class="col-md-4">

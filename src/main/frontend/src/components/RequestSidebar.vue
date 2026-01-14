@@ -3,6 +3,7 @@ import {onMounted, onUnmounted, ref} from 'vue'
 import {useBoardStore} from "@/stores/boardStore.js";
 import uiHelper from "@/helpers/uiHelper.js";
 import {storeToRefs} from "pinia";
+import {selectionState} from "@/helpers/selectionState.js";
 
 const boardStore = useBoardStore();
 const emit = defineEmits(['view-webhook'])
@@ -92,6 +93,7 @@ onUnmounted(() => {
 });
 
 const handleWebhookClick = (log) => {
+    selectionState.select(log.id)
     emit('view-webhook', log)
 }
 </script>
@@ -121,10 +123,11 @@ const handleWebhookClick = (log) => {
             <a v-for="webhook in webhooks"
                :key="webhook.id"
                class="list-group-item list-group-item-action log-item p-3 border-0 border-bottom cursor-pointer"
+               :class="{ 'request-selected text-white': selectionState.activeId === webhook.id }"
                @click="handleWebhookClick(webhook)">
 
                 <div class="d-flex w-100 justify-content-between mb-1 align-items-center">
-                    <span :class="['badge badge-method', webhook.matched ? 'bg-success' : 'bg-secondary']">
+                    <span :class="['badge badge-method', uiHelper.getMethodColor(webhook.method)]">
                         {{ webhook.method }}
                     </span>
                     <small class="text-muted font-mono">
@@ -138,12 +141,12 @@ const handleWebhookClick = (log) => {
                     <span v-if="webhook.matched" class="badge bg-light text-success border border-success-subtle text-xs">
                         <i class="bi bi-check-circle-fill me-1"></i>Matched
                     </span>
-                    <span v-else class="badge bg-light text-warning border border-warning-subtle text-xs">
+                    <span v-else class="badge bg-warning text-light border border-warning text-xs">
                         <i class="bi bi-exclamation-triangle-fill me-1"></i>No Match
                     </span>
 
                     <span class="ms-auto d-flex align-items-center gap-2">
-                        <small class="text-muted text-xs font-mono">{{ webhook.processingTimeMs }}ms</small>
+                        <small class="text-muted text-xs font-mono">{{ webhook.processingTimeMs || 0 }}ms</small>
                         <span class="badge bg-light text-dark border text-xs">{{ webhook.statusCode }}</span>
                     </span>
                 </div>
@@ -151,3 +154,11 @@ const handleWebhookClick = (log) => {
         </div>
     </aside>
 </template>
+
+<style scoped>
+.request-selected {
+    background-color: #e6ddea !important;
+    border-left: 4px solid #9d71b6 !important;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+</style>
