@@ -82,12 +82,12 @@ Status: In active development in my free time. The public beta is scheduled for 
 - [x] **Routing:** Custom wildcard path matcher
 - [X] **Real-time:** SSE Request Capture implementation
 - [X] **UI:** Lightweight Vue.js Dashboard
-- [ ] **SSE:** Preview received SSE events
 - [ ] **Import/Export:** Support for Mock Rules sharing
 - [ ] **Rate limiting:** App-level rate limiting by IP/apiKey 
 - [ ] **Data Faking:** JSON Body Templates
 - [ ] **Integration:** "Create Mock from Webhook" feature
 - [ ] **Distribution:** Self hostable `docker-compose.yml`
+- [ ] **Board sharing:** Allow to share board UI access
 
 ---
 ## 🤝 Contributing
