@@ -75,7 +75,7 @@ This isn't just a CRUD app. MockBoard.dev utilizes a custom Event-Driven and Cac
 
 ## 🗺 Roadmap (Q1 2026)
 
-I'm currently in Active Development. The Public Beta is scheduled for Q1 2026.
+Status: In active development in my free time. The public beta is scheduled for mid/end Q1 2026.
 
 - [x] **Core Engine:** Spring Boot 4 + Java 21 setup
 - [x] **Persistence:** H2 Server Mode + Custom Event Queue
