@@ -27,3 +27,10 @@ https://jsonformatter.org/json-stringify-online
 ---
 Intellij H2 DB:
 path: jdbc:h2:file:../data/mockboard_dev;MODE=MySQL;AUTO_SERVER=TRUE
+
+---
+Docker compose commands (run from project ROOT):
+> docker compose up -d
+> docker compose up -d --build
+> docker compose down -v
+> docker compose logs -f mockboard_dev
