@@ -1,6 +1,5 @@
 <script setup>
 import {computed, ref} from 'vue'
-import constants from '@/constants'
 import {useBoardStore} from '@/stores/boardStore.js'
 import {useToast} from "@/useToast.js";
 
@@ -11,7 +10,7 @@ const copied = ref(false)
 
 const displayUrl = computed(() => {
     return boardStore.board?.id
-        ? `${constants.SERVER_URL}/m/${boardStore.board.id}`
+        ? `${window.location.origin}/m/${boardStore.board.id}`
         : 'Session initializing...'
 })
 

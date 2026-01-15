@@ -1,4 +1,4 @@
-import api from "@/api.js";
+import api, {setOwnerToken} from "@/api.js";
 
 const createBoardPath = `api/boards`;
 const getBoardPath = (boardId) => `api/boards/${boardId}`;
@@ -11,64 +11,36 @@ const getBoardWebhooksPath = (boardId) => `api/boards/${boardId}/webhooks`;
 
 const BoardService = {
     getBoard(boardId, ownerToken) {
-        return api.get(getBoardPath(boardId), {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        })
+        setOwnerToken(ownerToken)
+        return api.get(getBoardPath(boardId))
     },
     createBoard() {
         return api.post(createBoardPath, {})
     },
     deleteBoard(boardId, ownerToken) {
-        return api.delete(deleteBoardPath(boardId), {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        });
+        setOwnerToken(ownerToken)
+        return api.delete(deleteBoardPath(boardId));
     },
     getMockRules(boardId, ownerToken) {
-        return api.get(getBoardMockRulesPath(boardId), {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        })
+        setOwnerToken(ownerToken)
+        return api.get(getBoardMockRulesPath(boardId))
     },
     createMockRule(boardId, ownerToken, mockRuleData) {
-        return api.post(createBoardMockRulePath(boardId), mockRuleData, {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        });
+        setOwnerToken(ownerToken)
+        return api.post(createBoardMockRulePath(boardId), mockRuleData);
     },
     updateMockRule(boardId, ownerToken, mockRuleId, mockRuleData) {
-        return api.put(updateBoardMockRulePath(boardId, mockRuleId), mockRuleData, {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        })
+        setOwnerToken(ownerToken)
+        return api.put(updateBoardMockRulePath(boardId, mockRuleId), mockRuleData)
     },
     deleteMockRule(boardId, ownerToken, mockRuleId) {
-        return api.delete(deleteBoardMockRulePath(boardId, mockRuleId), {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        });
+        setOwnerToken(ownerToken)
+        return api.delete(deleteBoardMockRulePath(boardId, mockRuleId));
     },
 
     getWebhooks(boardId, ownerToken) {
-        return api.get(getBoardWebhooksPath(boardId), {
-            headers: {
-                ...api.attachOwnerHeader(ownerToken).headers,
-                'Content-Type': 'application/json'
-            }
-        })
+        setOwnerToken(ownerToken)
+        return api.get(getBoardWebhooksPath(boardId))
     }
 }
 

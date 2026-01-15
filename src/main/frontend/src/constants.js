@@ -1,7 +1,6 @@
 export default {
     // base
     APP_VERSION: '0.0.1-dev',
-    SERVER_URL: 'http://localhost:8888',
 
     // ls
     BOARD_DATA: 'BOARD_DATA',

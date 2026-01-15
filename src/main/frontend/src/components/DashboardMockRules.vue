@@ -25,8 +25,7 @@ const handleMockRuleEdit = (mockRuleId) => {
 }
 
 const handleMockRuleDelete = async (mockRuleId) => {
-    const result = confirm(`Are you sure you want to delete mock rule?`)
-    if (!result) return
+    if (!window.confirm(`Are you sure you want to delete mock rule?`)) return
 
     try {
         await boardStore.deleteMockRuleById(mockRuleId);
