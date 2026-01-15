@@ -11,8 +11,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
-import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -22,33 +24,15 @@ public class MockExecutionService {
 
     private final PathMatchingService pathMatchingService;
     private final MockRuleCache mockRuleCache;
+    private final ObjectMapper objectMapper;
 
     public MockExecutionResult execute(String apiKey, RequestMetadata metadata) {
         var mockRule = findMatchingRule(apiKey, metadata.mockPath(), metadata.method()).orElse(null);
-        int statusCode = 200;
-        var body = Constants.DEFAULT_EXECUTION_RESPONSE;
+        var statusCode = mockRule != null ? mockRule.getStatusCode() : 200;
+        var body = determineResponseBody(mockRule);
+        var headers = buildHeaders(mockRule);
+        applyDelay(mockRule);
 
-        if (mockRule != null) {
-            statusCode = mockRule.getStatusCode();
-            body = mockRule.getBody();
-            if (body == null || body.isEmpty()) {
-                body = "{}"; // make it an empty json for now
-            }
-        }
-
-        var headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        // todo: attach user provided response headers
-
-        // simulate delay
-        if (mockRule != null && mockRule.getDelay() > 0) {
-            try {
-                log.debug("Delaying [{}] for {}ms", Thread.currentThread(), mockRule.getDelay());
-                Thread.sleep(Duration.ofMillis(mockRule.getDelay()));
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
         return new MockExecutionResult(mockRule, headers, body, statusCode);
     }
 
@@ -76,5 +60,44 @@ public class MockExecutionService {
             }
         }
         return Optional.empty();
+    }
+
+    private String determineResponseBody(MockRuleDto mockRule) {
+        if (mockRule == null) {
+            return Constants.DEFAULT_EXECUTION_RESPONSE;
+        }
+
+        var body = mockRule.getBody();
+        return (body == null || body.isEmpty()) ? "{}" : body;
+    }
+
+    private HttpHeaders buildHeaders(MockRuleDto mockRule) {
+        var headers = new HttpHeaders();
+        if (mockRule != null && mockRule.getHeaders() != null && !mockRule.getHeaders().isEmpty()) {
+            try {
+                var typeRef = new TypeReference<Map<String, String>>() {};
+                var headersMap = objectMapper.readValue(mockRule.getHeaders(), typeRef);
+                headersMap.forEach(headers::add);
+            } catch (Exception e) {
+                log.warn("Failed to parse headers, using default", e);
+                headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+            }
+        } else {
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        }
+
+        return headers;
+    }
+
+    private void applyDelay(MockRuleDto mockRule) {
+        if (mockRule != null && mockRule.getDelay() > 0) {
+            try {
+                log.debug("Delaying [{}] for {}ms", Thread.currentThread(), mockRule.getDelay());
+                Thread.sleep(mockRule.getDelay());
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                log.warn("Delay interrupted", ex);
+            }
+        }
     }
 }
