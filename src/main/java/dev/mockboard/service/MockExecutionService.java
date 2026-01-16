@@ -5,6 +5,7 @@ import dev.mockboard.cache.MockRuleCache;
 import dev.mockboard.common.domain.MockExecutionResult;
 import dev.mockboard.common.domain.RequestMetadata;
 import dev.mockboard.common.domain.dto.MockRuleDto;
+import dev.mockboard.common.engine.TemplateFakerEngine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -22,9 +23,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MockExecutionService {
 
-    private final PathMatchingService pathMatchingService;
     private final MockRuleCache mockRuleCache;
     private final ObjectMapper objectMapper;
+    private final PathMatchingService pathMatchingService;
+    private final TemplateFakerService templateFakerService;
 
     public MockExecutionResult execute(String apiKey, RequestMetadata metadata) {
         var mockRule = findMatchingRule(apiKey, metadata.mockPath(), metadata.method()).orElse(null);
@@ -68,7 +70,9 @@ public class MockExecutionService {
         }
 
         var body = mockRule.getBody();
-        return (body == null || body.isEmpty()) ? "{}" : body;
+        return (body == null || body.isEmpty())
+                ? "{}"
+                : templateFakerService.processTemplates(body);
     }
 
     private HttpHeaders buildHeaders(MockRuleDto mockRule) {
