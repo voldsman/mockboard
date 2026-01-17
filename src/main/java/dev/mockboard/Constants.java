@@ -52,7 +52,7 @@ public final class Constants {
     public static final String SSE_EMITTER_EVENT_SHUTDOWN = "server-shutdown";
 
     // rate limiter
-    public static final boolean RATE_LIMIT_ENABLED = Env.getBool("MBD_RATE_LIMIT_ENABLED", true);
+    public static final boolean RATE_LIMIT_ENABLED = Env.getBool("MBD_RATE_LIMIT_ENABLED", false);
     public static final int RATE_LIMIT_MAX_BOARDS_PER_HOUR = Env.getInt("MBD_RATE_LIMIT_MAX_BOARDS_PER_HOUR", 3);
     public static final int RATE_LIMIT_MAX_MOCK_EXECUTIONS_PER_MINUTE = Env.getInt("MBD_RATE_LIMIT_MAX_MOCK_EXECUTIONS_PER_MINUTE", 30);
     public static final int RATE_LIMIT_MAX_OTHER_REQUESTS_PER_MINUTE = Env.getInt("MBD_RATE_LIMIT_MAX_OTHER_REQUESTS_PER_MINUTE", 80);
