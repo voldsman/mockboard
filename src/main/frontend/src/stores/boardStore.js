@@ -157,9 +157,14 @@ export const useBoardStore = defineStore("boardStore", {
         },
 
         async processReceivedWebhook(webhookData) {
+            const existingIndex = this.webhooks.findIndex(w => w.id === webhookData.id);
+            if (existingIndex !== -1) {
+                this.webhooks.splice(existingIndex, 1);
+            }
+
             this.webhooks.unshift(webhookData)
             if (this.webhooks.length > constants.MAX_WEBHOOKS) {
-                this.webhooks.pop();
+                this.webhooks.splice(constants.MAX_WEBHOOKS);
             }
         }
     }

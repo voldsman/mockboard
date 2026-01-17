@@ -1,11 +1,11 @@
 package dev.mockboard.service;
 
 import dev.mockboard.Constants;
-import dev.mockboard.cache.MockRuleCache;
 import dev.mockboard.common.domain.MockExecutionResult;
 import dev.mockboard.common.domain.RequestMetadata;
+import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.MockRuleDto;
-import dev.mockboard.common.engine.TemplateFakerEngine;
+import dev.mockboard.common.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,13 +23,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MockExecutionService {
 
-    private final MockRuleCache mockRuleCache;
     private final ObjectMapper objectMapper;
-    private final PathMatchingService pathMatchingService;
+    private final MockRuleService mockRuleService;
     private final TemplateFakerService templateFakerService;
 
     public MockExecutionResult execute(String apiKey, RequestMetadata metadata) {
-        var mockRule = findMatchingRule(apiKey, metadata.mockPath(), metadata.method()).orElse(null);
+        // it is safe, unless mockRuleService.getMockRules(boardDto) changes
+        var boardDto = BoardDto.builder().id(apiKey).build();
+        var mockRule = findMatchingRule(boardDto, metadata.mockPath(), metadata.method()).orElse(null);
         var statusCode = mockRule != null ? mockRule.getStatusCode() : 200;
         var body = determineResponseBody(mockRule);
         var headers = buildHeaders(mockRule);
@@ -38,30 +39,20 @@ public class MockExecutionService {
         return new MockExecutionResult(mockRule, headers, body, statusCode);
     }
 
-    private Optional<MockRuleDto> findMatchingRule(String apiKey, String path, String method) {
-        var mockIdOpt = pathMatchingService.getMatchingMockRuleId(apiKey, path);
-        if (mockIdOpt.isEmpty()) {
-            log.debug("No mockId matching apiKey={} and path={} found", apiKey, path);
+    private Optional<MockRuleDto> findMatchingRule(BoardDto boardDto, String path, String method) {
+        var mockRules = mockRuleService.getMockRules(boardDto);
+        if (CollectionUtils.isEmpty(mockRules)) {
             return Optional.empty();
         }
-
-        return getMockRule(apiKey, mockIdOpt.get(), method);
-    }
-
-    private Optional<MockRuleDto> getMockRule(String apiKey, String mockId, String method) {
-        var cachedMocks = mockRuleCache.getMockRules(apiKey);
-        if (!CollectionUtils.isEmpty(cachedMocks)) {
-            var cached = cachedMocks.stream()
-                    .filter(mock -> mock.getId().equals(mockId))
-                    .filter(mock -> mock.getMethod().equalsIgnoreCase(method))
-                    .findFirst();
-
-            if (cached.isPresent()) {
-                log.trace("Cache hit for mockId={}, method={}", mockId, method);
-                return cached;
-            }
-        }
-        return Optional.empty();
+        return mockRules.stream()
+                .filter(r -> r.getMethod().equalsIgnoreCase(method))
+                .filter(r -> r.matches(path))
+                .min((r1, r2) -> {
+                    int wld1 = StringUtils.countWildcards(r1.getPath());
+                    int wld2 = StringUtils.countWildcards(r2.getPath());
+                    if (wld1 != wld2) return Integer.compare(wld1, wld2);
+                    return Integer.compare(r2.getPath().length(), r1.getPath().length());
+                });
     }
 
     private String determineResponseBody(MockRuleDto mockRule) {
