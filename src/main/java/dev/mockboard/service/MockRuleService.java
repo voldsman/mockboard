@@ -1,7 +1,6 @@
 package dev.mockboard.service;
 
 import dev.mockboard.Constants;
-import dev.mockboard.cache.MatchingEngineCache;
 import dev.mockboard.cache.MockRuleCache;
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.MockRuleDto;
@@ -35,7 +34,6 @@ public class MockRuleService {
     private final MockRuleValidator mockRuleValidator;
     private final MockRuleRepository mockRuleRepository;
     private final MockRuleCache mockRuleCache;
-    private final MatchingEngineCache matchingEngineCache;
 
     public IdResponse createMockRule(BoardDto boardDto, MockRuleDto mockRuleDto) {
         var existingMockRules = getMockRules(boardDto);
@@ -51,10 +49,10 @@ public class MockRuleService {
         mockRuleDto.setHeaders(JsonUtils.minify(mockRuleDto.getHeaders()));
         mockRuleDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
         mockRuleDto.setTimestamp(Instant.now());
+        mockRuleDto.compilePattern();
 
         var mockRule = modelMapper.map(mockRuleDto, MockRule.class);
         mockRuleCache.addMockRule(boardDto.getId(), mockRuleDto);
-        matchingEngineCache.invalidate(boardDto.getId());
 
         eventQueue.publish(DomainEvent.create(mockRule, MockRule.class));
         log.info("Mock rule added bo board: {}", boardDto.getId());
@@ -71,6 +69,7 @@ public class MockRuleService {
 
             var dtos = persistedMockRules.stream()
                     .map(mockRule -> modelMapper.map(mockRule, MockRuleDto.class))
+                    .peek(MockRuleDto::compilePattern)
                     .toList();
             mockRuleCache.addMockRules(boardDto.getId(), dtos);
             return dtos;
@@ -94,8 +93,9 @@ public class MockRuleService {
         existingDto.setBody(JsonUtils.minify(mockRuleDto.getBody()));
         existingDto.setStatusCode(mockRuleDto.getStatusCode());
         existingDto.setDelay(mockRuleDto.getDelay());
+        existingDto.compilePattern();
+
         mockRuleCache.updateMockRule(boardDto.getId(), existingDto);
-        matchingEngineCache.invalidate(boardDto.getId());
 
         var mockRule = modelMapper.map(existingDto, MockRule.class);
         eventQueue.publish(DomainEvent.update(mockRule, mockRuleId, MockRule.class));
@@ -112,7 +112,6 @@ public class MockRuleService {
         }
 
         mockRuleCache.deleteMockRule(boardDto.getId(), mockRuleId);
-        matchingEngineCache.invalidate(boardDto.getId());
         eventQueue.publish(DomainEvent.delete(mockRuleId, MockRule.class));
     }
 }

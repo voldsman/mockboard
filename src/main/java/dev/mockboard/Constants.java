@@ -12,6 +12,7 @@ public final class Constants {
     // defaults
     public static final int BOARD_ID_LENGTH = 24;
     public static final int BOARD_OWNER_TOKEN_LENGTH = 48;
+    public static final String WILDCARD = "*";
 
     // cache
     public static final int DEFAULT_CACHE_MAX_ENTRIES = Env.getInt("MBD_CACHE_DEFAULT_MAX_ENTRIES", 10_000);
