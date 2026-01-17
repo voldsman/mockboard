@@ -1,4 +1,4 @@
-package dev.mockboard.event;
+package dev.mockboard.event.config;
 
 import dev.mockboard.Constants;
 import lombok.extern.slf4j.Slf4j;

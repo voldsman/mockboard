@@ -1,4 +1,4 @@
-package dev.mockboard.event;
+package dev.mockboard.event.config;
 
 public enum EventType {
     CREATE,
