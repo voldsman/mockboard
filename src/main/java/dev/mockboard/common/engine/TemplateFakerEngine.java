@@ -5,9 +5,11 @@ import net.datafaker.Faker;
 import org.apache.commons.text.StringSubstitutor;
 import org.apache.commons.text.lookup.StringLookup;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.io.JsonStringEncoder;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
@@ -19,6 +21,7 @@ public class TemplateFakerEngine {
 
     private static final Faker FAKER = new Faker(Locale.US);
     private static final Map<String, Supplier<String>> DICTIONARY = new ConcurrentHashMap<>();
+    private static final JsonStringEncoder ENCODER = JsonStringEncoder.getInstance();
     private final StringSubstitutor substitutor;
 
     public TemplateFakerEngine() {
@@ -33,10 +36,13 @@ public class TemplateFakerEngine {
             if (isInvalidKey(trimmedKey)) return null;
 
             var supplier = DICTIONARY.get(trimmedKey);
-            if (supplier != null) return supplier.get();
+            if (supplier != null) {
+                var rawValue = supplier.get();
+                char[] escaped = ENCODER.quoteAsCharArray(rawValue);
+                return new String(escaped);
+            }
 
             // not registered template
-            // recursion happens when return original template
             return "[unknown: " + trimmedKey + "]";
         };
 
@@ -52,6 +58,8 @@ public class TemplateFakerEngine {
             // input body is json string, possbile case that needs to be handled:
             // { "username": "{{ test", "address": " test 2}}" }
             // {{{{user.fullName}}}}
+
+            // possibly use BitSet, but should be good enough for now
             if (c == '"' || c == '\n' || c == '\r' || c == ':' || c == '{' || c == '}') {
                 return true;
             }
@@ -65,8 +73,6 @@ public class TemplateFakerEngine {
     }
 
     private void initializeDictionary() {
-        DICTIONARY.clear();
-
         // personal data
         DICTIONARY.put("user.fullName", () -> FAKER.name().fullName());
         DICTIONARY.put("user.firstName", () -> FAKER.name().firstName());
@@ -76,18 +82,25 @@ public class TemplateFakerEngine {
         DICTIONARY.put("user.phoneNumber", () -> FAKER.phoneNumber().cellPhone());
         DICTIONARY.put("user.avatar", () -> FAKER.avatar().image());
 
-        // address / location
+        // address
         DICTIONARY.put("address.full", () -> FAKER.address().fullAddress());
         DICTIONARY.put("address.city", () -> FAKER.address().city());
         DICTIONARY.put("address.street", () -> FAKER.address().streetAddress());
         DICTIONARY.put("address.zipCode", () -> FAKER.address().zipCode());
         DICTIONARY.put("address.country", () -> FAKER.address().country());
         DICTIONARY.put("address.countryCode", () -> FAKER.address().countryCode());
-        DICTIONARY.put("address.lat", () -> FAKER.address().latitude());
-        DICTIONARY.put("address.lon", () -> FAKER.address().longitude());
 
         // content
+        DICTIONARY.put("content.char", () -> String.valueOf(FAKER.lorem().character()));
+        DICTIONARY.put("content.word", () -> FAKER.lorem().word());
         DICTIONARY.put("content.sentence", () -> FAKER.lorem().sentence());
         DICTIONARY.put("content.paragraph", () -> FAKER.lorem().paragraph());
+
+        // system
+        DICTIONARY.put("system.int", () -> String.valueOf(FAKER.random().nextInt(0, 10000)));
+        DICTIONARY.put("system.long", () -> String.valueOf(FAKER.random().nextLong()));
+        DICTIONARY.put("system.double", () -> String.valueOf(FAKER.random().nextDouble()));
+        DICTIONARY.put("system.bool", () -> String.valueOf(FAKER.random().nextBoolean()));
+        DICTIONARY.put("system.uuid", () -> UUID.randomUUID().toString());
     }
 }

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TemplateFakerEngineTest {
@@ -89,5 +91,23 @@ class TemplateFakerEngineTest {
         var result = engine.applyFaker(input);
         assertThat(result)
                 .isEqualTo(input);
+    }
+
+    @Test
+    void systemTemplates() {
+        var input = "{{system.int}}, {{system.long}}, {{system.double}}, {{system.bool}}, {{system.uuid}}";
+        var result = engine.applyFaker(input);
+        assertThat(result)
+                .doesNotContain("{{")
+                .doesNotContain("}}")
+                .doesNotContain("unknown");
+
+        var parts = result.split(",");
+        assertThat(parts).hasSize(5);
+        assertThat(Integer.parseInt(parts[0].trim())).isBetween(0, 10000).isInstanceOf(Integer.class);
+        assertThat(Long.parseLong(parts[1].trim())).isInstanceOf(Long.class);
+        assertThat(Double.parseDouble(parts[2].trim())).isInstanceOf(Double.class);
+        assertThat(parts[3].trim()).matches("true|false");
+        assertThat(UUID.fromString(parts[4].trim())).isNotNull();
     }
 }
