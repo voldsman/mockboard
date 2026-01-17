@@ -1,8 +1,5 @@
 package dev.mockboard.event;
 
-import dev.mockboard.event.config.DomainEvent;
-import dev.mockboard.event.config.EventQueue;
-import dev.mockboard.event.config.EventType;
 import dev.mockboard.repository.BoardRepository;
 import dev.mockboard.repository.MockRuleRepository;
 import dev.mockboard.repository.WebhookRepository;
