@@ -21,6 +21,7 @@ public final class Constants {
     public static final String OWNER_TOKEN_HEADER_KEY = "X-Owner-Token";
 
     // events
+    public static final int EVENT_QUEUE_CAPACITY = Env.getInt("MBD_EVENT_QUEUE_CAPACITY", 5_000);
     public static final int MAX_EVENT_CONSUMER_DRAIN_ELEMS = Env.getInt("MBD_EVENT_MAX_EVENT_DRAIN", 200);
 
     // scheduler
@@ -50,6 +51,7 @@ public final class Constants {
     public static final String SSE_EMITTER_EVENT_SHUTDOWN = "server-shutdown";
 
     // rate limiter
+    public static final boolean RATE_LIMIT_ENABLED = Env.getBool("MBD_RATE_LIMIT_ENABLED", true);
     public static final int RATE_LIMIT_MAX_BOARDS_PER_HOUR = Env.getInt("MBD_RATE_LIMIT_MAX_BOARDS_PER_HOUR", 3);
     public static final int RATE_LIMIT_MAX_MOCK_EXECUTIONS_PER_MINUTE = Env.getInt("MBD_RATE_LIMIT_MAX_MOCK_EXECUTIONS_PER_MINUTE", 30);
     public static final int RATE_LIMIT_MAX_OTHER_REQUESTS_PER_MINUTE = Env.getInt("MBD_RATE_LIMIT_MAX_OTHER_REQUESTS_PER_MINUTE", 80);

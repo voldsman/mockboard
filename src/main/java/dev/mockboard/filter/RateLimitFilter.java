@@ -29,6 +29,8 @@ public class RateLimitFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        if (!Constants.RATE_LIMIT_ENABLED) return;
+
         var request = (HttpServletRequest) servletRequest;
         var response = (HttpServletResponse) servletResponse;
 

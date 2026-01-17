@@ -1,5 +1,6 @@
-package dev.mockboard.event.config;
+package dev.mockboard.event;
 
+import dev.mockboard.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +15,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Component
 public class EventQueue {
 
-    private static final int QUEUE_CAPACITY = 5_000;
-
     private final Map<EventType, Map<Class<?>, BlockingQueue<DomainEvent<?>>>> queues = new ConcurrentHashMap<>();
 
     public EventQueue() {
@@ -26,7 +25,8 @@ public class EventQueue {
 
     public <T> void publish(DomainEvent<T> event) {
         var typeQueues = queues.get(event.getType());
-        var queue = typeQueues.computeIfAbsent(event.getEntityClass(), k -> new LinkedBlockingQueue<>(QUEUE_CAPACITY));
+        var queue = typeQueues.computeIfAbsent(event.getEntityClass(),
+                k -> new LinkedBlockingQueue<>(Constants.EVENT_QUEUE_CAPACITY));
         var added = queue.offer(event);
         log.debug("Event {} added to queue, result={}", event.getType(), added);
     }

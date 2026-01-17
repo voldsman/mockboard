@@ -24,7 +24,7 @@
 
 It is designed for rapid prototyping, CI/CD pipelines, and local development where you need a fake backend *now*, but don't want to manage long-term infrastructure.
 
-### 🕒 The "Cinderella" Feature
+### 🕒 The "Cinderella" Feature (Coming soon in web version only, doesn't apply to docker/self-hosted)
 **MockBoard.dev is ephemeral by design.**
 Every day at **3:00 AM UTC**, the server performs a hard reset. All mocks, data, and logs are wiped clean.
 * **No maintenance:** You never need to clean up old test data.
