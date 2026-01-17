@@ -1,7 +1,6 @@
-package dev.mockboard.cache;
+package dev.mockboard.common.cache;
 
 import dev.mockboard.Constants;
-import dev.mockboard.cache.config.CaffeineEntityCache;
 import dev.mockboard.common.domain.dto.WebhookDto;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -35,19 +34,12 @@ public class WebhookCache extends CaffeineEntityCache<List<WebhookDto>> {
            var mutableWebhooks = (webhooks == null)
                    ? new ArrayList<WebhookDto>()
                    : new ArrayList<>(webhooks);
+
+            // objects recycling
+            // reuses old objects when size > MAX_WEBHOOKS
+            // kepping id and boardId, remapping rest of the fields
            if (mutableWebhooks.size() >= Constants.MAX_WEBHOOKS) {
-               var lastWebhook = Collections.min(mutableWebhooks, Comparator.comparing(WebhookDto::getTimestamp));
-               lastWebhook.setMethod(webhook.getMethod());
-               lastWebhook.setPath(webhook.getPath());
-               lastWebhook.setFullUrl(webhook.getFullUrl());
-               lastWebhook.setQueryParams(webhook.getQueryParams());
-               lastWebhook.setHeaders(webhook.getHeaders());
-               lastWebhook.setBody(webhook.getBody());
-               lastWebhook.setContentType(webhook.getContentType());
-               lastWebhook.setStatusCode(webhook.getStatusCode());
-               lastWebhook.setMatched(webhook.isMatched());
-               lastWebhook.setTimestamp(webhook.getTimestamp());
-               lastWebhook.setProcessingTimeMs(webhook.getProcessingTimeMs());
+               var lastWebhook = recycleOldestWebhookDto(webhook, mutableWebhooks);
                resultWrapper.set(lastWebhook);
            } else {
                mutableWebhooks.add(webhook);
@@ -56,6 +48,22 @@ public class WebhookCache extends CaffeineEntityCache<List<WebhookDto>> {
            return mutableWebhooks;
         });
         return resultWrapper.get();
+    }
+
+    private WebhookDto recycleOldestWebhookDto(WebhookDto webhook, ArrayList<WebhookDto> mutableWebhooks) {
+        var oldWebhook = Collections.min(mutableWebhooks, Comparator.comparing(WebhookDto::getTimestamp));
+        oldWebhook.setMethod(webhook.getMethod());
+        oldWebhook.setPath(webhook.getPath());
+        oldWebhook.setFullUrl(webhook.getFullUrl());
+        oldWebhook.setQueryParams(webhook.getQueryParams());
+        oldWebhook.setHeaders(webhook.getHeaders());
+        oldWebhook.setBody(webhook.getBody());
+        oldWebhook.setContentType(webhook.getContentType());
+        oldWebhook.setStatusCode(webhook.getStatusCode());
+        oldWebhook.setMatched(webhook.isMatched());
+        oldWebhook.setTimestamp(webhook.getTimestamp());
+        oldWebhook.setProcessingTimeMs(webhook.getProcessingTimeMs());
+        return oldWebhook;
     }
 
     public List<WebhookDto> getWebhooks(String apiKey) {

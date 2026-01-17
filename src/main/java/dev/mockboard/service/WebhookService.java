@@ -1,13 +1,14 @@
 package dev.mockboard.service;
 
-import dev.mockboard.cache.WebhookCache;
+import dev.mockboard.common.cache.WebhookCache;
 import dev.mockboard.common.domain.MockExecutionResult;
 import dev.mockboard.common.domain.RequestMetadata;
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.WebhookDto;
+import dev.mockboard.config.sse.SseManager;
 import dev.mockboard.common.utils.IdGenerator;
-import dev.mockboard.event.config.DomainEvent;
-import dev.mockboard.event.config.EventQueue;
+import dev.mockboard.event.DomainEvent;
+import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.WebhookRepository;
 import dev.mockboard.repository.model.Webhook;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class WebhookService {
     private final ModelMapper modelMapper;
     private final WebhookCache webhookCache;
     private final WebhookRepository webhookRepository;
-    private final SseService sseService;
+    private final SseManager sseManager;
 
     public List<WebhookDto> getWebhooks(BoardDto boardDto) {
         var cachedWebhooks = webhookCache.getWebhooks(boardDto.getId());
@@ -72,11 +73,11 @@ public class WebhookService {
             if (cachedResultDto.getId().equals(webhookDto.getId())) {
                 var webhook = modelMapper.map(webhookDto, Webhook.class);
                 eventQueue.publish(DomainEvent.create(webhook, Webhook.class));
-                sseService.broadcast(apiKey, webhookDto);
+                sseManager.broadcast(apiKey, webhookDto);
             } else {
                 var webhook = modelMapper.map(cachedResultDto, Webhook.class);
                 eventQueue.publish(DomainEvent.update(webhook, webhook.getId(), Webhook.class));
-                sseService.broadcast(apiKey, cachedResultDto);
+                sseManager.broadcast(apiKey, cachedResultDto);
             }
         } catch (Exception e) {
             log.error("Failed to process webhook", e);

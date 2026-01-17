@@ -1,6 +1,6 @@
 package dev.mockboard.service;
 
-import dev.mockboard.common.engine.TemplateFakerEngine;
+import dev.mockboard.common.faker.TemplateFakerProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TemplateFakerService {
 
-    private final TemplateFakerEngine templateFakerEngine;
+    private final TemplateFakerProcessor templateFakerProcessor;
 
     public String processTemplates(String body) {
         if (body == null || body.isEmpty()) return "{}";
-        return templateFakerEngine.applyFaker(body);
+        return templateFakerProcessor.applyFaker(body);
     }
 }

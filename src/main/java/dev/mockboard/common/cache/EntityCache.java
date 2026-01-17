@@ -1,4 +1,4 @@
-package dev.mockboard.cache.config;
+package dev.mockboard.common.cache;
 
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 

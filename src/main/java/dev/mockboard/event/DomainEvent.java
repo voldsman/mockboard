@@ -1,4 +1,4 @@
-package dev.mockboard.event.config;
+package dev.mockboard.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

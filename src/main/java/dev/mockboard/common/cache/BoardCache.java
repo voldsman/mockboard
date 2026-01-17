@@ -1,6 +1,5 @@
-package dev.mockboard.cache;
+package dev.mockboard.common.cache;
 
-import dev.mockboard.cache.config.CaffeineEntityCache;
 import dev.mockboard.common.domain.dto.BoardDto;
 import org.springframework.stereotype.Component;
 

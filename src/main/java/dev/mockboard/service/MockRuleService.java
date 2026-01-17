@@ -1,7 +1,7 @@
 package dev.mockboard.service;
 
 import dev.mockboard.Constants;
-import dev.mockboard.cache.MockRuleCache;
+import dev.mockboard.common.cache.MockRuleCache;
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.MockRuleDto;
 import dev.mockboard.common.domain.response.IdResponse;
@@ -10,8 +10,8 @@ import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.common.utils.JsonUtils;
 import dev.mockboard.common.validator.MockRuleValidator;
-import dev.mockboard.event.config.DomainEvent;
-import dev.mockboard.event.config.EventQueue;
+import dev.mockboard.event.DomainEvent;
+import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.MockRuleRepository;
 import dev.mockboard.repository.model.MockRule;
 import lombok.RequiredArgsConstructor;
