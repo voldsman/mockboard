@@ -31,7 +31,7 @@ public class MockRuleDto implements Serializable {
     @Transient private Pattern compiledPattern;
 
     public void compilePattern() {
-        if (this.path != null && this.compiledPattern == null) {
+        if (this.path != null) {
             var normalizedPath = StringUtils.removeTrailingSlash(this.path);
             this.compiledPattern = Pattern.compile("^" + escape(normalizedPath) + "$");
         }
