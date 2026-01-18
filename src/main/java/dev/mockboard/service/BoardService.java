@@ -1,14 +1,14 @@
 package dev.mockboard.service;
 
-import dev.mockboard.cache.BoardCache;
-import dev.mockboard.cache.MockRuleCache;
-import dev.mockboard.cache.WebhookCache;
+import dev.mockboard.common.cache.BoardCache;
+import dev.mockboard.common.cache.MockRuleCache;
+import dev.mockboard.common.cache.WebhookCache;
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.common.utils.StringUtils;
-import dev.mockboard.event.config.DomainEvent;
-import dev.mockboard.event.config.EventQueue;
+import dev.mockboard.event.DomainEvent;
+import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.BoardRepository;
 import dev.mockboard.repository.model.Board;
 import lombok.RequiredArgsConstructor;

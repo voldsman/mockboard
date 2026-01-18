@@ -1,4 +1,4 @@
-package dev.mockboard.common.engine;
+package dev.mockboard.common.faker;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,9 +8,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TemplateFakerEngineTest {
+class TemplateFakerProcessorTest {
 
-    private final TemplateFakerEngine engine = new TemplateFakerEngine();
+    private final TemplateFakerProcessor engine = new TemplateFakerProcessor();
 
     @Test
     void replaceValidTokens() {

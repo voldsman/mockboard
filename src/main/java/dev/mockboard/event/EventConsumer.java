@@ -1,8 +1,5 @@
 package dev.mockboard.event;
 
-import dev.mockboard.event.config.DomainEvent;
-import dev.mockboard.event.config.EventQueue;
-import dev.mockboard.event.config.EventType;
 import dev.mockboard.repository.BoardRepository;
 import dev.mockboard.repository.MockRuleRepository;
 import dev.mockboard.repository.WebhookRepository;
@@ -17,7 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Objects;
 
-import static dev.mockboard.Constants.*;
+import static dev.mockboard.Constants.MAX_EVENT_CONSUMER_DRAIN_ELEMS;
 
 @Slf4j
 @Component
@@ -29,21 +26,21 @@ public class EventConsumer {
     private final MockRuleRepository mockRuleRepository;
     private final WebhookRepository webhookRepository;
 
-    @Scheduled(fixedDelay = CREATED_EVENTS_PROCESS_DELAY)
+    @Scheduled(fixedDelayString = "#{T(dev.mockboard.Constants).CREATED_EVENTS_PROCESS_DELAY}")
     public void processCreateEvents() {
         processBoards(EventType.CREATE);
         processMockRules(EventType.CREATE);
         processWebhooks(EventType.CREATE);
     }
 
-    @Scheduled(fixedDelay = UPDATED_EVENTS_PROCESS_DELAY)
+    @Scheduled(fixedDelayString = "#{T(dev.mockboard.Constants).UPDATED_EVENTS_PROCESS_DELAY}")
     public void processUpdateEvents() {
         processBoards(EventType.UPDATE);
         processMockRules(EventType.UPDATE);
         processWebhooks(EventType.UPDATE);
     }
 
-    @Scheduled(fixedDelay = DELETED_EVENTS_PROCESS_DELAY)
+    @Scheduled(fixedDelayString = "#{T(dev.mockboard.Constants).DELETED_EVENTS_PROCESS_DELAY}")
     public void processDeleteEvents() {
         processBoards(EventType.DELETE);
         processMockRules(EventType.DELETE);

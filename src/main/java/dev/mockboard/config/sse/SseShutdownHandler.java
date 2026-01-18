@@ -1,6 +1,5 @@
-package dev.mockboard.handler;
+package dev.mockboard.config.sse;
 
-import dev.mockboard.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SseShutdownHandler implements SmartLifecycle {
 
-    private final SseService sseService;
+    private final SseManager sseManager;
     private boolean isRunning = false;
 
     @Override
@@ -19,7 +18,7 @@ public class SseShutdownHandler implements SmartLifecycle {
 
     @Override
     public void stop() {
-        sseService.onShutdown();
+        sseManager.onShutdown();
         this.isRunning = false;
     }
 

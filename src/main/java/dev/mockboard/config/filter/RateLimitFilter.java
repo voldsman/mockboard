@@ -1,7 +1,7 @@
-package dev.mockboard.filter;
+package dev.mockboard.config.filter;
 
 import dev.mockboard.Constants;
-import dev.mockboard.cache.RateLimiterCache;
+import dev.mockboard.common.cache.RateLimiterCache;
 import dev.mockboard.common.utils.RequestUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

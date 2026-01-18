@@ -1,4 +1,4 @@
-package dev.mockboard.service;
+package dev.mockboard.config.sse;
 
 import dev.mockboard.Constants;
 import dev.mockboard.common.domain.dto.BoardDto;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -17,9 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
-public class SseService {
+public class SseManager {
 
     private final Map<String, List<SseEmitter>> webhookEmitters = new ConcurrentHashMap<>();
 

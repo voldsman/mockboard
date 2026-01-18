@@ -1,5 +1,6 @@
 package dev.mockboard.cache;
 
+import dev.mockboard.common.cache.MockRuleCache;
 import dev.mockboard.common.domain.dto.MockRuleDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

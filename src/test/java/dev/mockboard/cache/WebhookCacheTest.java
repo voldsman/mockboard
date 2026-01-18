@@ -1,6 +1,7 @@
 package dev.mockboard.cache;
 
 import dev.mockboard.Constants;
+import dev.mockboard.common.cache.WebhookCache;
 import dev.mockboard.common.domain.dto.WebhookDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
