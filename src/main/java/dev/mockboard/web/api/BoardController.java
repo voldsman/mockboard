@@ -9,10 +9,12 @@ import dev.mockboard.service.BoardService;
 import dev.mockboard.service.MockRuleService;
 import dev.mockboard.service.WebhookService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class BoardController {
     private final MockRuleService mockRuleService;
     private final WebhookService webhookService;
     private final BoardSecurityService boardSecurityService;
+
+    private final ObjectMapper objectMapper;
 
     @PostMapping
     public ResponseEntity<BoardDto> createBoard(HttpServletRequest _request) {
@@ -51,7 +55,7 @@ public class BoardController {
 
     @PostMapping("/{boardId}/mocks")
     public ResponseEntity<IdResponse> addMockRule(@PathVariable String boardId,
-                                                  @RequestBody MockRuleDto mockRuleDto,
+                                                  @Valid @RequestBody MockRuleDto mockRuleDto,
                                                   @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
         var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, ownerToken);
         var mockId = mockRuleService.createMockRule(boardDto, mockRuleDto);
@@ -69,7 +73,7 @@ public class BoardController {
     @PutMapping("/{boardId}/mocks/{mockRuleId}")
     public ResponseEntity<IdResponse> updateMockRule(@PathVariable String boardId,
                                                      @PathVariable String mockRuleId,
-                                                     @RequestBody MockRuleDto mockRuleDto,
+                                                     @Valid @RequestBody MockRuleDto mockRuleDto,
                                                      @RequestHeader(OWNER_TOKEN_HEADER_KEY) String ownerToken) {
         var boardDto = boardSecurityService.validateOwnershipAndGet(boardId, ownerToken);
         var response = mockRuleService.updateMockRule(boardDto, mockRuleId, mockRuleDto);

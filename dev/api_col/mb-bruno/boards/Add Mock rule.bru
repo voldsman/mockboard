@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: {{SERVER_URL}}/api/boards/01kee5nfvxvjw59za0s3zamaj5/mocks
+  url: {{SERVER_URL}}/api/boards/4cnVW7rTXnf5nJPo53pFsFtf/mocks
   body: json
   auth: inherit
 }
 
 headers {
-  X-Owner-Token: JdI4mprLyVfnkbrdMizmgYZoIqMDW3xff5b5gaNCPjs0f7xH
+  X-Owner-Token: tgaHvfPq2pWYd4vlhdKr3iuweK4c0S9QOuyLd4Oetb7uJ3IM
 }
 
 body:json {
@@ -20,7 +20,8 @@ body:json {
     "path": "/api/users/*/profile",
     "headers": "{\n    \"X-Header\": \"my-value\"\n  }",
     "body": "{\n  \"userId\": \"12345\",\n  \"profile\": {\n    \"profilePic\": \"/12345/pic.jpg\",\n    \"displayName\": \"Vold\"\n  }\n}",
-    "statusCode": 200
+    "statusCode": 200,
+    "delay": 10
   }
 }
 

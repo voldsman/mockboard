@@ -1,5 +1,6 @@
 package dev.mockboard.common.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +14,9 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebhookDto implements Serializable {
+
     private String id;
-    private String boardId;
+    @JsonIgnore private String boardId;
     private String method;
     private String path;
     private String fullUrl;
@@ -22,8 +24,8 @@ public class WebhookDto implements Serializable {
     private String headers;
     private String body;
     private String contentType;
-    private int statusCode;
-    private boolean matched;
+    private Integer statusCode;
+    private Boolean matched;
     private Instant timestamp;
-    private long processingTimeMs;
+    private Long processingTimeMs;
 }

@@ -28,7 +28,7 @@ public class MockRuleRepository {
                     .headers(rs.getString("headers"))
                     .body(rs.getString("body"))
                     .statusCode(rs.getInt("status_code"))
-                    .delay(rs.getLong("delay"))
+                    .delay(rs.getInt("delay"))
                     .timestamp(rs.getTimestamp("created_at").toInstant())
                     .build();
         }
@@ -83,7 +83,7 @@ public class MockRuleRepository {
             ps.setString(5, mockRule.getHeaders());
             ps.setString(6, mockRule.getBody());
             ps.setInt(7, mockRule.getStatusCode());
-            ps.setLong(8, mockRule.getDelay());
+            ps.setInt(8, mockRule.getDelay());
             ps.setTimestamp(9, Timestamp.from(mockRule.getTimestamp()));
         });
     }
@@ -98,7 +98,7 @@ public class MockRuleRepository {
             ps.setString(3, mockRule.getHeaders());
             ps.setString(4, mockRule.getBody());
             ps.setInt(5, mockRule.getStatusCode());
-            ps.setLong(6, mockRule.getDelay());
+            ps.setInt(6, mockRule.getDelay());
             ps.setString(7, mockRule.getId());
         });
     }

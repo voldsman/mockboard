@@ -30,8 +30,8 @@ public class LoggingAspectConfig {
 
     @Pointcut(
             "within(dev.mockboard.web..*)" +
-                    " || within(dev.mockboard.service..*)" +
-                    " || within(dev.mockboard.repository..*)"
+                    " || within(dev.mockboard.service..*)" //+
+//                    " || within(dev.mockboard.repository..*)"
     )
     public void applicationPackagePointcut() {
         // noop

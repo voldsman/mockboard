@@ -16,6 +16,7 @@ import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -44,14 +45,15 @@ public class MockExecutionService {
         if (CollectionUtils.isEmpty(mockRules)) {
             return Optional.empty();
         }
+        var normalizedPath = StringUtils.removeTrailingSlash(path);
         return mockRules.stream()
                 .filter(r -> r.getMethod().equalsIgnoreCase(method))
-                .filter(r -> r.matches(path))
+                .filter(r -> r.matches(normalizedPath))
                 .min((r1, r2) -> {
-                    int wld1 = StringUtils.countWildcards(r1.getPath());
-                    int wld2 = StringUtils.countWildcards(r2.getPath());
-                    if (wld1 != wld2) return Integer.compare(wld1, wld2);
-                    return Integer.compare(r2.getPath().length(), r1.getPath().length());
+                    if (!Objects.equals(r1.getWildcardCount(), r2.getWildcardCount())) {
+                        return Integer.compare(r1.getWildcardCount(), r2.getWildcardCount());
+                    }
+                    return Integer.compare(r2.getPathLength(), r1.getPathLength());
                 });
     }
 

@@ -5,19 +5,25 @@ meta {
 }
 
 put {
-  url: {{SERVER_URL}}/api/boards/6955a56b3baa4f77dd96a3b7/mocks/6955b0863498a2ce661f4008
+  url: {{SERVER_URL}}/api/boards/4cnVW7rTXnf5nJPo53pFsFtf/mocks/01kf9b0y1r8y7zxjg87x9fwkqm
   body: json
   auth: inherit
 }
 
+headers {
+  X-Owner-Token: tgaHvfPq2pWYd4vlhdKr3iuweK4c0S9QOuyLd4Oetb7uJ3IM
+}
+
 body:json {
   {
-    "method": "POST",
-    "path": "/api/users/*",
-    "headers": {
-      "X-Header": "my-value"
-    },
-    "statusCode": 200
+    "id": "01kf9b0y1r8y7zxjg87x9fwkqm",
+    "method": "GET",
+    "path": "/api/users/*/profile/*/files",
+    "headers": "{\"X-Header\":\"my-value\"}",
+    "body": "{\"userId\":\"12345\",\"profile\":{\"profilePic\":\"/12345/pic.jpg\",\"displayName\":\"Vold\"}}",
+    "statusCode": 200,
+    "delay": 10000,
+    "timestamp": "2026-01-18T19:58:59.128694Z"
   }
 }
 
