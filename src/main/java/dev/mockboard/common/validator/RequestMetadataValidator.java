@@ -27,6 +27,9 @@ public class RequestMetadataValidator {
         if (request.getRequestURI().length() > Constants.MAX_PATH_LENGTH) {
             throw new IllegalArgumentException("Allowed path length exceeded");
         }
+        if (request.getQueryString().length() > Constants.MAX_QUERY_STRING_LENGTH) {
+            throw new IllegalArgumentException("Allowed query string length exceeded");
+        }
         var body = extractAndValidateBody(request);
         if (!body.isBlank() && !isValidJson(body)) {
             throw new IllegalArgumentException("Invalid JSON payload");

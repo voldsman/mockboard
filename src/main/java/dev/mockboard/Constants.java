@@ -37,6 +37,7 @@ public final class Constants {
     public static final Pattern VALID_PATH_PATTERN = Pattern.compile("^/[a-zA-Z0-9/_\\-*]+$");
     public static final Set<String> VALID_HTTP_METHODS = Set.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS");
     public static final int MAX_PATH_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_PATH_LENGTH", 250);
+    public static final int MAX_QUERY_STRING_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_QUERY_STRING_LENGTH", 250);
     public static final int MAX_BODY_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_BODY_LENGTH", 5_000);
     public static final int MAX_WILDCARDS = Env.getInt("MBD_VALIDATION_MOCK_MAX_WILDCARDS", 3);
     public static final int MAX_HEADERS_SIZE = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADERS", 5);
