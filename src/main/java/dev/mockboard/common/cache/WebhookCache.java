@@ -60,7 +60,7 @@ public class WebhookCache extends CaffeineEntityCache<List<WebhookDto>> {
         oldWebhook.setBody(webhook.getBody());
         oldWebhook.setContentType(webhook.getContentType());
         oldWebhook.setStatusCode(webhook.getStatusCode());
-        oldWebhook.setMatched(webhook.isMatched());
+        oldWebhook.setMatched(webhook.getMatched());
         oldWebhook.setTimestamp(webhook.getTimestamp());
         oldWebhook.setProcessingTimeMs(webhook.getProcessingTimeMs());
         return oldWebhook;

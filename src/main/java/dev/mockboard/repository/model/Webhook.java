@@ -22,7 +22,7 @@ public class Webhook implements Serializable {
     private String headers;
     private String body;
     private String contentType;
-    private int statusCode;
+    private Integer statusCode;
 
     // metadata
     private boolean matched;

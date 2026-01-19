@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Slf4j
 public class FifoBuffer<T> implements EventBuffer<T> {
 
-    private final BlockingQueue<DomainEvent<T>> queue = new LinkedBlockingQueue<>(Constants.EVENT_FIFO_QUEUE_CAPACITY);
+    private final BlockingQueue<DomainEvent<T>> queue = new LinkedBlockingQueue<>();//Constants.EVENT_FIFO_QUEUE_CAPACITY
 
     @Override
     public void add(DomainEvent<T> event) {

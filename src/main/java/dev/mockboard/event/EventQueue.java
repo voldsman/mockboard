@@ -21,8 +21,9 @@ public class EventQueue {
         buffers.put(Board.class, new FifoBuffer<>());
         buffers.put(MockRule.class, new FifoBuffer<>());
 
-        // webhooks handle duplications
+        // webhooks should handle duplications
         buffers.put(Webhook.class, new DedupBuffer<>());
+        log.info("Initialized event queue with {} buffers", buffers.size());
     }
 
     @SuppressWarnings("unchecked")

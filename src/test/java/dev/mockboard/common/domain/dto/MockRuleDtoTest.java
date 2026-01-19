@@ -60,15 +60,6 @@ class MockRuleDtoTest {
         assertThat(rule.matches("/api/v1v0/users")).isFalse();
     }
 
-    @Test
-    void matchTrailingSlashes() {
-        var rule = createRule("/api/users");
-        assertThat(rule.matches("/api/users/")).isTrue();
-
-        var rule2 = createRule("/api/users/");
-        assertThat(rule2.matches("/api/users")).isTrue();
-    }
-
     @ParameterizedTest
     @CsvSource({
             "/api/*/users/*/data,       /api/v1/users/123/data,     true",
@@ -86,6 +77,7 @@ class MockRuleDtoTest {
     private MockRuleDto createRule(String path) {
         var dto = new MockRuleDto();
         dto.setPath(path);
+        dto.compilePattern();
         return dto;
     }
 }

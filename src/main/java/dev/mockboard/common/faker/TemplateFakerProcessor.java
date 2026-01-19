@@ -16,7 +16,6 @@ public class TemplateFakerProcessor {
     private final StringSubstitutor substitutor;
 
     public TemplateFakerProcessor() {
-        log.info("Initializing faker...");
         TemplateFakerDictionary.initializeDictionary();
 
         StringLookup fakerLookup = key -> {

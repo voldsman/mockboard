@@ -1,22 +1,24 @@
 package dev.mockboard.config.advice;
 
+import dev.mockboard.common.domain.ExceptionResponse;
 import dev.mockboard.common.exception.BadRequestException;
 import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.exception.RateLimitExceededException;
 import dev.mockboard.common.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class ExceptionHandlerAdvice {
-
-    private record ExceptionResponse(String error, LocalDateTime timestamp) {}
 
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException ex) {
@@ -52,6 +54,16 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ExceptionResponse> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
         var exceptionResponse = new ExceptionResponse(ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        var errors = new HashMap<String, String>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+        var response = new ExceptionResponse("Validation failed", LocalDateTime.now(), errors);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({Exception.class})

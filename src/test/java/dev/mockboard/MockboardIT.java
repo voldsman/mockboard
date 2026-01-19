@@ -74,6 +74,7 @@ public class MockboardIT {
                 .path("/api/test")
                 .statusCode(200)
                 .body("{\"message\":\"success\"}")
+                .delay(0)
                 .build();
 
         var response = restClient.post()
@@ -117,6 +118,7 @@ public class MockboardIT {
                 .path("/api/updated")
                 .statusCode(201)
                 .body("{\"message\": \"updated\"}")
+                .delay(0)
                 .build();
 
         var response = restClient.put()
