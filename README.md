@@ -1,36 +1,22 @@
-<p align="center">
-
+<div align="center">
   <img src="/public/readme_logo.png" alt="MockBoard.dev Logo" width="150"/>
+  <h1>MockBoard.dev</h1>
+</div>
 
-  <h1 align="center">MockBoard.dev</h1>
-
-</p>
-
-
-<p align="center">
-
+<div align="center">
   <strong>Self-Hosted API Mocking Without the Overhead</strong>
-
   <br>
-
   Built on Java 21 & Spring Boot 4
+</div>
+<br>
 
-</p>
-
-
-<p align="center">
-
+<div align="center">
   <img src="https://img.shields.io/badge/Java-21-orange" alt="Java 21">
-
   <img src="https://img.shields.io/badge/Spring_Boot-4.0-brightgreen" alt="Spring Boot 4">
-
   <img src="https://img.shields.io/badge/Status-Alpha-red" alt="Status">
-
   <img src="https://img.shields.io/badge/License-MIT-blue" alt="License">
+</div>
 
-</p>
-
----
 
 ## ⚡ What is MockBoard.dev?
 
@@ -68,6 +54,8 @@ It's simple to use, but under the hood it's designed to handle a lot of traffic 
 > 
 >This architecture works both for solo use when you deploy locally, but also allows working in small teams if needed, so you can host it as a web version.
 
+---
+
 ### 🛠️ Usage
 #### How to Mock an API
 1. **Create a Board** → Get a unique URL: e.g., `http://localhost:8000/m/21gDw5rJ68BDCzZzjumF7XM9`
@@ -94,6 +82,7 @@ Call it: `curl http://localhost:8000/m/21gDw5rJ68BDCzZzjumF7XM9/api/users`
 Get dynamic data back every time. Simple.
 
 ---
+
 ### ✨ Features
 
 ### Response Delay (up to 10 seconds by default)
