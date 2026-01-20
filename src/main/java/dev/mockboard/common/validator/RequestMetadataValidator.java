@@ -52,7 +52,7 @@ public class RequestMetadataValidator {
         var headers = new HashMap<String, String>();
         var names = request.getHeaderNames();
         int count = 0;
-        while (names.hasMoreElements() && count < 15) {
+        while (names.hasMoreElements() && count < Constants.MAX_WEBHOOK_HEADERS_SIZE) {
             var name = names.nextElement();
             var value = request.getHeader(name);
             if (name.length() < Constants.MAX_HEADER_KEY_LENGTH &&

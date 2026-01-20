@@ -40,7 +40,8 @@ public final class Constants {
     public static final int MAX_QUERY_STRING_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_QUERY_STRING_LENGTH", 250);
     public static final int MAX_BODY_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_BODY_LENGTH", 5_000);
     public static final int MAX_WILDCARDS = Env.getInt("MBD_VALIDATION_MOCK_MAX_WILDCARDS", 3);
-    public static final int MAX_HEADERS_SIZE = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADERS", 5);
+    public static final int MAX_HEADERS_SIZE = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADERS_SIZE", 5);
+    public static final int MAX_WEBHOOK_HEADERS_SIZE = Env.getInt("MBD_VALIDATION_MOCK_MAX_WEBHOOK_HEADERS_SIZE", 15);
     public static final int MAX_HEADER_KEY_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_KEY_LENGTH", 100);
     public static final int MAX_HEADER_VALUE_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_VALUE_LENGTH", 500);
 

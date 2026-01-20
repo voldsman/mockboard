@@ -13,23 +13,38 @@ const props = defineProps({
     }
 });
 
+const parsedQueryParams = computed(() => {
+    if (!props.webhook.queryParams) return []
+
+    return props.webhook.queryParams
+        .split("&")
+        .filter(Boolean)
+        .map(param => {
+            const [key, value] = param.split("=");
+            return {
+                key: decodeURIComponent(key || ''),
+                value: decodeURIComponent(value || ''),
+            }
+        })
+})
+
 const parsedHeaders = computed(() => {
     const raw = props.webhook.headers;
     if (!raw) return [];
     return Object.entries(typeof raw === 'string' ? JSON.parse(raw) : raw)
-        .map(([key, value]) => ({ key, value }));
-});
+        .map(([key, value]) => ({ key, value }))
+})
 
 const formattedBody = computed(() => {
     try {
         const body = props.webhook.body;
         return typeof body === 'string'
-            ? JSON.stringify(JSON.parse(body), null, 4)
-            : JSON.stringify(body, null, 4);
+            ? JSON.stringify(JSON.parse(body), null, 2)
+            : JSON.stringify(body, null, 2);
     } catch (e) {
-        return props.webhook.body || '{}';
+        return props.webhook.body || '{}'
     }
-});
+})
 
 const handleClose = () => {
     selectionState.clear();
@@ -61,7 +76,7 @@ const handleClose = () => {
                     </span>
                 </div>
                 <div class="flex-grow-1 bg-white">
-                    <div class="form-control border-0 font-mono py-3 text-dark bg-transparent">
+                    <div class="form-control border-0 font-mono py-3 text-dark bg-transparent text-break">
                         {{ webhook.path }}
                     </div>
                 </div>
@@ -70,6 +85,27 @@ const handleClose = () => {
                         {{ webhook.statusCode }}
                     </span>
                 </div>
+            </div>
+        </div>
+
+        <div class="mb-4" v-if="parsedQueryParams.length > 0">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label fw-bold text-muted small text-uppercase">Request Query Params</label>
+                <small class="text-muted font-mono">{{ parsedQueryParams.length }} items</small>
+            </div>
+            <div class="bg-white border rounded shadow-sm">
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody class="font-mono">
+                    <tr v-for="(param, index) in parsedQueryParams" :key="index" class="border-bottom last-child-border-0">
+                        <td class="ps-3 py-2 text-muted fw-bold text-break" style="width: 30%;">
+                            {{ param.key }}
+                        </td>
+                        <td class="py-2 text-dark text-break">
+                            {{ param.value }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -82,10 +118,10 @@ const handleClose = () => {
                 <table class="table table-sm table-borderless mb-0">
                     <tbody class="font-mono">
                     <tr v-for="(header, index) in parsedHeaders" :key="index" class="border-bottom last-child-border-0">
-                        <td class="ps-3 py-2 text-muted fw-bold" style="width: 30%;">
+                        <td class="ps-3 py-2 text-muted fw-bold text-break" style="width: 30%;">
                             {{ header.key }}
                         </td>
-                        <td class="py-2 text-dark">
+                        <td class="py-2 text-dark text-break">
                             {{ header.value }}
                         </td>
                     </tr>
