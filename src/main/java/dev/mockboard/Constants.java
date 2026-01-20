@@ -44,6 +44,7 @@ public final class Constants {
     public static final int MAX_WEBHOOK_HEADERS_SIZE = Env.getInt("MBD_VALIDATION_MOCK_MAX_WEBHOOK_HEADERS_SIZE", 15);
     public static final int MAX_HEADER_KEY_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_KEY_LENGTH", 100);
     public static final int MAX_HEADER_VALUE_LENGTH = Env.getInt("MBD_VALIDATION_MOCK_MAX_HEADER_VALUE_LENGTH", 500);
+    public static final int MAX_ALLOWED_DELAY = Env.getInt("MBD_VALIDATION_MOCK_MAX_ALLOWED_DELAY", 10_000);
 
     // sse
     public static final int MAX_SSE_EMITTERS_PER_BOARD = 1;

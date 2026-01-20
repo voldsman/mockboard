@@ -1,5 +1,6 @@
 package dev.mockboard.common.validator;
 
+import dev.mockboard.Constants;
 import dev.mockboard.common.domain.dto.MockRuleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -106,8 +107,8 @@ public class MockRuleValidator {
     }
 
     private void validateDelay(long delay) {
-        if (delay < 0 || delay > 10_000) {
-            throw new IllegalArgumentException("Delay must be in the range 0...10000");
+        if (delay < 0 || delay > Constants.MAX_ALLOWED_DELAY) {
+            throw new IllegalArgumentException("Delay must be in the range 0..." + Constants.MAX_ALLOWED_DELAY);
         }
     }
 }
