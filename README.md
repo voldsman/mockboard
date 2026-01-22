@@ -63,6 +63,7 @@ It's simple to use, but under the hood it's designed to handle a lot of traffic 
 
 ### 🛠️ Usage
 #### How to Mock an API
+Follow the [Hosting Guide](#-hosting).
 1. **Create a Board** → Get a unique URL: e.g., `http://localhost:8000/m/21gDw5rJ68BDCzZzjumF7XM9`
 2. **Add Endpoints** → Define what paths you want to mock (e.g., `/users`, `/api/data`)
 3. **Make Requests** → Append your endpoint to the board URL: `curl http://localhost:8000/m/21gDw5rJ68BDCzZzjumF7XM9/users`
@@ -157,14 +158,36 @@ Perfect for debugging, monitoring webhooks, or watching integration tests in act
 
 ---
 ## 🚀 Hosting
+<a name="hosting"></a>
 ### Self-hosted version
-All you need to do 
+**Prerequisites:** [Java 21+](https://adoptium.net) or [Docker Desktop](https://www.docker.com).
+#### Option 1: Native (Maven)
+Build and run the application locally:
+
 ```shell
 git clone https://github.com/voldpix/mockboard.git
 cd mockboard
-docker compose up -d --build
+./mvnw spring-boot:run
+
+#or
+
+mvn clean package -DskipTests
+java -jar target/mockboard*.jar
+
+# Browser access: http://localhost:8000
 ```
-**Note:** The first build might take some time, as it prioritizes offline dependencies. Follow-up launches will be quick.
+
+#### Option 2: Docker (Recommended)
+The easiest way to get started without installing Java:
+
+```shell
+git clone https://github.com/voldpix/mockboard.git
+cd mockboard
+
+docker compose up -d --build
+# Browser access: http://localhost:88888
+```
+**Note:** The first docker build might take some time, as it prioritizes offline dependencies. Follow-up launches will be quick.
 
 #### Configuration
 Most limits are configurable via [Constants.java](src/main/java/dev/mockboard/Constants.java). You can adjust them either through the docker compose file or by updating the class directly.
@@ -173,8 +196,7 @@ Most limits are configurable via [Constants.java](src/main/java/dev/mockboard/Co
 The Vue frontend is currently built and bundled into Spring Boot (`src/main/resources/static`), which makes UI-specific changes a bit tricky. If you need to modify the UI:
 > Make your changes in the Vue app
 > 
-> Build: `npm run build` (outputs to Spring Boot resources - see [vite.config.js](src/main/frontend/vite.config.js)
-)
+> Build: `npm run build` (outputs to Spring Boot resources - see [vite.config.js](src/main/frontend/vite.config.js))
 >
 > Run `docker compose up -d --build`
 <br><br>Note: I'm working on making this easier.

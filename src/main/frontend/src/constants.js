@@ -1,6 +1,6 @@
 export default {
     // base
-    APP_VERSION: '0.0.1-dev',
+    APP_VERSION: '0.1-beta',
 
     // ls
     BOARD_DATA: 'BOARD_DATA',

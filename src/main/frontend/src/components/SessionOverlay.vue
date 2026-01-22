@@ -148,19 +148,18 @@ const reloadPage = () => {
                         </button>
                     </div>
 
-                    <div class="bg-light p-3 rounded-2 text-center border border-secondary border-opacity-10">
-
-                        <p class="mb-1 small fw-bold text-dark">
-                            <i class="bi bi-clock me-1"></i> Hard Reset at 03:00 UTC
-                        </p>
-                        <p class="text-muted small mb-3" style="font-size: 0.8rem;">
-                            All data is vaporized daily. Don't get attached.
-                        </p>
-
-                        <router-link to="/fair-use" class="small text-decoration-underline text-secondary">
-                            Fair Use Policy
-                        </router-link>
-                    </div>
+<!--                    For web version, commenting out for self host-->
+<!--                    <div class="bg-light p-3 rounded-2 text-center border border-secondary border-opacity-10">-->
+<!--                        <p class="mb-1 small fw-bold text-dark">-->
+<!--                            <i class="bi bi-clock me-1"></i> Hard Reset at 03:00 UTC-->
+<!--                        </p>-->
+<!--                        <p class="text-muted small mb-3" style="font-size: 0.8rem;">-->
+<!--                            All data is vaporized daily. Don't get attached.-->
+<!--                        </p>-->
+<!--                        <router-link to="/fair-use" class="small text-decoration-underline text-secondary">-->
+<!--                            Fair Use Policy-->
+<!--                        </router-link>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
