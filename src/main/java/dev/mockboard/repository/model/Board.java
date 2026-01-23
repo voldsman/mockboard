@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Map;
 
 @Data
 @Builder
@@ -17,4 +18,5 @@ public class Board implements Serializable {
     private String id; // id and apiKey
     private String ownerToken;
     private Instant timestamp;
+    private Map<BoardStatType, Long> stats;
 }

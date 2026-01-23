@@ -1,16 +1,20 @@
 package dev.mockboard.repository;
 
+import dev.mockboard.common.utils.JsonUtils;
 import dev.mockboard.repository.model.Board;
+import dev.mockboard.repository.model.BoardStatType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import tools.jackson.core.type.TypeReference;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +23,8 @@ public class BoardRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private static final TypeReference<Map<BoardStatType, Long>> STATS_TYPE = new TypeReference<>() {};
+
     private static class BoardRowMapper implements RowMapper<Board> {
         @Override
         public Board mapRow(ResultSet rs, int _rowNum) throws SQLException {
@@ -26,6 +32,7 @@ public class BoardRepository {
                     .id(rs.getString("id"))
                     .ownerToken(rs.getString("owner_token"))
                     .timestamp(rs.getTimestamp("created_at").toInstant())
+                    .stats(JsonUtils.jsonStringToType(rs.getString("stats"), STATS_TYPE))
                     .build();
         }
     }
@@ -70,6 +77,16 @@ public class BoardRepository {
             ps.setString(1, board.getId());
             ps.setString(2, board.getOwnerToken());
             ps.setTimestamp(3, Timestamp.from(board.getTimestamp()));
+        });
+    }
+
+    public void batchUpdate(List<Board> boards) {
+        var sql = """
+                UPDATE boards SET stats = ? WHERE id = ?;
+                """;
+        jdbcTemplate.batchUpdate(sql, boards, boards.size(), (ps, board) -> {
+            ps.setString(1, JsonUtils.toJsonString(board.getStats()));
+            ps.setString(2, board.getId());
         });
     }
 

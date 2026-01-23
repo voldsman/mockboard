@@ -47,3 +47,5 @@ CREATE TABLE IF NOT EXISTS webhooks (
             REFERENCES boards(id)
             ON DELETE CASCADE
 );
+
+ALTER TABLE boards ADD COLUMN IF NOT EXISTS stats JSON NOT NULL DEFAULT '{}';
