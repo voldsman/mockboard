@@ -12,7 +12,7 @@
 
     <groupId>dev.mockboard</groupId>
     <artifactId>mockboard</artifactId>
-    <version>0.1-beta</version>
+    <version>0.2-beta</version>
     <name>mockboard</name>
 
     <properties>

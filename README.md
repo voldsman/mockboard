@@ -13,7 +13,7 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Java-21-orange" alt="Java 21">
   <img src="https://img.shields.io/badge/Spring_Boot-4.0-brightgreen" alt="Spring Boot 4">
-  <img src="https://img.shields.io/badge/Status-Alpha-red" alt="Status">
+  <img src="https://img.shields.io/badge/Status-Beta-red" alt="Status">
   <img src="https://img.shields.io/badge/License-MIT-blue" alt="License">
 </div>
 
@@ -165,7 +165,7 @@ Perfect for debugging, monitoring webhooks, or watching integration tests in act
 #### Get the Latest Beta
 To ensure stability, clone the specific tag:
 ```shell
-git clone --branch 0.1-beta --single-branch https://github.com/voldpix/mockboard.git
+git clone --branch 0.2-beta --single-branch https://github.com/voldpix/mockboard.git
 
 # or get a current active branch (might be unstable or contain bugs)
 git clone https://github.com/voldpix/mockboard.git
