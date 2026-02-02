@@ -95,7 +95,6 @@ public class MockRuleService {
         existingDto.compilePattern();
 
         var mockRule = modelMapper.map(existingDto, MockRule.class);
-        mockRule.markNotNew();
         mockRuleRepository.update(mockRule);
 
         mockRuleCache.updateMockRule(boardDto.getId(), existingDto);
