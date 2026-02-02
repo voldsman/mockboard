@@ -16,7 +16,7 @@ spring:
         virtual:
             enabled: ${VI_THREADS:true}
     datasource:
-        url: ${DB_PATH:jdbc:h2:file:../data/mockboard_dev;MODE=MySQL;AUTO_SERVER=TRUE}
+        url: ${DB_PATH:jdbc:h2:file:../data/mockboard_dev;MODE=MySQL;AUTO_SERVER=TRUE;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE}
         driver-class-name: org.h2.Driver
         username: ${DB_USERNAME:sa}
         password: ${DB_PASSWORD:}

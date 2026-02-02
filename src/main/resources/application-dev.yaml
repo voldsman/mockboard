@@ -14,3 +14,4 @@ logging:
     level:
         dev.mockboard: DEBUG
         org.springframework.web: DEBUG
+        org.springframework.jdbc.core.JdbcTemplate: DEBUG

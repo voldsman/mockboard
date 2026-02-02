@@ -1,6 +1,5 @@
 package dev.mockboard.event;
 
-import dev.mockboard.Constants;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -9,9 +8,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public class FifoBuffer<T> implements EventBuffer<T> {
 
-    private final BlockingQueue<DomainEvent<T>> queue = new LinkedBlockingQueue<>(Constants.EVENT_FIFO_QUEUE_CAPACITY);
+    private final BlockingQueue<DomainEvent<T>> queue = new LinkedBlockingQueue<>(1);
 
     @Override
     public void add(DomainEvent<T> event) {

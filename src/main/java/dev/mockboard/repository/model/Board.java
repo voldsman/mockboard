@@ -1,20 +1,32 @@
 package dev.mockboard.repository.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-@Data
-@Builder
+@Getter
+@Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board implements Serializable {
+@EqualsAndHashCode(callSuper = false, of = {"id", "ownerToken"})
 
-    private String id; // id and apiKey
+@Table("boards")
+public class Board extends PersistableEntity<String> implements Serializable {
+
+    @Id
+    private String id;
+
+    @Column("owner_token")
     private String ownerToken;
+
+    @Column("created_at")
     private Instant timestamp;
+
+    private boolean deleted;
 }

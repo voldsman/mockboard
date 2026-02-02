@@ -10,14 +10,13 @@ import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.common.utils.JsonUtils;
 import dev.mockboard.common.validator.MockRuleValidator;
-import dev.mockboard.event.DomainEvent;
-import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.MockRuleRepository;
 import dev.mockboard.repository.model.MockRule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
@@ -29,12 +28,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MockRuleService {
 
-    private final EventQueue eventQueue;
     private final ModelMapper modelMapper;
     private final MockRuleValidator mockRuleValidator;
     private final MockRuleRepository mockRuleRepository;
     private final MockRuleCache mockRuleCache;
 
+    @Transactional
     public IdResponse createMockRule(BoardDto boardDto, MockRuleDto mockRuleDto) {
         var existingMockRules = getMockRules(boardDto);
         if (existingMockRules.size() >= Constants.MAX_MOCK_RULES) {
@@ -53,7 +52,7 @@ public class MockRuleService {
         mockRuleCache.addMockRule(boardDto.getId(), mockRuleDto);
 
         var mockRule = modelMapper.map(mockRuleDto, MockRule.class);
-        eventQueue.publish(DomainEvent.create(mockRule, mockRule.getId(), MockRule.class));
+        mockRuleRepository.save(mockRule);
         log.info("Mock rule added bo board: {}", boardDto.getId());
         return new IdResponse(mockRule.getId());
     }
@@ -61,7 +60,7 @@ public class MockRuleService {
     public List<MockRuleDto> getMockRules(BoardDto boardDto) {
         var cachedMockRules = mockRuleCache.getMockRules(boardDto.getId());
         if (CollectionUtils.isEmpty(cachedMockRules)) {
-            var persistedMockRules = mockRuleRepository.findByBoardId(boardDto.getId());
+            var persistedMockRules = mockRuleRepository.findByBoardIdAndDeletedFalseOrderByTimestampDesc(boardDto.getId());
             if (CollectionUtils.isEmpty(persistedMockRules)) {
                 return Collections.emptyList();
             }
@@ -76,6 +75,7 @@ public class MockRuleService {
         return cachedMockRules;
     }
 
+    @Transactional
     public IdResponse updateMockRule(BoardDto boardDto, String mockRuleId, MockRuleDto mockRuleDto) {
         log.debug("updating mock rule={} for boardId={}", mockRuleId, boardDto.getId());
         mockRuleValidator.validateMockRule(mockRuleDto);
@@ -94,15 +94,18 @@ public class MockRuleService {
         existingDto.setDelay(mockRuleDto.getDelay());
         existingDto.compilePattern();
 
-        mockRuleCache.updateMockRule(boardDto.getId(), existingDto);
-
         var mockRule = modelMapper.map(existingDto, MockRule.class);
-        eventQueue.publish(DomainEvent.update(mockRule, mockRuleId, MockRule.class));
+        mockRule.markNotNew();
+        mockRuleRepository.update(mockRule);
+
+        mockRuleCache.updateMockRule(boardDto.getId(), existingDto);
+        log.info("Mock rule: {} updated for board: {}", mockRuleId, boardDto.getId());
         return new IdResponse(mockRuleId);
     }
 
+    @Transactional
     public void deleteMockRule(BoardDto boardDto, String mockRuleId) {
-        log.info("deleting mock rule={} for boardId={}", mockRuleId, boardDto.getId());
+        log.info("soft delete mock rule={} for boardId={}", mockRuleId, boardDto.getId());
         var mockRules = getMockRules(boardDto);
         var match = mockRules.stream().filter(m -> m.getId().equals(mockRuleId)).findFirst().orElse(null);
         if (match == null) {
@@ -111,6 +114,7 @@ public class MockRuleService {
         }
 
         mockRuleCache.deleteMockRule(boardDto.getId(), mockRuleId);
-        eventQueue.publish(DomainEvent.delete(mockRuleId, MockRule.class));
+        mockRuleRepository.markDeleted(mockRuleId);
+        log.info("Mock rule marked as deleted: {}", mockRuleId);
     }
 }

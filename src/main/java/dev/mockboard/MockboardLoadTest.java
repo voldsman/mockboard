@@ -17,34 +17,34 @@ public class MockboardLoadTest {
     /*
     LATEST TEST:
 
-    Concurrent Users: 500
-    Requests per User: 2000
+    Concurrent Users: 499
+    Requests per User: 100
 
-    Duration: 166 seconds
-    Total Requests: 1006000
-    Successful: 1006000 (100.0%)
+    Duration: 4 seconds
+    Total Requests: 55888
+    Successful: 55888 (100.0%)
     Failed: 0 (0.0%)
-    Throughput: 6060 req/sec
+    Throughput: 13972 req/sec
 
     Status Code Distribution:
-    200: 1000000 requests
-    201: 3000 requests
-    204: 3000 requests
+    200: 49900 requests
+    201: 2994 requests
+    204: 2994 requests
 
     Response Times(ms):
     min: 0
-    max: 1358
-    avg: 38.54447017892644
-    p50: 32
-    p95: 92
-    p99: 123
+    max: 260
+    avg: 9.074756656169482
+    p50: 2
+    p95: 50
+    p99: 113
      */
 
     private static final String BASE_URL = "http://localhost:8000";
     private static final ObjectMapper JSON = new ObjectMapper();
 
-    private static final int CONCURRENT_USERS = 500;
-    private static final int REQUESTS_PER_USER = 2000;
+    private static final int CONCURRENT_USERS = 499;
+    private static final int REQUESTS_PER_USER = 100;
 
     private static final LongAdder totalRequests = new LongAdder();
     private static final LongAdder successfulRequests = new LongAdder();
