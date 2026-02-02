@@ -5,8 +5,8 @@ import dev.mockboard.common.domain.MockExecutionResult;
 import dev.mockboard.common.domain.RequestMetadata;
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.WebhookDto;
-import dev.mockboard.config.sse.SseManager;
 import dev.mockboard.common.utils.IdGenerator;
+import dev.mockboard.config.sse.SseManager;
 import dev.mockboard.event.DomainEvent;
 import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.WebhookRepository;
@@ -42,18 +42,18 @@ public class WebhookService {
     }
 
     @Async
-    public void processWebhookAsync(String apiKey, RequestMetadata metadata, MockExecutionResult result, long executionTime) {
+    public void processWebhookAsync(String boardId, RequestMetadata metadata, MockExecutionResult result, long executionTime) {
         try {
-            var webhooks = webhookCache.getWebhooks(apiKey);
+            var webhooks = webhookCache.getWebhooks(boardId);
             if (CollectionUtils.isEmpty(webhooks)) {
-                log.debug("Initializing webhooks cache for apiKey: {}", apiKey);
-                getWebhooks(apiKey);
+                log.debug("Initializing webhooks cache for boardId: {}", boardId);
+                getWebhooks(boardId);
             }
 
-            log.debug("Processing webhook async [{}] for key: {}", Thread.currentThread(), apiKey);
+            log.debug("Processing webhook async [{}] for key: {}", Thread.currentThread(), boardId);
             var webhookDto = new WebhookDto();
             webhookDto.setId(IdGenerator.generateId());
-            webhookDto.setBoardId(apiKey);
+            webhookDto.setBoardId(boardId);
             webhookDto.setMatched(result.matchingMockRuleDto() != null);
             webhookDto.setProcessingTimeMs(executionTime);
             webhookDto.setTimestamp(Instant.now());
@@ -67,25 +67,25 @@ public class WebhookService {
             webhookDto.setContentType(metadata.contentType());
             webhookDto.setStatusCode(result.statusCode());
 
-            var cachedResultDto = webhookCache.addWebhook(apiKey, webhookDto);
+            var cachedResultDto = webhookCache.addWebhook(boardId, webhookDto);
             // when ids are equals - means new object added, should process insert
             // otherwise - reference rewrite happened, should process update and use cachedResultDto
             if (cachedResultDto.getId().equals(webhookDto.getId())) {
                 var webhook = modelMapper.map(webhookDto, Webhook.class);
                 eventQueue.publish(DomainEvent.create(webhook, webhook.getId(), Webhook.class));
-                sseManager.broadcast(apiKey, webhookDto);
+                sseManager.broadcast(boardId, webhookDto);
             } else {
                 var webhook = modelMapper.map(cachedResultDto, Webhook.class);
                 eventQueue.publish(DomainEvent.update(webhook, webhook.getId(), Webhook.class));
-                sseManager.broadcast(apiKey, cachedResultDto);
+                sseManager.broadcast(boardId, cachedResultDto);
             }
         } catch (Exception e) {
             log.error("Failed to process webhook", e);
         }
     }
 
-    private List<WebhookDto> getWebhooks(String apiKey) {
-        var persistedWebhooks = webhookRepository.findByBoardId(apiKey);
+    private List<WebhookDto> getWebhooks(String boardId) {
+        var persistedWebhooks = webhookRepository.findByBoardIdOrderByTimestampDesc(boardId);
         if (CollectionUtils.isEmpty(persistedWebhooks)) {
             return Collections.emptyList();
         }
@@ -93,7 +93,7 @@ public class WebhookService {
         var dtos = persistedWebhooks.stream()
                 .map(webhook -> modelMapper.map(webhook, WebhookDto.class))
                 .toList();
-        webhookCache.addWebhooks(apiKey, dtos);
+        webhookCache.addWebhooks(boardId, dtos);
         return dtos;
     }
 }

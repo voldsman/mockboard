@@ -5,14 +5,12 @@ services:
             dockerfile: Dockerfile
         environment:
           - SPRING_PROFILES_ACTIVE=default
-          - DB_PATH=jdbc:h2:file:/backend/data/mockboard_dev;MODE=MySQL;AUTO_SERVER=TRUE
+          - DB_PATH=jdbc:h2:file:/backend/data/mockboard_db;MODE=MySQL;AUTO_SERVER=TRUE;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
           # app config
           - MBD_MAX_ACTIVE_BOARDS_CHECK_ENABLED=false
           - MBD_MAX_ACTIVE_BOARDS=500
-          # event configs
-          - MBD_EVENT_QUEUE_CAPACITY=10000
-          - MBD_EVENT_FIFO_PROCESS_DELAY=3000
-          - MBD_EVENT_DEDUP_PROCESS_DELAY=10000
+          # webhook event configs
+          - MBD_EVENT_DEDUP_PROCESS_DELAY=30000
           # app rate limiter configs
           - MBD_RATE_LIMIT_ENABLED=false
           - MBD_RATE_LIMIT_MAX_BOARDS_PER_HOUR=2

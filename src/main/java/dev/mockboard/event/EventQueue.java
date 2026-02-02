@@ -1,7 +1,5 @@
 package dev.mockboard.event;
 
-import dev.mockboard.repository.model.Board;
-import dev.mockboard.repository.model.MockRule;
 import dev.mockboard.repository.model.Webhook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,9 +16,6 @@ public class EventQueue {
     private final Map<Class<?>, EventBuffer<?>> buffers = new ConcurrentHashMap<>();
 
     public EventQueue() {
-        buffers.put(Board.class, new FifoBuffer<>());
-        buffers.put(MockRule.class, new FifoBuffer<>());
-
         // webhooks should handle duplications
         buffers.put(Webhook.class, new DedupBuffer<>());
         log.info("Initialized event queue with {} buffers", buffers.size());

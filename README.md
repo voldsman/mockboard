@@ -1,6 +1,6 @@
 <div align="center">
   <img src="/public/readme_logo.png" alt="MockBoard.dev Logo" width="150"/>
-  <h1>MockBoard.dev</h1>
+  <h1>MockBoard</h1>
 </div>
 
 <div align="center">
@@ -18,9 +18,9 @@
 </div>
 
 
-## ⚡ What is MockBoard.dev?
+## ⚡ What is MockBoard?
 
-**MockBoard.dev** is a lightweight, self-hostable tool for mocking HTTP APIs during local development and testing.
+**MockBoard** is a lightweight, self-hostable tool for mocking HTTP APIs during local development and testing.
 
 >**Fair warning:** This is early beta. The core works, but there's still a mess under the hood and some UI rough edges. It does what it's supposed to do, the rest is just polish.
 
@@ -39,19 +39,16 @@ It is designed to do one thing well: Fake REST API responses (**JSON in / JSON o
 This started as a SaaS idea I was working on with some folks using Elixir. 
 When the team fell apart, I still needed the tool, so I rebuilt the parts that actually mattered to me using Java (Spring Boot) + Vue.
 
-I use this daily. My friend uses it too and keeps telling me what's broken or missing, so I add features when I have time.
-
-Figured I would put it out there in case it helps someone else who needs a simple, containerized mock server.
+Figured I would open-source in case it helps someone else who needs a simple, containerized mock server.
 
 ### 🏗 Architecture
 Main goal: Keep it lightweight. Minimal dependencies. 
 
 It's simple to use, but under the hood it's designed to handle a lot of traffic on cheap hardware.
 
-- Java 21 Virtual Threads  - handles tons of concurrent requests
-- Cache-first (Caffeine) - reads/writes hit the cache, not the database, so responses are fast
-- Async persistence - changes get queued and written to H2 in the background
-- Custom event queue - UI changes go through FIFO, mock executions get deduplicated to avoid spam
+- Virtual Threads  - handles tons of concurrent requests
+- Cache-first (Caffeine) - reads hit the cache, not the database, so responses are fast
+- Async persistence - mock execution get queued, deduplicated and written to H2 in the background
 
 >You might ask - why such architecture for a tool?
 > 
@@ -104,7 +101,7 @@ Configure the delay (in milliseconds) per endpoint - it applies to every request
 
 
 ### Dynamic Response Templates
-When creating mock responses, you can use template variables inside `{{}}` to generate realistic fake data. Mockboard.dev uses [Datafaker](https://github.com/datafaker-net/datafaker) under the hood.
+When creating mock responses, you can use template variables inside `{{}}` to generate realistic fake data. Mockboard uses [Datafaker](https://github.com/datafaker-net/datafaker) under the hood.
 
 #### Example:
 ```json
@@ -205,12 +202,6 @@ The Vue frontend is built and bundled into Spring Boot (`src/main/resources/stat
 > Build: `npm run build` (outputs to Spring Boot resources - see [vite.config.js](src/main/frontend/vite.config.js))
 >
 > Run the app or follow the [Hosting Guide](#-hosting).
-
-### Web version (mockboard.dev) - Coming soon
-A hosted version with hard limits and rate limiting.  I'll be running it on a cheap server and have no desire to invest in infrastructure.
-
-Main use case: you come in, create endpoints, test what you need, and leave. Hence, the idea of deleting saved data at 3 AM UTC. A simple tool that might come in handy when needed, and you'll know where to find it.
-
 ---
 ## 🤝 Contributing
 Contributions are welcome, but please understand this is a **personal project** built to solve specific problems. It's not a product roadmap or feature request queue.
@@ -226,5 +217,3 @@ Contributions are welcome, but please understand this is a **personal project** 
 - Bug fixes and performance improvements
 - Documentation updates
 - Small features that maintain simplicity
-
-If you need features I won't add, fork it - that's what open source is for. No hard feelings.

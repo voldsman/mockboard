@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS boards (
     id VARCHAR(45) NOT NULL PRIMARY KEY,
     owner_token VARCHAR(90) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    INDEX idx_board_created_at (created_at)
+    deleted BOOL NOT NULL DEFAULT FALSE,
+    INDEX idx_board_created_at (created_at),
+    INDEX idx_board_deleted (deleted)
 );
 
 CREATE TABLE IF NOT EXISTS mock_rules (
@@ -19,8 +21,10 @@ CREATE TABLE IF NOT EXISTS mock_rules (
     status_code INT NOT NULL DEFAULT 200,
     delay INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL,
+    deleted BOOL NOT NULL DEFAULT FALSE,
     INDEX idx_mock_board_id (board_id),
     INDEX idx_mock_created_at (created_at),
+    INDEX idx_mock_deleted (deleted),
     CONSTRAINT fk_mock_rules_board
         FOREIGN KEY (board_id)
             REFERENCES boards(id)
@@ -42,6 +46,7 @@ CREATE TABLE IF NOT EXISTS webhooks (
     received_at TIMESTAMP NOT NULL,
     processing_time_ms LONG NOT NULL,
     INDEX idx_webhook_board_id_key (board_id),
+    INDEX idx_webhook_received_at (received_at),
     CONSTRAINT fk_webhooks_board
         FOREIGN KEY (board_id)
             REFERENCES boards(id)

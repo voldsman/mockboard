@@ -60,15 +60,15 @@ public class SseManager {
         return emitter;
     }
 
-    private Runnable cleanup(String apiKey, SseEmitter emitter) {
-        return () -> webhookEmitters.computeIfPresent(apiKey, (key, list) -> {
+    private Runnable cleanup(String boardId, SseEmitter emitter) {
+        return () -> webhookEmitters.computeIfPresent(boardId, (key, list) -> {
             list.remove(emitter);
             return list.isEmpty() ? null : list;
         });
     }
 
-    public void broadcast(String apiKey, Object data) {
-        var emitters = webhookEmitters.get(apiKey);
+    public void broadcast(String boardId, Object data) {
+        var emitters = webhookEmitters.get(boardId);
         if (CollectionUtils.isEmpty(emitters)) {
             return;
         }

@@ -9,14 +9,13 @@ import dev.mockboard.common.exception.ForbiddenException;
 import dev.mockboard.common.exception.NotFoundException;
 import dev.mockboard.common.utils.IdGenerator;
 import dev.mockboard.common.utils.StringUtils;
-import dev.mockboard.event.DomainEvent;
-import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.BoardRepository;
 import dev.mockboard.repository.model.Board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
@@ -27,7 +26,6 @@ import static dev.mockboard.Constants.BOARD_OWNER_TOKEN_LENGTH;
 @RequiredArgsConstructor
 public class BoardService {
 
-    private final EventQueue eventQueue;
     private final ModelMapper modelMapper;
     private final BoardRepository boardRepository;
 
@@ -35,6 +33,7 @@ public class BoardService {
     private final MockRuleCache mockRuleCache;
     private final WebhookCache webhookCache;
 
+    @Transactional
     public BoardDto createBoard() {
         if (Constants.MAX_ACTIVE_BOARDS_CHECK_ENABLED) {
             var currentActiveBoards = boardCache.size();
@@ -50,14 +49,16 @@ public class BoardService {
                 .ownerToken(ownerToken)
                 .timestamp(Instant.now())
                 .build();
-        var boardDto = modelMapper.map(board, BoardDto.class);
-        boardCache.put(board.getId(), boardDto);
+        var persisted = boardRepository.save(board);
 
-        eventQueue.publish(DomainEvent.create(board, boardId, Board.class));
-        log.info("Created board: {}", board.getId());
+        var boardDto = modelMapper.map(persisted, BoardDto.class);
+        boardCache.put(persisted.getId(), boardDto);
+
+        log.info("Created board: {}", persisted.getId());
         return boardDto;
     }
 
+    @Transactional(readOnly = true)
     public BoardDto getBoardDto(String boardId) {
         var cachedOpt = boardCache.get(boardId);
         if (cachedOpt.isPresent()) {
@@ -66,7 +67,7 @@ public class BoardService {
         }
 
         log.debug("Board cache miss: {}, fallback to DB", boardId);
-        var boardOpt = boardRepository.findById(boardId);
+        var boardOpt = boardRepository.findByIdAndDeletedFalse(boardId);
         if (boardOpt.isEmpty()) {
             throw new NotFoundException("Board not found by id: " + boardId);
         }
@@ -76,13 +77,14 @@ public class BoardService {
         return boardDto;
     }
 
+    @Transactional
     public void deleteBoard(BoardDto boardDto) {
-        log.info("Deleting board: {}", boardDto.getId());
+        log.info("Soft delete board: {}", boardDto.getId());
 
         boardCache.invalidate(boardDto.getId());
         mockRuleCache.invalidate(boardDto.getId());
         webhookCache.invalidate(boardDto.getId());
 
-        eventQueue.publish(DomainEvent.delete(boardDto.getId(), Board.class));
+        boardRepository.markDeleted(boardDto.getId());
     }
 }

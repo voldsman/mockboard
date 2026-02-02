@@ -28,11 +28,7 @@ public final class Constants {
     public static final int DEFAULT_CACHE_EXP_AFTER_ACCESS_MINUTES = Env.getInt("MBD_CACHE_DEFAULT_EXP_AFTER_ACCESS_MINUTES", 15);
 
     // events
-    public static final int EVENT_FIFO_QUEUE_CAPACITY = Env.getInt("MBD_EVENT_QUEUE_CAPACITY", 10_000);
-    public static final int EVENT_FIFO_PROCESS_DELAY = Env.getInt("MBD_EVENT_FIFO_PROCESS_DELAY", 3_000);
-    public static final int EVENT_DEDUP_PROCESS_DELAY = Env.getInt("MBD_EVENT_DEDUP_PROCESS_DELAY", 10_000);
-    public static final int EVENT_CONSUMER_DRAIN_BOARD_ELEMS = Env.getInt("MBD_EVENT_CONSUMER_DRAIN_BOARD_ELEMS", 100);
-    public static final int EVENT_CONSUMER_DRAIN_MOCK_RULE_ELEMS = Env.getInt("MBD_EVENT_CONSUMER_DRAIN_MOCK_RULE_ELEMS", 200);
+    public static final int EVENT_DEDUP_PROCESS_DELAY = Env.getInt("MBD_EVENT_DEDUP_PROCESS_DELAY", 30_000);
     public static final int EVENT_CONSUMER_DRAIN_WEBHOOK_ELEMS = Env.getInt("MBD_EVENT_CONSUMER_DRAIN_WEBHOOK_ELEMS", 500);
 
     // validations
