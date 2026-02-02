@@ -1,6 +1,6 @@
 <div align="center">
   <img src="/public/readme_logo.png" alt="MockBoard.dev Logo" width="150"/>
-  <h1>MockBoard.dev</h1>
+  <h1>MockBoard</h1>
 </div>
 
 <div align="center">
@@ -18,9 +18,9 @@
 </div>
 
 
-## ⚡ What is MockBoard.dev?
+## ⚡ What is MockBoard?
 
-**MockBoard.dev** is a lightweight, self-hostable tool for mocking HTTP APIs during local development and testing.
+**MockBoard** is a lightweight, self-hostable tool for mocking HTTP APIs during local development and testing.
 
 >**Fair warning:** This is early beta. The core works, but there's still a mess under the hood and some UI rough edges. It does what it's supposed to do, the rest is just polish.
 
@@ -104,7 +104,7 @@ Configure the delay (in milliseconds) per endpoint - it applies to every request
 
 
 ### Dynamic Response Templates
-When creating mock responses, you can use template variables inside `{{}}` to generate realistic fake data. Mockboard.dev uses [Datafaker](https://github.com/datafaker-net/datafaker) under the hood.
+When creating mock responses, you can use template variables inside `{{}}` to generate realistic fake data. Mockboard uses [Datafaker](https://github.com/datafaker-net/datafaker) under the hood.
 
 #### Example:
 ```json
@@ -205,12 +205,6 @@ The Vue frontend is built and bundled into Spring Boot (`src/main/resources/stat
 > Build: `npm run build` (outputs to Spring Boot resources - see [vite.config.js](src/main/frontend/vite.config.js))
 >
 > Run the app or follow the [Hosting Guide](#-hosting).
-
-### Web version (mockboard.dev) - Coming soon
-A hosted version with hard limits and rate limiting.  I'll be running it on a cheap server and have no desire to invest in infrastructure.
-
-Main use case: you come in, create endpoints, test what you need, and leave. Hence, the idea of deleting saved data at 3 AM UTC. A simple tool that might come in handy when needed, and you'll know where to find it.
-
 ---
 ## 🤝 Contributing
 Contributions are welcome, but please understand this is a **personal project** built to solve specific problems. It's not a product roadmap or feature request queue.
@@ -226,5 +220,3 @@ Contributions are welcome, but please understand this is a **personal project** 
 - Bug fixes and performance improvements
 - Documentation updates
 - Small features that maintain simplicity
-
-If you need features I won't add, fork it - that's what open source is for. No hard feelings.
