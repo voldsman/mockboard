@@ -7,6 +7,11 @@ import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.MockRuleDto;
 import dev.mockboard.common.domain.dto.WebhookDto;
 import dev.mockboard.common.domain.response.IdResponse;
+import dev.mockboard.repository.BoardRepository;
+import dev.mockboard.repository.MockRuleRepository;
+import dev.mockboard.repository.WebhookRepository;
+import dev.mockboard.repository.model.MockRule;
+import dev.mockboard.service.CleanupService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,10 +38,15 @@ public class MockboardIT {
     private static String mockId;
 
     @LocalServerPort private int port;
-    @Autowired private JdbcTemplate jdbcTemplate;
+    @Autowired private BoardRepository boardRepository;
+    @Autowired private MockRuleRepository mockRuleRepository;
+    @Autowired private WebhookRepository webhookRepository;
+
     @Autowired private BoardCache boardCache;
     @Autowired private MockRuleCache mockRuleCache;
     @Autowired private WebhookCache webhookCache;
+
+    @Autowired private CleanupService cleanupService;
 
     private RestClient restClient;
 
@@ -64,6 +74,7 @@ public class MockboardIT {
         assertThat(cached).isPresent();
         assertThat(cached.get()).isInstanceOf(BoardDto.class);
         assertThat(cached.get().getTimestamp()).isNotNull();
+        assertThat(boardRepository.count()).isEqualTo(1);
     }
 
     @Test
@@ -95,6 +106,7 @@ public class MockboardIT {
             assertThat(mr.getBody()).contains("success");
             assertThat(mr.getTimestamp()).isNotNull();
         });
+        assertThat(mockRuleRepository.count()).isEqualTo(1);
     }
 
     @Test
@@ -139,6 +151,10 @@ public class MockboardIT {
             assertThat(mr.getBody()).contains("updated");
             assertThat(mr.getTimestamp()).isNotNull();
         });
+
+        var mockRule = mockRuleRepository.findById(mockId);
+        assertThat(mockRule).isPresent();
+        assertThat(mockRule.get().getBody()).contains("updated");
     }
 
     @Test
@@ -156,17 +172,6 @@ public class MockboardIT {
 
     @Test
     @Order(6)
-    void ensureDatabaseOperationComplete() {
-        await().atMost(Duration.ofSeconds(30)).untilAsserted(() -> {
-            assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM boards WHERE id = ?", Long.class, boardId)).isEqualTo(1);
-
-            var path = jdbcTemplate.queryForObject("SELECT path FROM mock_rules WHERE id = ?", String.class, mockId);
-            assertThat(path).isNotNull().isEqualTo("/api/updated");
-        });
-    }
-
-    @Test
-    @Order(7)
     void receiveMockRules() {
         var mockRules = restClient.get()
                 .uri("/api/boards/" + boardId + "/mocks")
@@ -177,7 +182,7 @@ public class MockboardIT {
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     void deleteMockRule() {
         restClient.delete()
                 .uri("/api/boards/" + boardId + "/mocks/" + mockId)
@@ -191,13 +196,13 @@ public class MockboardIT {
         var cached = mockRuleCache.getMockRules(boardId);
         assertThat(cached).isEmpty();
 
-        await().atMost(Duration.ofSeconds(30)).untilAsserted(() -> {
-            assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM mock_rules WHERE id = ?", Integer.class, mockId)).isEqualTo(0);
-        });
+        var mockRule = mockRuleRepository.findById(mockId);
+        assertThat(mockRule).isPresent();
+        assertThat(mockRule.get().isDeleted()).isTrue();
     }
 
     @Test
-    @Order(9)
+    @Order(8)
     void executeDeleteMockRule() {
         var body = restClient.get()
                 .uri("/m/" + boardId + "/api/updated")
@@ -207,10 +212,14 @@ public class MockboardIT {
 
         var cached = webhookCache.getWebhooks(boardId);
         assertThat(cached).isNotEmpty().hasSize(3);
+
+        await().atMost(Duration.ofSeconds(Constants.EVENT_DEDUP_PROCESS_DELAY)).untilAsserted(() -> {
+            assertThat(webhookRepository.count()).isEqualTo(3);
+        });
     }
 
     @Test
-    @Order(10)
+    @Order(9)
     void receiveWebhooks() {
         var webhooks = restClient.get()
                 .uri("/api/boards/" + boardId + "/webhooks")
@@ -221,7 +230,7 @@ public class MockboardIT {
     }
 
     @Test
-    @Order(11)
+    @Order(10)
     void deleteBoard() {
         restClient.delete()
                 .uri("/api/boards/" + boardId)
@@ -236,10 +245,23 @@ public class MockboardIT {
         assertThat(mockRuleCache.getMockRules(boardId)).isEmpty();
         assertThat(webhookCache.getWebhooks(boardId)).isEmpty();
 
-        await().atMost(Duration.ofSeconds(30)).untilAsserted(() -> {
-            assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM boards", Integer.class)).isEqualTo(0);
-            assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM mock_rules", Integer.class)).isEqualTo(0);
-            assertThat(jdbcTemplate.queryForObject("SELECT count(*) FROM webhooks", Integer.class)).isEqualTo(0);
-        });
+        var board = boardRepository.findById(boardId);
+        assertThat(board).isPresent();
+        assertThat(board.get().isDeleted()).isTrue();
+    }
+
+    @Test
+    @Order(11)
+    void hardDelete() {
+        assertThat(mockRuleRepository.count()).isEqualTo(1);
+        cleanupService.hardDeleteMockRules();
+        assertThat(mockRuleRepository.count()).isZero();
+
+        assertThat(boardRepository.count()).isEqualTo(1);
+        cleanupService.hardDeleteBoards();
+        assertThat(boardRepository.count()).isZero();
+
+        // cascade deleted
+        assertThat(webhookRepository.count()).isZero();
     }
 }

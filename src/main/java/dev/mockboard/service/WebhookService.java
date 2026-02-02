@@ -70,8 +70,7 @@ public class WebhookService {
             var cachedResultDto = webhookCache.addWebhook(boardId, webhookDto);
             // when ids are equals - means new object added, should process insert
             // otherwise - reference rewrite happened, should process update and use cachedResultDto
-            boolean isRecycled = !cachedResultDto.getId().equals(webhookDto.getId());
-            if (isRecycled) {
+            if (cachedResultDto.getId().equals(webhookDto.getId())) {
                 var webhook = modelMapper.map(webhookDto, Webhook.class);
                 eventQueue.publish(DomainEvent.create(webhook, webhook.getId(), Webhook.class));
                 sseManager.broadcast(boardId, webhookDto);
