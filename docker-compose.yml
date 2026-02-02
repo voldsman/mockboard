@@ -10,7 +10,7 @@ services:
           - MBD_MAX_ACTIVE_BOARDS_CHECK_ENABLED=false
           - MBD_MAX_ACTIVE_BOARDS=500
           # webhook event configs
-          - MBD_EVENT_DEDUP_PROCESS_DELAY=10000
+          - MBD_EVENT_DEDUP_PROCESS_DELAY=30000
           # app rate limiter configs
           - MBD_RATE_LIMIT_ENABLED=false
           - MBD_RATE_LIMIT_MAX_BOARDS_PER_HOUR=2

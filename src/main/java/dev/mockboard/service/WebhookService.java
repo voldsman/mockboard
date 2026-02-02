@@ -5,8 +5,8 @@ import dev.mockboard.common.domain.MockExecutionResult;
 import dev.mockboard.common.domain.RequestMetadata;
 import dev.mockboard.common.domain.dto.BoardDto;
 import dev.mockboard.common.domain.dto.WebhookDto;
-import dev.mockboard.config.sse.SseManager;
 import dev.mockboard.common.utils.IdGenerator;
+import dev.mockboard.config.sse.SseManager;
 import dev.mockboard.event.DomainEvent;
 import dev.mockboard.event.EventQueue;
 import dev.mockboard.repository.WebhookRepository;
@@ -70,13 +70,13 @@ public class WebhookService {
             var cachedResultDto = webhookCache.addWebhook(boardId, webhookDto);
             // when ids are equals - means new object added, should process insert
             // otherwise - reference rewrite happened, should process update and use cachedResultDto
-            if (cachedResultDto.getId().equals(webhookDto.getId())) {
+            boolean isRecycled = !cachedResultDto.getId().equals(webhookDto.getId());
+            if (isRecycled) {
                 var webhook = modelMapper.map(webhookDto, Webhook.class);
                 eventQueue.publish(DomainEvent.create(webhook, webhook.getId(), Webhook.class));
                 sseManager.broadcast(boardId, webhookDto);
             } else {
                 var webhook = modelMapper.map(cachedResultDto, Webhook.class);
-                webhook.markNotNew();
                 eventQueue.publish(DomainEvent.update(webhook, webhook.getId(), Webhook.class));
                 sseManager.broadcast(boardId, cachedResultDto);
             }
