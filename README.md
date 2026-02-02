@@ -39,19 +39,16 @@ It is designed to do one thing well: Fake REST API responses (**JSON in / JSON o
 This started as a SaaS idea I was working on with some folks using Elixir. 
 When the team fell apart, I still needed the tool, so I rebuilt the parts that actually mattered to me using Java (Spring Boot) + Vue.
 
-I use this daily. My friend uses it too and keeps telling me what's broken or missing, so I add features when I have time.
-
-Figured I would put it out there in case it helps someone else who needs a simple, containerized mock server.
+Figured I would open-source in case it helps someone else who needs a simple, containerized mock server.
 
 ### 🏗 Architecture
 Main goal: Keep it lightweight. Minimal dependencies. 
 
 It's simple to use, but under the hood it's designed to handle a lot of traffic on cheap hardware.
 
-- Java 21 Virtual Threads  - handles tons of concurrent requests
-- Cache-first (Caffeine) - reads/writes hit the cache, not the database, so responses are fast
-- Async persistence - changes get queued and written to H2 in the background
-- Custom event queue - UI changes go through FIFO, mock executions get deduplicated to avoid spam
+- Virtual Threads  - handles tons of concurrent requests
+- Cache-first (Caffeine) - reads hit the cache, not the database, so responses are fast
+- Async persistence - mock execution get queued, deduplicated and written to H2 in the background
 
 >You might ask - why such architecture for a tool?
 > 
