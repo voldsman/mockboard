@@ -17,14 +17,14 @@ public class CleanupService {
     private final MockRuleRepository mockRuleRepository;
 
     @Transactional
-    @Scheduled(fixedRate = 3_600_000) // Runs every 1 hour
+    @Scheduled(initialDelay = 1000, fixedRate = 3_600_000) // every 1 hour
     public void hardDeleteBoards() {
         int deleted = boardRepository.hardDeleteMarkedBoards();
         log.info("Hard deleted {} soft-deleted boards", deleted);
     }
 
     @Transactional
-    @Scheduled(fixedRate = 600_000) // Runs every 10 minutes
+    @Scheduled(initialDelay = 3000, fixedRate = 600_000) // every 10 minutes
     public void hardDeleteMockRules() {
         int deleted = mockRuleRepository.hardDeleteMarkedRules();
         log.info("Hard deleted {} soft-deleted mock rules", deleted);
