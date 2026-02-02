@@ -2,6 +2,7 @@ package dev.mockboard.event;
 
 import dev.mockboard.Constants;
 import dev.mockboard.repository.WebhookRepository;
+import dev.mockboard.repository.model.PersistableEntity;
 import dev.mockboard.repository.model.Webhook;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,14 +40,15 @@ public class EventConsumer {
             if (groupedEvents.containsKey(EventType.CREATE)) {
                 var domainEvents = groupedEvents.get(EventType.CREATE);
                 var list = getEntities(domainEvents);
-                webhookRepository.batchInsert(list);
+                webhookRepository.saveAll(list);
                 log.info("Inserted {} webhooks", list.size());
             }
 
             if (groupedEvents.containsKey(EventType.UPDATE)) {
                 var domainEvents = groupedEvents.get(EventType.UPDATE);
                 var list = getEntities(domainEvents);
-                webhookRepository.batchUpdate(list);
+                list.forEach(PersistableEntity::markNotNew);
+                webhookRepository.saveAll(list);
                 log.info("Updated {} webhooks", list.size());
             }
 

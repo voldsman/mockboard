@@ -28,9 +28,9 @@ public class MockExecutionService {
     private final MockRuleService mockRuleService;
     private final TemplateFakerService templateFakerService;
 
-    public MockExecutionResult execute(String apiKey, RequestMetadata metadata) {
+    public MockExecutionResult execute(String boardId, RequestMetadata metadata) {
         // it is safe, unless mockRuleService.getMockRules(boardDto) changes
-        var boardDto = BoardDto.builder().id(apiKey).build();
+        var boardDto = BoardDto.builder().id(boardId).build();
         var mockRule = findMatchingRule(boardDto, metadata.mockPath(), metadata.method()).orElse(null);
         var statusCode = mockRule != null ? mockRule.getStatusCode() : 200;
         var body = determineResponseBody(mockRule);

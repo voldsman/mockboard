@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS webhooks (
     received_at TIMESTAMP NOT NULL,
     processing_time_ms LONG NOT NULL,
     INDEX idx_webhook_board_id_key (board_id),
+    INDEX idx_webhook_received_at (received_at),
     CONSTRAINT fk_webhooks_board
         FOREIGN KEY (board_id)
             REFERENCES boards(id)

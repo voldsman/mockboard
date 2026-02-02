@@ -20,9 +20,9 @@ public final class RequestUtils {
         return request.getRemoteAddr();
     }
 
-    public static String extractMockPath(String apiKey, HttpServletRequest request) {
+    public static String extractMockPath(String boardId, HttpServletRequest request) {
         var fullPath = request.getRequestURI();
-        var prefix = "/m/" + apiKey;
+        var prefix = "/m/" + boardId;
 
         if (fullPath.startsWith(prefix)) {
             var path = fullPath.substring(prefix.length());

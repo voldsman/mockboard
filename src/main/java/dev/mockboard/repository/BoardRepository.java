@@ -14,4 +14,8 @@ public interface BoardRepository extends ListCrudRepository<Board, String> {
     @Modifying
     @Query("UPDATE boards SET deleted = true WHERE id = :boardId")
     void markDeleted(String boardId);
+
+    @Modifying
+    @Query("DELETE FROM boards WHERE deleted = true")
+    int hardDeleteMarkedBoards();
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/m/{apiKey}")
+@RequestMapping("/m/{boardId}")
 @RequiredArgsConstructor
 public class MockExecutionController {
 
@@ -31,14 +31,14 @@ public class MockExecutionController {
             RequestMethod.OPTIONS,
             RequestMethod.HEAD,
     })
-    public ResponseEntity<String> executeMock(@PathVariable String apiKey, HttpServletRequest request) {
+    public ResponseEntity<String> executeMock(@PathVariable String boardId, HttpServletRequest request) {
         var executionStart = System.currentTimeMillis();
-        var metadata = requestMetadataValidator.validateAndGet(apiKey, request);
-        var result = mockExecutionService.execute(apiKey, metadata);
+        var metadata = requestMetadataValidator.validateAndGet(boardId, request);
+        var result = mockExecutionService.execute(boardId, metadata);
 
         var executionTime = System.currentTimeMillis() - executionStart;
         log.debug("Execution time: {}ms", executionTime);
-        webhookService.processWebhookAsync(apiKey, metadata, result, executionTime);
+        webhookService.processWebhookAsync(boardId, metadata, result, executionTime);
         return ResponseEntity
                 .status(result.statusCode())
                 .headers(result.headers())

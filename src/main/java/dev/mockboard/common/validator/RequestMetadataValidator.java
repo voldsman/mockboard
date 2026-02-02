@@ -20,7 +20,7 @@ public class RequestMetadataValidator {
 
     private final ObjectMapper objectMapper;
 
-    public RequestMetadata validateAndGet(String apiKey, HttpServletRequest request) {
+    public RequestMetadata validateAndGet(String boardId, HttpServletRequest request) {
         if (!Constants.VALID_HTTP_METHODS.contains(request.getMethod())) {
             throw new IllegalArgumentException("Unsupported HTTP method: " + request.getMethod());
         }
@@ -39,7 +39,7 @@ public class RequestMetadataValidator {
         return new RequestMetadata(
                 request.getMethod(),
                 request.getRequestURI(),
-                RequestUtils.extractMockPath(apiKey, request),
+                RequestUtils.extractMockPath(boardId, request),
                 request.getRequestURL().toString(),
                 request.getQueryString(),
                 serializeHeaders(headers),

@@ -4,7 +4,6 @@ import dev.mockboard.repository.model.MockRule;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -17,17 +16,6 @@ public interface MockRuleRepository extends ListCrudRepository<MockRule, String>
     void markDeleted(String mockRuleId);
 
     @Modifying
-    @Query("""
-        UPDATE mock_rules SET
-            method = :#{#rule.method},
-            path = :#{#rule.path},
-            headers = :#{#rule.headers},
-            body = :#{#rule.body},
-            status_code = :#{#rule.statusCode},
-            delay = :#{#rule.delay}
-        WHERE id = :#{#rule.id}
-    """)
-    void update(@Param("rule") MockRule mockRule);
-
-
+    @Query("DELETE FROM mock_rules WHERE deleted = true")
+    int hardDeleteMarkedRules();
 }

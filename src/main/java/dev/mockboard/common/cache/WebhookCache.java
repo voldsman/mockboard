@@ -31,8 +31,8 @@ public class WebhookCache extends CaffeineEntityCache<List<WebhookDto>> {
         var resultWrapper = new AtomicReference<WebhookDto>();
         cache.asMap().compute(key, (k, webhooks) -> {
             // given the small collection size, TreeSet would be overkill here
-           var mutableWebhooks = (webhooks == null)
-                   ? new ArrayList<WebhookDto>()
+           var mutableWebhooks = (CollectionUtils.isEmpty(webhooks))
+                   ? new ArrayList<WebhookDto>(Constants.MAX_WEBHOOKS)
                    : new ArrayList<>(webhooks);
 
             // objects recycling
@@ -66,8 +66,8 @@ public class WebhookCache extends CaffeineEntityCache<List<WebhookDto>> {
         return oldWebhook;
     }
 
-    public List<WebhookDto> getWebhooks(String apiKey) {
-        var webhooks = cache.getIfPresent(apiKey);
+    public List<WebhookDto> getWebhooks(String boardId) {
+        var webhooks = cache.getIfPresent(boardId);
         if (CollectionUtils.isEmpty(webhooks)) {
             return Collections.emptyList();
         }
